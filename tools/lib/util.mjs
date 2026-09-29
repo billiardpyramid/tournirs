@@ -150,8 +150,22 @@ export function findCity(...texts) {
   return best;
 }
 
-/* ---------- Текст ---------- */
+/* ---------- Отбор по времени ---------- */
 
+/**
+ * Турнир уже начался? Пользователю нужны только те, что ещё не стартовали.
+ * Если время известно — сравниваем с текущим моментом; если нет (МСБС отдаёт
+ * только даты) — сравниваем по дню, чтобы турнир сегодняшнего дня не пропал.
+ */
+export function hasStarted(r, now = new Date()) {
+  const from = r.from instanceof Date ? r.from : new Date(r.from);
+  if (isNaN(from)) return true;
+  if (/^\d{1,2}:\d{2}$/.test(String(r.time || ''))) return from.getTime() < now.getTime();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return from.getTime() < today.getTime();
+}
+
+/* ---------- Текст ---------- */
 export const clean = s => String(s == null ? '' : s)
   .replace(/\s+/g, ' ')
   .replace(/ /g, ' ')
