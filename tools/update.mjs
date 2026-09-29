@@ -15,7 +15,7 @@ import { fetchLlb } from './lib/llb.mjs';
 import { fetchMsbs } from './lib/msbs.mjs';
 import { fetchB4y } from './lib/b4y.mjs';
 import { buildHtml, writeSite, sig } from './build.mjs';
-import { nowMsk } from './lib/util.mjs';
+import { nowMsk, hasStarted } from './lib/util.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'billiard-tournaments.html');
@@ -105,8 +105,12 @@ for (const s of sources) {
     continue;
   }
 
-  const inHorizon = rows.filter(r => r.to >= H.from && r.from <= H.to);
-  log(`  ${s.name.padEnd(5)} ${String(rows.length).padStart(3)} всего, ${String(inHorizon.length).padStart(3)} в горизонте, ${((Date.now() - t0) / 1000).toFixed(1)} с`);
+  const now = new Date();
+  const inHorizon = rows.filter(r => !hasStarted(r, now)).filter(r => r.to >= H.from && r.from <= H.to);
+  const skippedStarted = rows.filter(r => hasStarted(r, now)).length;
+  log(`  ${s.name.padEnd(5)} ${String(rows.length).padStart(3)} всего, ${String(inHorizon.length).padStart(3)} в горизонте` +
+    (skippedStarted ? `, уже начавшихся пропущено ${skippedStarted}` : '') +
+    `, ${((Date.now() - t0) / 1000).toFixed(1)} с`);
   fs.writeFileSync(cacheFile(s.cls), JSON.stringify({
     at: nowMsk().stamp, total: rows.length, rows: inHorizon
   }, null, 1), 'utf8');
