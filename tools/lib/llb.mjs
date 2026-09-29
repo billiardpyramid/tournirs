@@ -20,11 +20,24 @@ import { clean, pyramidKind, isPyramidOnly, rangeKey, nowMsk, findCity } from '.
 
 const BASE = 'https://www.llb.su';
 const NEXT = BASE + '/tournaments/next?page=';
-const ONLINE = BASE + '/tournaments/online';
 
-function yearFromText(t) {
-  const m = String(t).match(/\b(20\d{2})\b/);
-  return m ? +m[1] : null;
+/* Вкладку /tournaments/online («текущие») НЕ берём: там идущие турниры, а нужны
+   только те, что ещё не начались. */
+
+/**
+ * Ячейка с датой выглядит как «30.09.26<br>19:00». Если брать её текст целиком,
+ * дата и время слипаются в «30.09.2619:00», и регулярка с двумя цифрами года
+ * съедает «2619» — получается год 2619, турнир улетает за горизонт и пропадает.
+ * Поэтому режем по <br> и разбираем каждую строку отдельно.
+ */
+function splitDateCell($td) {
+  const html = $td.html() || '';
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .split('\n')
+    .map(clean)
+    .filter(Boolean);
 }
 
 function parseCard($tr) {
@@ -35,30 +48,44 @@ function parseCard($tr) {
   if (!id) return null;
 
   const name = clean($a.text());
-  const dateCell = clean($tr.find('td.date').first().text());
-  const d = (dateCell.match(/(\d{2})\.(\d{2})\.(\d{2,4})/) || [])[1];
-  const mo = (dateCell.match(/(\d{2})\.(\d{2})\.(\d{2,4})/) || [])[2];
-  const yy = (dateCell.match(/(\d{2})\.(\d{2})\.(\d{2,4})/) || [])[3];
-  const time = (dateCell.match(/(\d{1,2}:\d{2})/) || [])[1] || '';
-  if (!d || !mo) return null;
+  const lines = splitDateCell($tr.find('td.date').first());
+  if (!lines.length) return null;
 
-  const year = yy ? (+yy < 100 ? 2000 + +yy : +yy) : (yearFromText(name) || nowMsk().y);
-  const start = new Date(year, +mo - 1, +d);
+  const dateLine = lines[0];
+  const rest = lines.slice(1).join(' ');
+
+  // «30.09.26» — начало; у многодневных «23.10.26 26.10» — кон��ец позже в этой же строке
+  const startM = dateLine.match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/);
+  if (!startM) return null;
+  const toYear = y => (+y < 100 ? 2000 + +y : +y);
+  const start = new Date(toYear(startM[3]), +startM[2] - 1, +startM[1]);
+  if (isNaN(start)) return null;
+
+  let end = new Date(start);
+  const tail = dateLine.slice((dateLine.indexOf(startM[0]) || 0) + startM[0].length);
+  const endM = tail.match(/(\d{1,2})\.(\d{1,2})/);
+  if (endM) {
+    const e = new Date(start.getFullYear(), +endM[2] - 1, +endM[1]);
+    if (!isNaN(e) && e >= start) end = e;
+  }
+
+  // время может быть во второй строке, а у части карточек — сразу после даты
+  const time = (rest + ' ' + tail).match(/(\d{1,2}:\d{2})/);
+  const timeStr = time ? time[1] : '';
 
   const club = clean($tr.find('a.club-link').first().text());
   const partsLink = $tr.find('a.parts-link').first();
-  let cnt = clean(partsLink.text());
+  // показываем число зарегистрированных (как в первой версии сайта), а не «N из M»
   const title = partsLink.attr('title') || '';
-  const reg = title.match(/Участники:\s*(\d+)\s*из\s*(\d+)/);
-  if (reg) cnt = reg[1] + ' / ' + reg[2];
-  if (!/^\d/.test(cnt)) cnt = '—';
+  let cnt = (title.match(/Участники:\s*(\d+)/) || [])[1] || clean(partsLink.text());
+  if (!/^\d/.test(cnt)) cnt = '';
 
   const kind = pyramidKind(name);
   if (!isPyramidOnly(kind, name)) return null;
 
   return {
-    from: start, to: start,
-    time: time || '—',
+    from: start, to: end,
+    time: timeStr,
     name,
     city: findCity(name, club) || '—',
     venue: club,
@@ -72,7 +99,6 @@ function parseCard($tr) {
 export async function fetchLlb() {
   const pages = [];
   for (let p = 0; p < 3; p++) pages.push(NEXT + p);
-  pages.push(ONLINE);
 
   const seen = new Set();
   const out = [];
