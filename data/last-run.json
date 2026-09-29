@@ -1,13 +1,14 @@
 {
- "ranAt": "29.09.2026, 14:44",
- "total": 63,
+ "ranAt": "29.09.2026, 20:44",
+ "total": 91,
  "bySource": {
-  "ЛЛБ": 22,
-  "МСБС": 21,
-  "B4Y": 20
+  "ЛЛБ": 53,
+  "МСБС": 20,
+  "B4Y": 18
  },
- "exactLinks": 43,
- "added": 63,
- "removed": 0,
- "pageChanged": true
+ "exactLinks": 72,
+ "added": 3,
+ "removed": 3,
+ "pageChanged": true,
+ "staleSources": []
 }
