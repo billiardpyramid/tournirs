@@ -114,7 +114,7 @@
   "city": "Москва",
   "venue": "33",
   "kind": "пирамида",
-  "cnt": "23",
+  "cnt": "30",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545899"
@@ -162,7 +162,7 @@
   "city": "Москва",
   "venue": "БАЗА",
   "kind": "пирамида",
-  "cnt": "46",
+  "cnt": "47",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545914"
@@ -282,7 +282,7 @@
   "city": "Ижевск",
   "venue": "Кино",
   "kind": "пирамида",
-  "cnt": "60",
+  "cnt": "61",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5541770"
@@ -294,7 +294,7 @@
   "city": "Ижевск",
   "venue": "Кино",
   "kind": "пирамида",
-  "cnt": "40",
+  "cnt": "41",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545615"
@@ -306,7 +306,7 @@
   "city": "Москва",
   "venue": "Модус V.",
   "kind": "пирамида",
-  "cnt": "67",
+  "cnt": "68",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5542450"
@@ -918,7 +918,7 @@
   "city": "Минск",
   "venue": "БК \"Европа\"",
   "kind": "пирамида",
-  "cnt": "3",
+  "cnt": "5",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14668"
@@ -930,7 +930,7 @@
   "city": "Тихорецк",
   "venue": "БК «Ной»",
   "kind": "комбинированная",
-  "cnt": "7",
+  "cnt": "8",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14835"
@@ -942,7 +942,7 @@
   "city": "Минск",
   "venue": "БК \"Европа\"",
   "kind": "свободная",
-  "cnt": "6",
+  "cnt": "9",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14670"
@@ -1046,18 +1046,6 @@
  {
   "key": "16.10",
   "time": "00:00",
-  "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(квал.)",
-  "city": "Иркутск",
-  "venue": "БК \"Меткий\"",
-  "kind": "свободная с продолж.",
-  "cnt": "14",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/14495"
- },
- {
-  "key": "16.10",
-  "time": "00:00",
   "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(П.Л.)",
   "city": "Иркутск",
   "venue": "БК \"Меткий\"",
@@ -1078,6 +1066,18 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14497"
+ },
+ {
+  "key": "16.10",
+  "time": "00:00",
+  "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(квал.)",
+  "city": "Иркутск",
+  "venue": "БК \"Меткий\"",
+  "kind": "свободная с продолж.",
+  "cnt": "14",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14495"
  },
  {
   "key": "24.10",
