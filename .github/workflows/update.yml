@@ -1,0 +1,81 @@
+# Автообновление расписания турниров по русскому бильярду (пирамида).
+#
+# Расписание: 07:30 и 19:30 по Москве.
+#   04:30 и 16:30 UTC — раннеры GitHub работают в UTC, московское время = UTC+3 без перехода.
+#
+# Как работает:
+#   1. node tools/update.mjs забирает три площадки обычными HTTP-запросами
+#      (браузер не нужен), отбрасывает всё, кроме пирамиды, и собирает страницу;
+#   2. если хоть одна площадка не ответила — скрипт падает, страница не трогается;
+#   3. если страница изменилась — коммит в эту же ветку, Pages пересобирает сайт сам.
+#
+# Код 10 на выходе означает «страница не изменилась» — тогда коммита не будет.
+name: Обновить расписание
+
+on:
+  schedule:
+    # 04:30 и 16:30 UTC = 07:30 и 19:30 МСК
+    - cron: '30 4,16 * * *'
+  # запуск вручную из вкладки Actions
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-schedule
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Забрать ветку с сайтом
+        uses: actions/checkout@v4
+
+      - name: Поставить Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Установить зависимости
+        run: npm ci --omit=dev || npm install --omit=dev
+
+      - name: Собрать расписание
+        id: build
+        run: |
+          set +e
+          node tools/update.mjs
+          code=$?
+          set -e
+          echo "код выхода: $code"
+          if [ "$code" = "10" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          elif [ "$code" = "0" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Сбор данных не удался (код $code). Страница не изменена."
+            exit "$code"
+          fi
+
+      - name: Закоммитить, если есть изменения
+        if: steps.build.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html billiard-tournaments.html
+          if git diff --cached --quiet; then
+            echo "нечего коммитить"
+            exit 0
+          fi
+          message="$(cat data/commit-message.txt 2>/dev/null || echo 'Расписание обновлено')"
+          git commit -m "$message"
+          git push
+          echo "Изменения залиты, Pages пересоберёт сайт."
+
+      - name: Краткий отчёт
+        if: always()
+        run: |
+          [ -f data/last-run.json ] && cat data/last-run.json || echo "отчёта нет"
