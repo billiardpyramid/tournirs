@@ -15,7 +15,7 @@
  * Идти/прошедшие нужны, иначе в ленте пропадают турниры текущего дня.
  */
 import * as cheerio from 'cheerio';
-import { get } from './http.mjs';
+import { get, patient } from './http.mjs';
 import { clean, pyramidKind, isPyramidOnly, rangeKey, nowMsk, findCity } from './util.mjs';
 
 const BASE = 'https://www.llb.su';
@@ -77,7 +77,7 @@ export async function fetchLlb() {
   const seen = new Set();
   const out = [];
   for (const url of pages) {
-    const html = await get(url);
+    const html = await get(url, patient);
     const $ = cheerio.load(html);
     $('tr').each((_, tr) => {
       const card = parseCard($(tr));
