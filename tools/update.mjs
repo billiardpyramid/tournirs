@@ -67,7 +67,10 @@ for (const s of sources) {
   try {
     rows = await s.fn();
   } catch (e) {
-    fail(`${s.name} не ответила: ${e.message}. Страница не тронута, старые данные остаются.`);
+    // Раньше здесь терялась причина: node иногда отдаёт ошибку без message,
+    // и в отчёт попадала пустая строка — сбой выглядел необъяснимым.
+    const why = (e && (e.reason || e.detail || e.message)) || String(e) || 'причина неизвестна';
+    fail(`${s.name} не ответила: ${why} Страница не тронута, старые данные остаются.`);
   }
   if (!rows.length) fail(`${s.name} вернула 0 турниров — похоже на сбой или смену вёрстки. Страница не тронута.`);
   const inHorizon = rows.filter(r => r.to >= H.from && r.from <= H.to);
