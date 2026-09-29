@@ -1,0 +1,9 @@
+# Системные папки — не коммитим
+browser-profiles/
+_trash/
+
+# Зависимости
+node_modules/
+
+# Локальные файлы opencode
+*.local.json

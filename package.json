@@ -1,0 +1,19 @@
+{
+  "name": "billiard-pyramid-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Автосбор расписания турниров по русскому бильярду (пирамида) для сайта billiardpyramid.github.io",
+  "type": "module",
+  "scripts": {
+    "fetch": "node tools/fetch.js",
+    "build": "node tools/build.js",
+    "update": "node tools/update.js",
+    "check": "node tools/fetch.js --check"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
