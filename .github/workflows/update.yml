@@ -1,0 +1,75 @@
+# ВАЖНО: этот файл должен лежать в ветке по умолчанию (main) — только из неё GitHub
+# читает расписания. Код сборщика и сама страница живут в ветке Pyramid_tournirs,
+# поэтому шаг checkout явно указывает на неё, а push идёт в неё же.
+name: Обновить расписание
+
+on:
+  schedule:
+    # 04:30 и 16:30 UTC = 07:30 и 19:30 МСК
+    - cron: '30 4,16 * * *'
+  # запуск вручную из вкладки Actions
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-schedule
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Забрать ветку с сайтом и сборщиками
+        uses: actions/checkout@v4
+        with:
+          ref: Pyramid_tournirs
+
+      - name: Поставить Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Установить зависимости
+        run: npm ci --omit=dev || npm install --omit=dev
+
+      - name: Собрать расписание
+        id: build
+        run: |
+          set +e
+          node tools/update.mjs
+          code=$?
+          set -e
+          echo "код выхода: $code"
+          if [ "$code" = "10" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          elif [ "$code" = "0" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Сбор данных не удался (код $code). Страница не изменена."
+            exit "$code"
+          fi
+
+      - name: Закоммитить, если есть изменения
+        if: steps.build.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html billiard-tournaments.html data
+          if git diff --cached --quiet; then
+            echo "нечего коммитить"
+            exit 0
+          fi
+          message="$(cat data/commit-message.txt 2>/dev/null || echo 'Расписание обновлено')"
+          git commit -m "$message"
+          git push origin HEAD:Pyramid_tournirs
+          echo "Изменения залиты в Pyramid_tournirs, Pages пересоберёт сайт."
+
+      - name: Краткий отчёт
+        if: always()
+        run: |
+          [ -f data/last-run.json ] && cat data/last-run.json || echo "отчёта нет"
