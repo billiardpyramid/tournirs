@@ -9,7 +9,7 @@
  * на конкретный турнир, — PDF/DOC регламента в /upload/iblock/… внутри строки.
  */
 import * as cheerio from 'cheerio';
-import { get } from './http.mjs';
+import { get, patient } from './http.mjs';
 import { clean, pyramidKind, isPyramidOnly, rangeKey, parseRuRange, nowMsk } from './util.mjs';
 
 const CAL = 'https://mosbilliard.ru/calen/';
@@ -30,7 +30,7 @@ function splitPlace(place) {
 }
 
 export async function fetchMsbs() {
-  const html = await get(CAL);
+  const html = await get(CAL, patient);
   const $ = cheerio.load(html);
   const out = [];
   const seen = new Set();
