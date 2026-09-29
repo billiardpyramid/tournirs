@@ -91,3 +91,9 @@ export function get(url, { timeout = 30000, retries = 3, headers = {} } = {}) {
 export async function getJson(url, opts) {
   return JSON.parse(await get(url, { ...opts, headers: { Accept: 'application/json, text/plain, */*', ...(opts && opts.headers) } }));
 }
+
+/**
+ * Загрузка с повышенной устойчивостью — для площадок, которые периодически
+ * не отвечают (проверено на mosbilliard.ru с серверов GitHub).
+ */
+export const patient = { timeout: 45000, retries: 5 };
