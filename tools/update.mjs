@@ -55,30 +55,68 @@ const fail = msg => {
 
 const H = horizon();
 const sources = [
-  { name: 'ЛЛБ', fn: fetchLlb },
-  { name: 'МСБС', fn: fetchMsbs },
-  { name: 'B4Y', fn: fetchB4y }
+  { name: 'ЛЛБ', cls: 'llb', fn: fetchLlb },
+  { name: 'МСБС', cls: 'msbs', fn: fetchMsbs },
+  { name: 'B4Y', cls: 'b4y', fn: fetchB4y }
 ];
 
+const cacheFile = cls => path.join(DATA, 'cache-' + cls + '.json');
+
+/** Из JSON даты приходят строками — возвращаем их в Date, иначе сборка страницы падает. */
+const revive = r => ({
+  ...r,
+  from: r.from instanceof Date ? r.from : new Date(r.from),
+  to: r.to instanceof Date ? r.to : new Date(r.to)
+});
+
+/**
+ * Связь с площадками нестабильна: mosbilliard.ru с разных адресов GitHub то отвечает
+ * за секунду, то уходит в таймаут. Проверено диагностикой: curl до него доходит,
+ * падает именно Node-запрос, и не в каждом запуске.
+ *
+ * Поэтому сбой по одной площадке не роняет всю сборку: берём её прошлые данные из кэша
+ * и пишем в отчёт, что они устаревшие. Если кэша нет — тогда уже останавливаемся,
+ * чтобы не опубликовать неполное расписание.
+ */
 const gathered = [];
+const stale = [];
+
 for (const s of sources) {
   const t0 = Date.now();
-  let rows;
+  let rows = null, problem = null;
   try {
     rows = await s.fn();
+    if (!rows || !rows.length) problem = 'вернула 0 турниров';
   } catch (e) {
-    // Раньше здесь терялась причина: node иногда отдаёт ошибку без message,
-    // и в отчёт попадала пустая строка — сбой выглядел необъяснимым.
-    const why = (e && (e.reason || e.detail || e.message)) || String(e) || 'причина неизвестна';
-    fail(`${s.name} не ответила: ${why} Страница не тронута, старые данные остаются.`);
+    problem = ((e && (e.reason || e.detail || e.message)) || String(e) || 'причина неизвестна').toString();
   }
-  if (!rows.length) fail(`${s.name} вернула 0 турниров — похоже на сбой или смену вёрстки. Страница не тронута.`);
+
+  if (problem) {
+    const file = cacheFile(s.cls);
+    let cached = null;
+    if (fs.existsSync(file)) { try { cached = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { cached = null; } }
+    if (cached && cached.rows && cached.rows.length) {
+      log(`  ${s.name.padEnd(5)} НЕ ОТВЕТИЛА (${problem}) — беру прошлые данные от ${cached.at}`);
+      stale.push(s.name);
+      gathered.push({ name: s.name, cls: s.cls, rows: cached.rows.map(revive), fromCache: true });
+    } else {
+      fail(`${s.name} не ответила: ${problem} Прошлых данных тоже нет, страница не тронута.`);
+    }
+    continue;
+  }
+
   const inHorizon = rows.filter(r => r.to >= H.from && r.from <= H.to);
   log(`  ${s.name.padEnd(5)} ${String(rows.length).padStart(3)} всего, ${String(inHorizon.length).padStart(3)} в горизонте, ${((Date.now() - t0) / 1000).toFixed(1)} с`);
-  gathered.push({ name: s.name, rows: inHorizon });
+  fs.writeFileSync(cacheFile(s.cls), JSON.stringify({
+    at: nowMsk().stamp, total: rows.length, rows: inHorizon
+  }, null, 1), 'utf8');
+  gathered.push({ name: s.name, cls: s.cls, rows: inHorizon, fromCache: false });
 }
 
 const all = gathered.flatMap(g => g.rows);
+if (stale.length) {
+  console.log('  ВНИМАНИЕ: устаревшие данные по: ' + stale.join(', ') + '. Расписание собрано не полностью свежим.');
+}
 
 /* ---------- 2. Страховка ---------- */
 
@@ -131,7 +169,8 @@ if (dry) {
   })), null, 1), 'utf8');
   fs.writeFileSync(REPORT, JSON.stringify({
     ranAt: stamp, total: all.length, bySource: bySrc, exactLinks: exact,
-    added: added.length, removed: removed.length, pageChanged: changed
+    added: added.length, removed: removed.length, pageChanged: changed,
+    staleSources: stale
   }, null, 1), 'utf8');
   log('\nзаписано: ' + path.relative(ROOT, SRC) + ' и ' + path.relative(ROOT, path.join(ROOT, 'index.html')));
   log('время обновления на странице: ' + stamp);
@@ -143,8 +182,9 @@ const summary = [
   `обновление ${stamp}`,
   `турниров: ${all.length} (было ${prev.length || '—'})`,
   `новых: ${added.length}, исчезло: ${removed.length}`,
-  bySrc
-].join(', ');
+  Object.entries(bySrc).map(([k, v]) => k + '=' + v).join(' '),
+  stale.length ? 'устаревшие данные: ' + stale.join(', ') : ''
+].filter(Boolean).join(', ');
 
 fs.writeFileSync(MSG,
   'Расписание на ' + stamp + '\n\n' + summary + '\n', 'utf8');
