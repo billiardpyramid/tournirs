@@ -37,7 +37,19 @@ function horizon() {
 }
 
 const log = (...a) => console.log(...a);
-const fail = msg => { console.error('ОШИБКА: ' + msg); process.exit(1); };
+
+/**
+ * Останавливаем сборку с внятной причиной. В GitHub Actions причина дополнительно
+ * попадает в Annotations — там её видно без открытия полного лога.
+ */
+const fail = msg => {
+  console.error('ОШИБКА: ' + msg);
+  if (process.env.GITHUB_ACTIONS) console.error('::error title=Сбор не удался::' + msg);
+  try {
+    fs.writeFileSync(REPORT, JSON.stringify({ ranAt: nowMsk().stamp, ok: false, error: msg }, null, 1), 'utf8');
+  } catch (e) { /* отчёт не записался — не страшно */ }
+  process.exit(1);
+};
 
 /* ---------- 1. Сбор ---------- */
 
