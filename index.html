@@ -43,6 +43,18 @@
           color:#0f1218;background:var(--soon);border-radius:6px;padding:0 3px;line-height:1.3}
   .cal-hint{font-size:11.5px;color:var(--dim);text-align:center;margin-top:8px}
 
+  /* Календарь при активном фильтре */
+  .cal-filter{background:#1f2a38;border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:8px;padding:9px 11px;margin-bottom:12px;font-size:12.5px;color:var(--dim);line-height:1.5}
+  .cal-filter b{color:var(--txt)}
+  .cal-reset{cursor:pointer;color:var(--accent);text-decoration:underline;
+    text-underline-offset:2px;white-space:nowrap}
+  .cal-reset:hover{color:#ffd36b}
+  #cal.filtered aside .day:not(.has){opacity:.28}
+  #cal.filtered .day.has{background:#20402f;color:#d6ffe8;font-weight:700;
+    box-shadow:inset 0 0 0 1px var(--soon)}
+  #cal.filtered .day.has:hover{background:#2a5540}
+
   /* ---------- Поиск и фильтры ---------- */
   .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
   input[type=search]{flex:1;min-width:240px;padding:10px 14px;border-radius:8px;
@@ -292,6 +304,8 @@ function parseRange(s){
   return [new Date(YEAR, m1 - 1, d1), new Date(YEAR, m2 - 1, d2)];
 }
 const key = dt => pad(dt.getDate()) + "." + pad(dt.getMonth() + 1);
+/* sortable-номер дня (0110, 0111, …) — строки "31.10" и "01.11" нельзя сравнивать как строки */
+const mmdd = dt => (dt.getMonth() + 1) * 100 + dt.getDate();
 const mondayIdx = dt => (dt.getDay() + 6) % 7;
 
 const TODAY = new Date();
@@ -310,9 +324,33 @@ for (const r of ROWS){
 }
 
 /* ---------- Календарь справа ---------- */
-function buildCalendar(){
-  const box = document.getElementById("cal");
+const calBox = document.getElementById("cal");
+
+function passes(r, term, flt){
+  const [d, time, name, cityRaw, kind, cnt, src] = r;
+  const [city] = cityRaw.split("|");
+  const hay = (d + " " + time + " " + name + " " + cityRaw + " " + kind + " " + src).toLowerCase();
+  if (term && !hay.includes(term)) return false;
+  if (flt !== "all" && flt !== regionOf(city)) return false;
+  return true;
+}
+
+function buildCalendar(term, flt, shown){
+  const on = !!term || flt !== "all";
+  const matchDay = {};          // сколько турниров подходит фильтру
+  const totalDay = perDay;      // сколько всего (для подсказки)
+  for (const r of ROWS){
+    if (!passes(r, term, flt)) continue;
+    const [a, b] = parseRange(r[0]);
+    for (let d = new Date(a); d <= b; d.setDate(d.getDate() + 1)) matchDay[key(d)] = (matchDay[key(d)] || 0) + 1;
+  }
+
   let html = "";
+  if (on){
+    const label = flt !== "all" ? flt : `поиск: ${q.value.trim()}`;
+    html += `<div class="cal-filter">Показаны дни с подходящими турнирами: <b>${label}</b> — ` +
+            `${shown}. <span class="cal-reset" role="button" tabindex="0">Сбросить</span></div>`;
+  }
   let m = new Date(minD.getFullYear(), minD.getMonth(), 1);
   while (m <= maxD){
     const y = m.getFullYear(), mo = m.getMonth();
@@ -326,34 +364,59 @@ function buildCalendar(){
     for (let i = 0; i < lead; i++) html += `<div class="day pad"></div>`;
     for (let d = 1; d <= last; d++){
       const k = pad(d) + "." + pad(mo + 1);
-      const n = perDay[k] || 0;
+      const n = matchDay[k] || 0;
+      const tot = totalDay[k] || 0;
       const dt = new Date(y, mo, d);
       const isWknd = dt.getDay() === 0 || dt.getDay() === 6;
       const cls = ["day"];
       if (n) cls.push("has");
       if (k === TODAY_KEY) cls.push("today");
-      const title = `${d} ${MONTH_SHORT[mo]} ${y}, ${WD_FULL[mondayIdx(dt)]}` +
-                    (n ? ` — турниров: ${n}` : " — турниров нет");
+      let title = `${d} ${MONTH_SHORT[mo]} ${y}, ${WD_FULL[mondayIdx(dt)]}`;
+      if (on) title += n ? ` — подходит: ${n}` + (tot > n ? ` (всего ${tot})` : "")
+                        : (tot ? ` — подходящих нет (всего ${tot})` : " — турниров нет");
+      else title += n ? ` — турниров: ${n}` : " — турниров нет";
       html += `<div class="${cls.join(" ")}" data-k="${k}" title="${title}">${d}` +
               (n ? `<span class="n">${n}</span>` : "") + `</div>`;
     }
     html += `</div></div>`;
     m = new Date(y, mo + 1, 1);
   }
-  html += `<div class="cal-hint">Число в углу — сколько турниров в этот день.<br>Клик по дню — переход к списку.</div>`;
-  box.innerHTML = html;
-
-  box.addEventListener("click", e => {
-    const el = e.target.closest(".day.has");
-    if (!el) return;
-    const target = document.getElementById("day-" + el.dataset.k.replace(".", "-"));
-    if (target){
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      target.classList.add("flash");
-      setTimeout(() => target.classList.remove("flash"), 1400);
-    }
-  });
+  html += `<div class="cal-hint">Число в углу — сколько турниров в этот день` +
+          (on ? ` <b>(после фильтра)</b>` : "") +
+          `.<br>Клик по дню — переход к списку.</div>`;
+  calBox.classList.toggle("filtered", on);
+  calBox.innerHTML = html;
 }
+
+/* клики по календарю: переход к дню и сброс фильтра (делегирование, слушатель один) */
+calBox.addEventListener("click", e => {
+  if (e.target.closest(".cal-reset")){
+    q.value = "";
+    filter = "all";
+    document.querySelectorAll("#chips .chip").forEach(c => c.classList.toggle("on", c.dataset.f === "all"));
+    build();
+    return;
+  }
+  const el = e.target.closest(".day.has");
+  if (!el) return;
+  /* турнир может идти несколько дней: ищем заголовок, чей диапазон накрывает этот день */
+  const [dd, mm] = el.dataset.k.split(".").map(Number);
+  const kNum = mm * 100 + dd;
+  const target = [...document.querySelectorAll("tr.day")]
+    .find(r => kNum >= +r.dataset.from && kNum <= +r.dataset.to);
+  if (target){
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.classList.add("flash");
+    setTimeout(() => target.classList.remove("flash"), 1400);
+  }
+});
+calBox.addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const el = e.target.closest(".cal-reset");
+  if (!el) return;
+  e.preventDefault();
+  el.click();
+});
 
 /* ---------- Таблица ---------- */
 const tb = document.getElementById("tb");
@@ -370,11 +433,10 @@ function regionOf(city){
 function build(){
   const term = q.value.trim().toLowerCase();
   let shown = 0, html = "", cur = null, block = [];
-
   const flush = () => {
     if (!block.length) return;
     const cnt = block.length;
-    const [a] = parseRange(cur);
+    const [a, b] = parseRange(cur);
     let cls = "day", label = "";
     if (cur === TODAY_KEY) cls += " today";
     if (WEEKEND[cur]) cls += " wknd";
@@ -383,7 +445,7 @@ function build(){
     if (cur === TODAY_KEY) label += " · сегодня";
     if (WEEKEND[cur]) label += " · выходной";
     if (cnt >= 8) label += "  ★ " + cnt + " турниров";
-    html += `<tr class="${cls}" id="day-${cur.replace(".", "-")}">` +
+    html += `<tr class="${cls}" id="day-${cur.replace(".", "-")}" data-from="${mmdd(a)}" data-to="${mmdd(b)}">` +
             `<td colspan="7">${cur} — 2026<span class="wd">${label}</span></td></tr>`;
     html += block.join("");
     block = [];
@@ -392,9 +454,7 @@ function build(){
   for (const r of ROWS){
     const [d, time, name, cityRaw, kind, cnt, src, srcCls, url] = r;
     const [city, venue] = cityRaw.split("|");
-    const hay = (d + " " + time + " " + name + " " + cityRaw + " " + kind + " " + src).toLowerCase();
-    if (term && !hay.includes(term)) continue;
-    if (filter !== "all" && filter !== regionOf(city)) continue;
+    if (!passes(r, term, filter)) continue;
     if (cur !== null && d !== cur) flush();
     cur = d;
     shown++;
@@ -416,6 +476,7 @@ function build(){
   tb.innerHTML = html ||
     `<tr><td colspan="7" style="padding:24px;color:#8b97a8">Ничего не найдено</td></tr>`;
   document.getElementById("count").textContent = "показано " + shown + " из " + ROWS.length;
+  buildCalendar(term, filter, shown);
 }
 
 /* клик по строке открывает турнир на площадке-источнике */
@@ -443,7 +504,6 @@ document.getElementById("chips").addEventListener("click", e => {
   build();
 });
 
-buildCalendar();
 build();
 </script>
 </body>
