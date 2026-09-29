@@ -1,0 +1,55 @@
+# Диагностика доступности площадок с серверов GitHub.
+# Запускается только вручную. Нужен, чтобы понять, какая площадка и почему недоступна.
+name: Диагностика площадок
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Что видно по версии и адресам
+        run: |
+          echo "node: $(node -v)  curl: $(curl --version | head -1)"
+          for h in mosbilliard.ru www.mosbilliard.ru llb.su bill4you.ru; do
+            echo "--- $h"
+            getent ahosts "$h" | head -4 || echo "  нет AAAA/A"
+          done
+
+      - name: Проверить каждый адрес curl
+        run: |
+          for u in https://mosbilliard.ru/calen/ http://mosbilliard.ru/calen/ https://www.mosbilliard.ru/calen/ https://llb.su/tournaments/next https://bill4you.ru/api/v2/site/time-zones; do
+            echo "=== $u"
+            curl -sS -o /dev/null -w '    код=%{http_code} время=%{time_total}c ip=%{remote_ip}\n' \
+                 --max-time 25 "$u" || echo "    ОШИБКА curl: $?"
+          done
+
+      - name: Проверить из Node тем же кодом, что и сборщик
+        run: |
+          cat > probe.mjs <<'EOF'
+          import https from 'node:https';
+          import dns from 'node:dns';
+          const targets = [
+            ['https://mosbilliard.ru/calen/', {}],
+            ['https://mosbilliard.ru/calen/', { family: 4, autoSelectFamily: false }],
+            ['https://llb.su/tournaments/next', { family: 4, autoSelectFamily: false }]
+          ];
+          for (const [url, extra] of targets) {
+            await new Promise(res => {
+              const t0 = Date.now();
+              const r = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, timeout: 25000, ...extra }, resp => {
+                let n = 0; resp.on('data', c => n += c.length);
+                resp.on('end', () => { console.log(`  ${url} extra=${JSON.stringify(extra)} -> ${resp.statusCode}, ${n} б, ${Date.now() - t0} мс`); res(); });
+              });
+              r.on('error', e => { console.log(`  ${url} extra=${JSON.stringify(extra)} -> ОШИБКА ${e.code || ''} ${e.message || ''}`); res(); });
+              r.on('timeout', () => { r.destroy(); console.log(`  ${url} extra=${JSON.stringify(extra)} -> ТАЙМАУТ`); res(); });
+            });
+          }
+          console.log('  порядок DNS:', dns.getDefaultResultOrder());
+          EOF
+          node probe.mjs
