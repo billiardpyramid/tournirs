@@ -4,9 +4,20 @@
  */
 import https from 'node:https';
 import http from 'node:http';
+import dns from 'node:dns';
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
            '(KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36';
+
+/**
+ * ВАЖНО: работаем только по IPv4.
+ * У mosbilliard.ru объявлен IPv6-адрес (AAAA), но он не обслуживается: на серверах
+ * GitHub Node выбирает IPv6, соединение висит и падает по таймауту, хотя по IPv4
+ * сайт отвечает за доли секунды. На своём компьютере с IPv6 это не воспроизводится —
+ * там Node сразу берёт IPv4.
+ */
+dns.setDefaultResultOrder('ipv4first');
+const FORCE_IPV4 = { family: 4, autoSelectFamily: false };
 
 export class HttpError extends Error {
   constructor(url, status) {
@@ -27,7 +38,8 @@ export function get(url, { timeout = 30000, retries = 3, headers = {} } = {}) {
       const mod = url.startsWith('http://') ? http : https;
       const req = mod.get(url, {
         headers: { 'User-Agent': UA, 'Accept-Language': 'ru-RU,ru;q=0.9', ...headers },
-        timeout
+        timeout,
+        ...FORCE_IPV4
       }, r => {
         if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) {
           r.resume();
