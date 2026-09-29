@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ближайшие турниры по русскому бильярду (пирамида) — 29.09.2026</title>
+<style>
+  :root{
+    --bg:#12151b; --card:#1a1f28; --line:#2b3444; --txt:#e6ebf2; --dim:#8b97a8;
+    --accent:#f0b429; --soon:#3ddc97; --today:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:24px;background:var(--bg);color:var(--txt);
+       font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.45}
+  .wrap{max-width:1420px;margin:0 auto}
+  h1{margin:0 0 4px;font-size:26px}
+  .sub{color:var(--dim);margin-bottom:18px;font-size:14px}
+
+  .layout{display:flex;gap:22px;align-items:flex-start}
+  main{flex:1;min-width:0}
+
+  /* ---------- Календарь справа ---------- */
+  aside{width:252px;flex:0 0 252px;position:sticky;top:16px;align-self:flex-start;
+        max-height:calc(100vh - 32px);overflow-y:auto}
+  aside::-webkit-scrollbar{width:6px}
+  aside::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+  .cal{background:var(--card);border:1px solid var(--line);border-radius:10px;
+       padding:12px 12px 14px;margin-bottom:12px}
+  .cal h3{margin:0 0 8px;font-size:14px;color:var(--txt);text-align:center;letter-spacing:.3px}
+  .cal h3 span{color:var(--dim);font-weight:400;font-size:12px}
+  .wd,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .wd div{text-align:center;font-size:10.5px;color:var(--dim);padding:3px 0;text-transform:uppercase}
+  .day{position:relative;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+       border-radius:6px;font-size:13px;color:var(--txt);cursor:pointer;user-select:none}
+  .day:hover{background:#2b3444}
+  .day.pad{visibility:hidden}
+  .day.has{background:#23303f;color:#cfe6ff;font-weight:600}
+  .day.has:hover{background:#2e4152}
+  .day.today{outline:2px solid var(--today);outline-offset:-2px;color:#fff}
+  .day .n{position:absolute;right:2px;bottom:1px;font-size:9.5px;font-weight:700;
+          color:#0f1218;background:var(--soon);border-radius:6px;padding:0 3px;line-height:1.3}
+  .cal-hint{font-size:11.5px;color:var(--dim);text-align:center;margin-top:8px}
+
+  /* ---------- Поиск и фильтры ---------- */
+  .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  input[type=search]{flex:1;min-width:240px;padding:10px 14px;border-radius:8px;
+    border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:15px}
+  input[type=search]:focus{outline:none;border-color:var(--accent)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+    background:var(--card);color:var(--dim);cursor:pointer;font-size:13px;user-select:none}
+  .chip:hover{color:var(--txt)}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#1a1f28;font-weight:600}
+  #count{color:var(--dim);font-size:13px;margin-left:auto}
+
+  /* ---------- Таблица ---------- */
+  table{width:100%;border-collapse:collapse;background:var(--card);
+    border-radius:10px;overflow:hidden}
+  thead th{position:sticky;top:0;background:#232b38;color:var(--dim);
+    text-align:left;padding:10px 12px;font-size:12px;text-transform:uppercase;
+    letter-spacing:.5px;border-bottom:1px solid var(--line);z-index:2}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr.day td{background:#232b38;font-weight:700;color:var(--accent);
+    padding:9px 12px;font-size:14px;letter-spacing:.3px}
+  tr.day.flash td{background:#4a3a1a;color:#ffe1a3}
+  tr.sat td{background:#2b2f3d}
+  tr.today td{background:#3a2226;color:#ffc9c9}
+  tbody tr:not(.day):hover td{background:#222a36}
+  .t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
+  .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .city{color:#9fd0ff}
+  .venue{color:var(--dim);font-size:13px}
+  .tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:12px;
+    border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+  .tag.src-llb{border-color:#4a6fa5;color:#9fc4ee}
+  .tag.src-b4y{border-color:#7a5c9e;color:#c3a6e8}
+  .tag.src-msbs{border-color:#3f7a5c;color:#8fd9b4}
+
+  .legend{margin-top:20px;padding:14px 16px;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;color:var(--dim);font-size:13.5px}
+  .legend b{color:var(--txt)}
+  .legend code{background:#232b38;padding:1px 5px;border-radius:4px;color:#c9d4e2}
+
+  @media (max-width:1080px){
+    .layout{flex-direction:column}
+    aside{width:100%;flex:1 1 auto;position:static;max-height:none;
+          display:flex;gap:12px;overflow-x:auto}
+    .cal{flex:0 0 230px;margin-bottom:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Русский бильярд (пирамида) — ближайшие турниры</h1>
+  <div class="sub">
+    Обновлено 29.09.2026 · только пирамида (свободная / комбинированная / динамичная / омка).
+    Пул, снукер, карамболь, дартс и фишки не включены.
+  </div>
+
+  <div class="layout">
+    <main>
+
+      <div class="bar">
+        <input type="search" id="q" placeholder="Поиск: город, клуб, название…">
+        <div class="chips" id="chips">
+          <span class="chip on" data-f="all">Все</span>
+          <span class="chip" data-f="Москва">Москва</span>
+          <span class="chip" data-f="Санкт-Петербург">Санкт-Петербург</span>
+          <span class="chip" data-f="область">Область / край</span>
+          <span class="chip" data-f="другой">Другой регион</span>
+          <span class="chip" data-f="другое">За рубежом</span>
+        </div>
+        <span id="count"></span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:88px">Время</th>
+            <th>Турнир</th>
+            <th style="width:200px">Город / площадка</th>
+            <th style="width:145px">Вид</th>
+            <th style="width:78px" class="num">Участн.</th>
+            <th style="width:76px">Ист.</th>
+          </tr>
+        </thead>
+        <tbody id="tb"></tbody>
+      </table>
+
+      <div class="legend">
+        <b>Обозначения:</b>
+        <code>[Д]</code> девушки/женщины · <code>[Д+]</code> женщины + девочки ·
+        <code>[14+1]</code> гандикап по возрасту · <code>[С]</code> сильнейшие ·
+        <code>[К]</code> квалификация · <code>ЭЛО≤850</code> ограничение по рейтингу.<br>
+        <b>Источники:</b> <span class="tag src-llb">ЛЛБ</span> llb.su — общероссийская лента ·
+        <span class="tag src-msbs">МСБС</span> mosbilliard.ru — официальный календарь ·
+        <span class="tag src-b4y">B4Y</span> bill4you.ru — только пирамида.<br>
+        <b>Осторожно:</b> у Bill4you время помечено <code>(UTC+3)</code>, но у турниров из Новосибирска,
+        Беларуси и Душанбе выглядит сдвинутым — проверяй по странице турнира.
+        У МСБС время не указано, только даты.
+      </div>
+
+    </main>
+
+    <aside id="cal"></aside>
+  </div>
+
+</div>
+
+<script>
+const ROWS = [
+["29.09","11:00","Турнир, посвящённый Победе в Куликовской битве (ветераны 60–70)","Санкт-Петербург|ЦБС «Ольгино»","пирамида","51","ЛЛБ","llb"],
+["30.09","19:00","Ольгино. Пирамида № 47 (блиц) [Д+]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","20","ЛЛБ","llb"],
+["01.10","08:00","Кубок «Старт СНГ» Душанбе 2026","Душанбе, Узбекистан","пирамида","5","B4Y","b4y"],
+["01.10","12:00","Турнир «Armada Marafon CUP»","Волгоград|ARMADA","пирамида","27","ЛЛБ","llb"],
+["01.10","19:00","Ольгино. Пирамида № 48 (блиц) [14+1]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","44","ЛЛБ","llb"],
+["02.10","19:30","ЭСТЕТ. Пирамида № 12 (Колхоз)","Красноярск|«Эстет»","пирамида","0","ЛЛБ","llb"],
+["03.10","05:00","Первенство Новосибирска «Комбинированная пирамида» 60+","Новосибирск","комбинированная","0","B4Y","b4y"],
+["03.10","08:00","Парный турнир «Комбинированная пирамида \ Лянтор 2026» (2×2)","Лянтор (ХМАО)","комбинированная","2","B4Y","b4y"],
+["03.10","09:00","Союз. Пирамида № 11","Заречный, Пензенская обл.","пирамида","1","ЛЛБ","llb"],
+["03.10","09:00","Турнир, посвящённый Дню пожилого человека (60–70)","регион не указан","пирамида","10","B4Y","b4y"],
+["03.10","09:00","Турнир, посвящённый Дню физкультурника (71+)","регион не указан","пирамида","7","B4Y","b4y"],
+["03.10","10:00","Первенство Республики Беларусь, свободная пирамида — юниоры","Беларусь","свободная","3","B4Y","b4y"],
+["03.10","10:00","Первенство Республики Беларусь, свободная пирамида — юниорки","Беларусь","свободная","0","B4Y","b4y"],
+["03.10","10:00","Первенство Республики Беларусь, пирамида — мальчики/девочки до 13","Беларусь","пирамида","2","B4Y","b4y"],
+["03.10","10:00","Чемпионат Гомельской области по бильярдному спорту","Гомель, Беларусь","пирамида","11","B4Y","b4y"],
+["03.10","10:00","Открытый любительский турнир по динамичной пирамиде","регион не указан","динамичная","0","B4Y","b4y"],
+["03.10","10:00","Тихорецк. Комбинированная пирамида","Тихорецк, Краснодарский кр.","комбинированная","6","B4Y","b4y"],
+["03.10","10:00","Турнир, посвящённый Дню Газовика","регион не указан","пирамида","18","B4Y","b4y"],
+["03.10","11:00","7-й тур серии открытых турниров «Лига Бороды»","Новокузнецк|БК «Кураж»","пирамида","9","ЛЛБ","llb"],
+["03.10","11:00","4-й этап Кубка СПб по пирамиде — юноши до 16 [Д]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","7","ЛЛБ","llb"],
+["03.10","11:00","4-й этап Кубка СПб по пирамиде — девушки до 16 [Д]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","0","ЛЛБ","llb"],
+["03.10","11:00","Любительский турнир БК «Сезам»","регион не указан","пирамида","6","B4Y","b4y"],
+["03.10","11:30","Московская пирамида «Сибирка»","Московская пирамида","пирамида","23","B4Y","b4y"],
+["03.10","12:00","ТриК3. Пирамида № 13 (блиц) [Д]","Санкт-Петербург|ТриК3","пирамида","1","ЛЛБ","llb"],
+["03.10","12:00","БК «Леон». Любительский (без профи)","Санкт-Петербург|БК «Леон»","пирамида","0","B4Y","b4y"],
+["04.10","05:00","Первенство Новосибирска «Комбинированная пирамида» 70+","Новосибирск","комбинированная","0","B4Y","b4y"],
+["04.10","05:00","Первенство Новосибирска «Комбинированная пирамида» 80+","Новосибирск","комбинированная","0","B4Y","b4y"],
+["04.10","08:00","Турнир среди ветеранов 40+ «Лянтор 2026»","Лянтор (ХМАО)","пирамида","4","B4Y","b4y"],
+["04.10","10:00","Sport &amp; Business. 4 этап","Москва|Центральный бильярдный клуб","свободная с продолж.","—","МСБС","msbs"],
+["04.10","10:00","ЛЛБ. Чехов. Пирамида № 12 [К] ЭЛО≤850","Чехов, Московская обл.|BILLIARDS","пирамида","8","ЛЛБ","llb"],
+["04.10","10:00","Рейтинговый турнир БК «Меркурий» по Московской пирамиде, 8 этап (2–4 группы)","БК «Меркурий»","пирамида","2","B4Y","b4y"],
+["04.10","10:30","Турнир среди учеников школы бильярда Татьяны Максимовой [С]","Воронеж|БК «Первый»","пирамида","1","ЛЛБ","llb"],
+["04.10","10:30","Высота. Пирамида № 18","Пенза|БК «Высота»","пирамида","0","ЛЛБ","llb"],
+["04.10","11:00","ЛЛБ. Калининград. Пирамида № 21 [Д] ЭЛО≤950","Калининград","пирамида","5","ЛЛБ","llb"],
+["04.10","12:00","2-й этап II Кубка «Академии бильярда Максима Зверева» [Д+]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","20","ЛЛБ","llb"],
+["09–12.10","10:00","LIDER. Пирамида № 7 [С]","Ташкент, Узбекистан","пирамида","16","ЛЛБ","llb"],
+["10.10","09:30","ЛЛБ. СПб. Пирамида № 34 ЭЛО≤1150","Санкт-Петербург|PLAYPOOL","пирамида","0","ЛЛБ","llb"],
+["10.10","12:00","5-й этап серии «Сеньоры Центра»","Ярославль|БК «У Степаныча»","пирамида","10","ЛЛБ","llb"],
+["10–17.10","—","Кубок Кремля, Кубок мира (комбинированная + свободная пирамида)","Москва|ДБС «Москвич»","комбинир. / свободная","—","МСБС","msbs"],
+["11.10","11:00","ЛЛБ. СПб. Пирамида № 36 [С] ЭЛО≤900","Санкт-Петербург|ЦБС «Ольгино»","пирамида","0","ЛЛБ","llb"],
+["11.10","12:00","Открытый парный Кубок «Академии бильярда Максима Зверева» [14+1]","Санкт-Петербург|MAXImatic","пирамида","2","ЛЛБ","llb"],
+["17.10","09:30","«Золотая Лига Русского бильярда 2026/2027», 1-й этап — ветераны 60+","Ижевск|БК «Кино»","пирамида","50","ЛЛБ","llb"],
+["17.10","09:30","«Золотая Лига Русского бильярда 2026/2027», 1-й этап — ветераны 50–59","Ижевск|БК «Кино»","пирамида","38","ЛЛБ","llb"],
+["17.10","10:00","8-й этап Премьер-лиги «Сеньоры России»","Москва|Модус V.","пирамида","27","ЛЛБ","llb"],
+["18.10","10:00","Чемпионат СПб по пирамиде — студенты [С]","Санкт-Петербург|PLAYPOOL","пирамида","0","ЛЛБ","llb"],
+["18.10","10:00","Чемпионат СПб по пирамиде — студентки [С]","Санкт-Петербург|PLAYPOOL","пирамида","0","ЛЛБ","llb"],
+["18.10","11:00","ЛЛБ. Калининград. Пирамида № 22 ЭЛО≤1050","Калининград","пирамида","1","ЛЛБ","llb"],
+["18.10","12:00","3-й этап II Кубка «Академии бильярда Максима Зверева» [14+1]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","9","ЛЛБ","llb"],
+["18.10","12:45","ЛЛБ. Красноярск. Пирамида № 25","Красноярск|«Эстет»","пирамида","0","ЛЛБ","llb"],
+["18.10","21:00","Турнир «Легенда-Питер — CUP 2»","Санкт-Петербург|«Легенда-Питер»","пирамида","9","ЛЛБ","llb"],
+["23–26.10","10:00","LIDER. Пирамида № 8","Ташкент, Узбекистан","пирамида","0","ЛЛБ","llb"],
+["24.10","09:30","ЛЛБ. СПб. Пирамида № 35 [К]","Санкт-Петербург|PLAYPOOL","пирамида","0","ЛЛБ","llb"],
+["24.10","12:00","OBN Profi Pyramid 2026","Обнинск","пирамида","—","B4Y","b4y"],
+["24–25.10","—","Открытый Кубок Москвы. Юноши/девушки до 16, юниоры до 19. 3 этап","Москва|ДБС «Москвич»","свободная","—","МСБС","msbs"],
+["26–31.10","—","Всероссийские соревнования «Юные легенды». Юноши и девушки до 16","Москва|БК «Легенда»","свободная","—","МСБС","msbs"],
+["31.10–01.11","—","Чемпионат Москвы. Свободная пирамида с продолжением. Мужчины, женщины","Москва|ДБС «Москвич»","свободная с продолж.","—","МСБС","msbs"],
+["07–08.11","—","Открытый Кубок Москвы. Любители. 6 этап. Общая группа","Москва|ДБС «Москвич»","динамичная","—","МСБС","msbs"],
+["07–08.11","—","Первенство Москвы. Пирамида. Девочки до 13, девушки до 16, юниорки до 19 (отбор)","Москва|СБЗ «Москвич»","пирамида","—","МСБС","msbs"],
+["08–15.11","—","Чемпионат России. Свободная пирамида с продолжением","Калуга","свободная с продолж.","—","МСБС","msbs"],
+["14–15.11","—","Открытый Кубок Москвы. Любители. 6 этап. Лига вызова","Москва|ДБС «Москвич»","динамичная","—","МСБС","msbs"],
+["14–15.11","—","Первенство Москвы. Пирамида. Мальчики до 13, юноши до 16, юниоры до 19 (отбор в Екатеринбург)","Москва|СБЗ «Москвич»","пирамида","—","МСБС","msbs"],
+["16–23.11","—","Кубок мира. Свободная пирамида. Мужчины","Новосибирск","свободная","—","МСБС","msbs"],
+["21–22.11","—","Открытый Кубок Москвы. Мужчины, женщины. 4 этап","Москва|ДБС «Москвич»","комбинированная","—","МСБС","msbs"],
+["25–29.11","—","XI турнир по бильярдному спорту «Трестфом»","Омск","омка","—","МСБС","msbs"],
+["28–29.11","—","Спартакиада РЖД","Москва|ДБС «Москвич»","пирамида","—","МСБС","msbs"]
+];
+
+/* ---------- Даты ---------- */
+const YEAR = 2026;
+const WD   = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+const WD_FULL = ["понедельник","вторник","среда","четверг","пятница","суббота","воскресенье"];
+const MONTH_GEN = ["январь","февраль","март","апрель","май","июнь","июль",
+                   "август","сентябрь","октябрь","ноябрь","декабрь"];
+const MONTH_SHORT = ["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+const WEEKEND = {"03.10":"сб","04.10":"вс","10.10":"сб","11.10":"вс","17.10":"сб","18.10":"вс","24.10":"сб","25.10":"вс"};
+
+const pad = n => String(n).padStart(2, "0");
+
+// "29.09" | "09–12.10" | "31.10–01.11" | "24–25.10" -> [Date, Date]
+function parseRange(s){
+  const parts = String(s).replace(/[–—−]/g, "-").split("-").map(x => x.trim()).filter(Boolean);
+  let d1, m1, d2, m2;
+  if (parts.length === 1){
+    const [d, m] = parts[0].split(".");
+    d1 = +d; m1 = +m; d2 = +d; m2 = +m;
+  } else {
+    const a = parts[0].split(".");
+    const b = parts[1].split(".");
+    if (a.length === 2){ d1 = +a[0]; m1 = +a[1]; d2 = +b[0]; m2 = +(b[1] || m1); }
+    else { d1 = +a[0]; d2 = +b[0]; m1 = +b[1]; m2 = m1; }
+  }
+  return [new Date(YEAR, m1 - 1, d1), new Date(YEAR, m2 - 1, d2)];
+}
+const key = dt => pad(dt.getDate()) + "." + pad(dt.getMonth() + 1);
+const mondayIdx = dt => (dt.getDay() + 6) % 7;
+
+const TODAY = new Date();
+const TODAY_KEY = pad(TODAY.getDate()) + "." + pad(TODAY.getMonth() + 1);
+
+/* ---------- Сколько турниров на каждый день ---------- */
+const perDay = {};
+let minD = null, maxD = null;
+for (const r of ROWS){
+  const [a, b] = parseRange(r[0]);
+  if (!minD || a < minD) minD = a;
+  for (let d = new Date(a); d <= b; d.setDate(d.getDate() + 1)){
+    perDay[key(d)] = (perDay[key(d)] || 0) + 1;
+    if (!maxD || d > maxD) maxD = new Date(d);
+  }
+}
+
+/* ---------- Календарь справа ---------- */
+function buildCalendar(){
+  const box = document.getElementById("cal");
+  let html = "";
+  let m = new Date(minD.getFullYear(), minD.getMonth(), 1);
+  while (m <= maxD){
+    const y = m.getFullYear(), mo = m.getMonth();
+    const first = new Date(y, mo, 1);
+    const last  = new Date(y, mo + 1, 0).getDate();
+    const lead  = mondayIdx(first);
+
+    html += `<div class="cal"><h3>${MONTH_GEN[mo]} ${y}</h3><div class="wd">`;
+    for (const w of WD) html += `<div>${w}</div>`;
+    html += `</div><div class="days">`;
+    for (let i = 0; i < lead; i++) html += `<div class="day pad"></div>`;
+    for (let d = 1; d <= last; d++){
+      const k = pad(d) + "." + pad(mo + 1);
+      const n = perDay[k] || 0;
+      const dt = new Date(y, mo, d);
+      const isWknd = dt.getDay() === 0 || dt.getDay() === 6;
+      const cls = ["day"];
+      if (n) cls.push("has");
+      if (k === TODAY_KEY) cls.push("today");
+      const title = `${d} ${MONTH_SHORT[mo]} ${y}, ${WD_FULL[mondayIdx(dt)]}` +
+                    (n ? ` — турниров: ${n}` : " — турниров нет");
+      html += `<div class="${cls.join(" ")}" data-k="${k}" title="${title}">${d}` +
+              (n ? `<span class="n">${n}</span>` : "") + `</div>`;
+    }
+    html += `</div></div>`;
+    m = new Date(y, mo + 1, 1);
+  }
+  html += `<div class="cal-hint">Число в углу — сколько турниров в этот день.<br>Клик по дню — переход к списку.</div>`;
+  box.innerHTML = html;
+
+  box.addEventListener("click", e => {
+    const el = e.target.closest(".day.has");
+    if (!el) return;
+    const target = document.getElementById("day-" + el.dataset.k.replace(".", "-"));
+    if (target){
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.add("flash");
+      setTimeout(() => target.classList.remove("flash"), 1400);
+    }
+  });
+}
+
+/* ---------- Таблица ---------- */
+const tb = document.getElementById("tb");
+const q  = document.getElementById("q");
+let filter = "all";
+
+function regionOf(city){
+  if (city.startsWith("Москва") || city.startsWith("Чехов")) return "Москва";
+  if (city.startsWith("Санкт-Петербург")) return "Санкт-Петербург";
+  if (/Беларусь|Гомель|Душанбе|Ташкент|Узбекистан/.test(city)) return "другое";
+  return "область";
+}
+
+function build(){
+  const term = q.value.trim().toLowerCase();
+  let shown = 0, html = "", cur = null, block = [];
+
+  const flush = () => {
+    if (!block.length) return;
+    const n = block.length;
+    const [a] = parseRange(cur);
+    let cls = "day", label = " · " + WD_FULL[mondayIdx(a)];
+    if (cur === TODAY_KEY) label += " · сегодня";
+    if (WEEKEND[cur]) label += " · выходной";
+    if (n >= 8) label += "  ★ " + n + " турниров";
+    html += `<tr class="${cls}" id="day-${cur.replace(".", "-")}">` +
+            `<td colspan="6">${cur} — 2026${label}</td></tr>`;
+    html += block.join("");
+    block = [];
+  };
+
+  for (const r of ROWS){
+    const [d, time, name, cityRaw, kind, cnt, src, srcCls] = r;
+    const [city, venue] = cityRaw.split("|");
+    const hay = (d + " " + time + " " + name + " " + cityRaw + " " + kind + " " + src).toLowerCase();
+    if (term && !hay.includes(term)) continue;
+    if (filter !== "all" && filter !== regionOf(city)) continue;
+    if (cur !== null && d !== cur) flush();
+    cur = d;
+    shown++;
+    block.push(`<tr>
+      <td class="t">${time}</td>
+      <td>${name}</td>
+      <td><span class="city">${city}</span>${venue ? `<div class="venue">${venue}</div>` : ""}</td>
+      <td><span class="tag">${kind}</span></td>
+      <td class="num">${cnt}</td>
+      <td><span class="tag src-${srcCls}">${src}</span></td>
+    </tr>`);
+  }
+  flush();
+  tb.innerHTML = html ||
+    `<tr><td colspan="6" style="padding:24px;color:#8b97a8">Ничего не найдено</td></tr>`;
+  document.getElementById("count").textContent = "показано " + shown + " из " + ROWS.length;
+}
+
+q.addEventListener("input", build);
+document.getElementById("chips").addEventListener("click", e => {
+  if (!e.target.classList.contains("chip")) return;
+  document.querySelectorAll("#chips .chip").forEach(c => c.classList.remove("on"));
+  e.target.classList.add("on");
+  filter = e.target.dataset.f;
+  build();
+});
+
+buildCalendar();
+build();
+</script>
+</body>
+</html>
