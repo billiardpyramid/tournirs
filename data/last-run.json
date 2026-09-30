@@ -1,5 +1,5 @@
 {
- "ranAt": "30.09.2026, 00:01",
+ "ranAt": "30.09.2026, 11:28",
  "total": 91,
  "bySource": {
   "ЛЛБ": 53,
@@ -7,10 +7,8 @@
   "B4Y": 18
  },
  "exactLinks": 72,
- "added": 0,
- "removed": 0,
+ "added": 3,
+ "removed": 3,
  "pageChanged": true,
- "staleSources": [
-  "МСБС"
- ]
+ "staleSources": []
 }
