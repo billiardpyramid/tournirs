@@ -61,7 +61,7 @@ export function buildHtml(html, rows, stamp, status) {
   if (!/<title>[^<]*<\/title>/.test(html))
     throw new Error('не нашёл <title> — страница сломана, сборку прекращаю');
   html = html.replace(/<title>[^<]*<\/title>/,
-    '<title>Все ближайшие турниры по пирамиде — собраны в одном месте</title>');
+    '<title>Ближайшие турниры по русскому бильярду — на одном листе</title>');
 
   return html;
 }
