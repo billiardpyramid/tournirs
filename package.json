@@ -5,10 +5,10 @@
   "description": "Автосбор расписания турниров по русскому бильярду (пирамида) для сайта billiardpyramid.github.io",
   "type": "module",
   "scripts": {
-    "fetch": "node tools/fetch.js",
-    "build": "node tools/build.js",
-    "update": "node tools/update.js",
-    "check": "node tools/fetch.js --check"
+    "update": "node tools/update.mjs",
+    "build": "node tools/build.mjs",
+    "check": "node tools/check.mjs",
+    "all": "node tools/update.mjs && node tools/check.mjs"
   },
   "dependencies": {
     "cheerio": "^1.0.0"
