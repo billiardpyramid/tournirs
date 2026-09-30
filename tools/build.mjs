@@ -31,25 +31,33 @@ function toRow(r) {
   ];
 }
 
-export function buildHtml(html, rows, stamp) {
+export function buildHtml(html, rows, stamp, status) {
   // 0) год сезона — в датах строк («29.09») года нет, он нужен для Date
   const season = rows.reduce((y, r) => Math.max(y, r.from.getFullYear()), rows[0] ? rows[0].from.getFullYear() : new Date().getFullYear());
   if (!/const SEASON = \d{4};/.test(html))
     throw new Error('не нашёл строку «const SEASON = …» — страница сломана, сборку прекращаю');
   html = html.replace(/const SEASON = \d{4}; \/\/ <- автосбор/, 'const SEASON = ' + season + '; // <- автосбор');
 
-  // 1) массив ROWS
+  // 1) состояние площадок — из него страница рисует плашку при сбое
+  if (status) {
+    if (!/const SOURCE_STATUS =/.test(html))
+      throw new Error('не нашёл «const SOURCE_STATUS = …» — страница сломана, сборку прекращаю');
+    html = html.replace(/const SOURCE_STATUS = \{[\s\S]*?\}; \/\/ <- автосбор/,
+      'const SOURCE_STATUS = ' + JSON.stringify(status, null, 1).replace(/\n\s*/g, ' ') + '; // <- автосбор');
+  }
+
+  // 2) массив ROWS
   const body = rows.map(r => '[' + toRow(r).map(jsStr).join(',') + ']').join(',\n');
   if (!/const ROWS = \[[\s\S]*?\n\];/.test(html))
     throw new Error('не нашёл блок «const ROWS = [ … ];» — страница сломана, сборку прекращаю');
   html = html.replace(/(const ROWS = \[)[\s\S]*?(\n\];)/, (_, a, b) => a + '\n' + body + b);
 
-  // 2) время обновления
+  // 3) время обновления
   if (!/<span id="upd">/.test(html))
     throw new Error('не нашёл <span id="upd"> — страница сломана, сборку прекращаю');
   html = html.replace(/(<span id="upd">)[^<]*(<\/span>)/, (_, a, b) => a + 'обновлено ' + stamp + b);
 
-  // 3) заголовок вкладки
+  // 4) заголовок вкладки
   html = html.replace(/<title>[^<]*<\/title>/,
     '<title>Ближайшие турниры по русскому бильярду (пирамида) — ' + esc(stamp.split(',')[0]) + '</title>');
 
