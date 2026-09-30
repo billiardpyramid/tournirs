@@ -112,7 +112,7 @@ for (const s of sources) {
     (skippedStarted ? `, уже начавшихся пропущено ${skippedStarted}` : '') +
     `, ${((Date.now() - t0) / 1000).toFixed(1)} с`);
   fs.writeFileSync(cacheFile(s.cls), JSON.stringify({
-    at: nowMsk().stamp, total: rows.length, rows: inHorizon
+    at: nowMsk().stamp, iso: new Date().toISOString(), total: rows.length, rows: inHorizon
   }, null, 1), 'utf8');
   gathered.push({ name: s.name, cls: s.cls, rows: inHorizon, fromCache: false });
 }
@@ -130,6 +130,22 @@ const all = gathered.flatMap(g => g.rows).sort((a, b) =>
 );
 if (stale.length) {
   console.log('  ВНИМАНИЕ: устаревшие данные по: ' + stale.join(', ') + '. Расписание собрано не полностью свежим.');
+}
+
+/**
+ * Состояние площадок для страницы. Страница показывает красную плашку, если
+ * какую-то площадку не удалось обновить или её данные старше трёх суток —
+ * иначе сбой выглядит как обычное расписание и заметить его нельзя.
+ */
+const status = {};
+for (const g of gathered) {
+  let at = null, iso = null;
+  try {
+    const c = JSON.parse(fs.readFileSync(cacheFile(g.cls), 'utf8'));
+    at = c.at || null;
+    iso = c.iso || null;
+  } catch (e) { /* кэша нет */ }
+  status[g.cls] = { name: g.name, rows: g.rows.length, stale: !!g.fromCache, at, iso };
 }
 
 /* ---------- 2. Страховка ---------- */
@@ -169,7 +185,7 @@ else {
 
 const n = nowMsk();
 const stamp = n.stamp;
-const html = buildHtml(fs.readFileSync(SRC, 'utf8'), all, stamp);
+const html = buildHtml(fs.readFileSync(SRC, 'utf8'), all, stamp, status);
 const changed = html !== fs.readFileSync(SRC, 'utf8');
 
 if (dry) {
@@ -184,7 +200,7 @@ if (dry) {
   fs.writeFileSync(REPORT, JSON.stringify({
     ranAt: stamp, total: all.length, bySource: bySrc, exactLinks: exact,
     added: added.length, removed: removed.length, pageChanged: changed,
-    staleSources: stale
+    staleSources: stale, sources: status
   }, null, 1), 'utf8');
   log('\nзаписано: ' + path.relative(ROOT, SRC) + ' и ' + path.relative(ROOT, path.join(ROOT, 'index.html')));
   log('время обновления на странице: ' + stamp);
