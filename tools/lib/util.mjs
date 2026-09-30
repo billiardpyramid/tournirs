@@ -30,7 +30,10 @@ export function dayKey(date, time) {
  * Возвращает строку с тире «–», как принято в таблице.
  */
 export function rangeKey(a, b) {
-  if (!b || +a === +b) return dayKey(a);
+  // Сравниваем только по дню: во «from» может быть время начала (19:00), а в «to» — нет,
+  // и простое сравнение дат выдавало бы «30–30.09» вместо «30.09».
+  const sameDay = !b || (a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate());
+  if (sameDay) return dayKey(a);
   const am = a.getMonth() + 1, bm = b.getMonth() + 1;
   if (am === bm) return `${pad(a.getDate())}–${pad(b.getDate())}.${pad(am)}`;
   return `${dayKey(a)}–${dayKey(b)}`;
