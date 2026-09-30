@@ -57,9 +57,11 @@ export function buildHtml(html, rows, stamp, status) {
     throw new Error('не нашёл <span id="upd"> — страница сломана, сборку прекращаю');
   html = html.replace(/(<span id="upd">)[^<]*(<\/span>)/, (_, a, b) => a + 'обновлено ' + stamp + b);
 
-  // 4) заголовок вкладки
+  // 4) заголовок вкладки — он же показывается в предпросмотре при отправке ссылки
+  if (!/<title>[^<]*<\/title>/.test(html))
+    throw new Error('не нашёл <title> — страница сломана, сборку прекращаю');
   html = html.replace(/<title>[^<]*<\/title>/,
-    '<title>Ближайшие турниры по русскому бильярду (пирамида) — ' + esc(stamp.split(',')[0]) + '</title>');
+    '<title>Все ближайшие турниры по пирамиде — собраны в одном месте</title>');
 
   return html;
 }
