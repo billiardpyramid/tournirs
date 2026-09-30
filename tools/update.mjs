@@ -117,7 +117,17 @@ for (const s of sources) {
   gathered.push({ name: s.name, cls: s.cls, rows: inHorizon, fromCache: false });
 }
 
-const all = gathered.flatMap(g => g.rows);
+/**
+ * Порядок в таблице строго по дате, а не «сначала вся ЛЛБ, потом вся МСБС, потом B4Y».
+ * Иначе октябрь из ЛЛБ идёт раньше октября из B4Y, и в календаре день двоится.
+ * Сортируем по дате начала, затем по времени, затем по названию — чтобы порядок был
+ * стабильным от запуска к запуску.
+ */
+const all = gathered.flatMap(g => g.rows).sort((a, b) =>
+  a.from - b.from ||
+  String(a.time || '').localeCompare(String(b.time || '')) ||
+  String(a.name).localeCompare(String(b.name), 'ru')
+);
 if (stale.length) {
   console.log('  ВНИМАНИЕ: устаревшие данные по: ' + stale.join(', ') + '. Расписание собрано не полностью свежим.');
 }
