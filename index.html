@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Все ближайшие турниры по пирамиде — собраны в одном месте</title>
+<title>Ближайшие турниры по русскому бильярду — на одном листе</title>
 <style>
   :root{
     --bg:#12151b; --card:#1a1f28; --line:#2b3444; --txt:#e6ebf2; --dim:#8b97a8;
@@ -190,6 +190,45 @@
   .legend b{color:var(--txt)}
   .legend code{background:#232b38;padding:1px 5px;border-radius:4px;color:#c9d4e2}
 
+  /* ---------- Карусель: детский кий ---------- */
+  .cue{margin-top:24px;padding:16px;background:rgba(26,31,40,.92);
+    border:1px solid #4a3d1c;border-radius:12px}
+  .cue-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+  .cue-badge{padding:2px 9px;border-radius:999px;background:#4a3d16;border:1px solid #8a6d22;
+    color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+  .cue-head h2{margin:0;font-size:18px;color:#fff}
+  .cue-grid{display:flex;gap:16px;align-items:stretch}
+  .cue-slider{position:relative;flex:0 0 300px;width:300px}
+  .cue-stage{position:relative;width:100%;height:400px;border-radius:10px;overflow:hidden;
+    background:#0f1319;border:1px solid var(--line);touch-action:pan-y}
+  .cue-slide{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .35s ease}
+  .cue-slide.on{opacity:1}
+  .cue-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .cue-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 7px;
+    background:linear-gradient(rgba(10,12,16,0),rgba(10,12,16,.85));color:#cdd8e6;
+    font-size:12px;text-align:center}
+  .cue-arrow{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:52px;
+    display:flex;align-items:center;justify-content:center;border:1px solid var(--line);
+    border-radius:8px;background:rgba(18,21,27,.82);color:#fff;font-size:19px;cursor:pointer;
+    padding:0;line-height:1}
+  .cue-arrow:hover{background:#2b3442;border-color:var(--accent)}
+  .cue-prev{left:6px}
+  .cue-next{right:6px}
+  .cue-dots{display:flex;justify-content:center;gap:7px;margin-top:10px}
+  .cue-dot{width:9px;height:9px;padding:0;border-radius:50%;border:1px solid #55606f;
+    background:#2b3442;cursor:pointer}
+  .cue-dot.on{background:var(--accent);border-color:var(--accent)}
+  .cue-info{flex:1 1 auto;min-width:0}
+  .cue-info p{margin:0 0 10px;color:#d6dfeb;font-size:14.5px;line-height:1.55}
+  .cue-info .cue-name{color:var(--accent);font-weight:600}
+  .cue-facts{margin:0 0 14px;padding:0;list-style:none;color:var(--dim);font-size:13.5px}
+  .cue-facts li{padding:3px 0 3px 18px;position:relative}
+  .cue-facts li:before{content:"—";position:absolute;left:0;color:var(--accent)}
+  .cue-phone{display:inline-block;padding:10px 18px;border-radius:9px;border:1px solid #8a6d22;
+    background:#3c3113;color:#ffe6a8;font-size:16px;font-weight:700;text-decoration:none}
+  .cue-phone:hover{background:#4c3e17;border-color:var(--accent);color:#fff}
+  .cue-note{margin:10px 0 0;color:var(--dim);font-size:12.5px}
+
   @media (max-width:1080px){
     .layout{flex-direction:column;align-items:stretch}
     aside{order:-1;width:100%;flex:1 1 auto;position:static;max-height:none;
@@ -199,25 +238,28 @@
               background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0}
     /* таблица прокручивается внутри себя, страница не уезжает вбок */
     .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .cue-grid{flex-direction:column;align-items:stretch}
+    .cue-slider{flex:0 0 auto;width:100%;max-width:420px;margin:0 auto}
+    .cue-stage{height:420px}
+  }
+  @media (max-width:520px){
+    .cue{padding:13px}
+    .cue-stage{height:340px}
+    .cue-arrow{width:30px;height:46px;font-size:17px}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<h1>Русский бильярд (пирамида) — ближайшие турниры</h1>
-    <p class="tagline">Все ближайшие турниры по пирамиде — собраны в одном месте</p>
+<h1>Русский бильярд — ближайшие турниры</h1>
+    <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
     <div class="sub">
-    <span id="upd">обновлено 30.09.2026, 14:11</span> · только пирамида
-    (свободная / комбинированная / динамичная / омка).
-    Пул, снукер, карамболь, дартс и фишки не включены.
+    <span id="upd">обновлено 30.09.2026, 14:21</span> · календарь турниров по русскому бильярду
   </div>
 
   <div class="acts acts-top">
     <a class="btn btn-tg" href="https://t.me/+K4dL-XzcI8BmYmUy" target="_blank" rel="noopener">Вступить в группу в Telegram</a>
-    <span class="acts-lab">Поделиться:</span>
-    <a class="btn" id="shVk" target="_blank" rel="noopener">ВКонтакте</a>
-    <a class="btn" id="shTg" target="_blank" rel="noopener">Телеграм</a>
     <button class="btn" type="button" id="shCopy">Скопировать ссылку</button>
   </div>
 
@@ -313,6 +355,58 @@
     <aside id="cal"></aside>
   </div>
 
+  <section class="cue" id="cue" aria-labelledby="cue-title">
+    <div class="cue-head">
+      <span class="cue-badge">Продаётся</span>
+      <h2 id="cue-title">Детский кий для русского бильярда</h2>
+    </div>
+    <div class="cue-grid">
+      <div class="cue-slider" id="cueSlider" aria-roledescription="карусель" aria-label="Фотографии кия">
+        <div class="cue-stage">
+          <figure class="cue-slide on">
+            <img src="cue-1.jpg" alt="Детский кий для русского бильярда: два кия на бильярдном столе с шарами" width="788" height="1050">
+            <figcaption class="cue-cap">Кий и бильярдный шар</figcaption>
+          </figure>
+          <figure class="cue-slide">
+            <img src="cue-2.jpg" alt="Детский кий в руке у бильярдного стола, рядом шары" width="789" height="1050" loading="lazy">
+            <figcaption class="cue-cap">Длина кия под ребёнка</figcaption>
+          </figure>
+          <figure class="cue-slide">
+            <img src="cue-3.jpg" alt="Два кия рядом на зелёном бильярдном столе" width="788" height="1050" loading="lazy">
+            <figcaption class="cue-cap">Кий целиком, вид сверху</figcaption>
+          </figure>
+          <figure class="cue-slide">
+            <img src="cue-4.jpg" alt="Детский кий рядом с бильярдными шарами на столе" width="789" height="1050" loading="lazy">
+            <figcaption class="cue-cap">Набор киев у стола</figcaption>
+          </figure>
+          <figure class="cue-slide">
+            <img src="cue-5.jpg" alt="Один кий на бильярдном столе, рядом треугольник шаров" width="788" height="1050" loading="lazy">
+            <figcaption class="cue-cap">Кий на бильярдном столе</figcaption>
+          </figure>
+          <figure class="cue-slide">
+            <img src="cue-6.jpg" alt="Кий в руке: видны наклейка и соединение с кийником" width="789" height="1050" loading="lazy">
+            <figcaption class="cue-cap">Наклейка и соединение</figcaption>
+          </figure>
+        </div>
+        <button class="cue-arrow cue-prev" type="button" id="cuePrev" aria-label="Предыдущее фото">‹</button>
+        <button class="cue-arrow cue-next" type="button" id="cueNext" aria-label="Следующее фото">›</button>
+        <div class="cue-dots" id="cueDots"></div>
+      </div>
+
+      <div class="cue-info">
+        <p>Продаётся <span class="cue-name">детский кий для русского бильярда</span>. Профессиональный
+          кий К. Лохно, переделан мастером С. Терещенковым под ребёнка.</p>
+        <ul class="cue-facts">
+          <li>Кий выиграл множество наград на первенствах Санкт-Петербурга и не только.</li>
+          <li>Идеален для детей 6–11 лет для тренировок в русский бильярд.</li>
+          <li>Наклейка Н+ профессиональная.</li>
+        </ul>
+        <a class="cue-phone" href="tel:+79119222158">Позвонить: +79119222158</a>
+        <p class="cue-note">По телефону договоримся о показе и передаче кия.</p>
+      </div>
+    </div>
+  </section>
+
   <div class="notice" id="notice" role="status" aria-live="polite"></div>
 
   <footer class="foot">
@@ -341,48 +435,48 @@
 
 <script>
 const ROWS = [
-["30.09","19:00","Санкт-Петербург 2026. Ольгино. Пирамида № 47 (блиц) [Д+]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","24","ЛЛБ","llb","https://www.llb.su/t/5545038"],
+["30.09","19:00","Санкт-Петербург 2026. Ольгино. Пирамида № 47 (блиц) [Д+]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","25","ЛЛБ","llb","https://www.llb.su/t/5545038"],
 ["01.10","12:00","Волгоград 2026. Турнир «Armada Marafon CUP» по пирамиде","Волгоград|ARMADA","пирамида","27","ЛЛБ","llb","https://www.llb.su/t/5538453"],
 ["01.10","19:00","Санкт-Петербург 2026. Ольгино. Пирамида № 48 (блиц) [14+1]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","44","ЛЛБ","llb","https://www.llb.su/t/5545039"],
 ["02.10","19:30","Красноярск 2026. ЭСТЕТ. Пирамида № 12 (Колхоз)","Красноярск|Эстет","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5545405"],
 ["03–04.10","—","Sport & Business. 4 этап","Москва|Центральный бильярдный клуб","свободная с продолж.","—","МСБС","msbs","https://mosbilliard.ru/calen/"],
 ["03.10","05:00","Первенство Новосибирска \"Комбинированная пирамида\" (мужчины и женщины 60+)","Новосибирск|\"Федерация\"","комбинированная","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14610"],
 ["03.10","08:00","/Парный/ Комбинированная пирамида\\Лянтор 2026/","Лянтор|БК \"Легенда\" (г. Лянтор)","комбинированная","5","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14792"],
+["03.10","09:00","Заречный 2026. Союз. Пирамида № 11","Заречный|Союз","пирамида","3","ЛЛБ","llb","https://www.llb.su/t/5543606"],
 ["03.10","10:00","Открытый любительский турнир по динамичной пирамиде","Глазов|\"Мир бильярда\", г. Глазов","динамичная","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14820"],
 ["03.10","10:00","Первенство Республики Беларусь, пирамида, мальчики, девочки до 13 лет","Минск|БК \"Европа\"","пирамида","7","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14668"],
-["03.10","10:00","Первенство Республики Беларусь, свободная пирамида, юниорки","Минск|БК \"Европа\"","свободная","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14671"],
+["03.10","10:00","Первенство Республики Беларусь, свободная пирамида, юниорки","Минск|БК \"Европа\"","свободная","3","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14671"],
 ["03.10","10:00","Первенство Республики Беларусь, свободная пирамида, юниоры","Минск|БК \"Европа\"","свободная","10","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14670"],
 ["03.10","10:00","Тихорецк Комбинированная пирамида","Тихорецк|БК «Ной»","комбинированная","10","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14835"],
-["03.10","11:30","Московская пирамида (Сибирка)","Кропоткин|БК Ковбой","пирамида","22","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14620"],
-["03.10","09:00","Заречный 2026. Союз. Пирамида № 11","Заречный|Союз","пирамида","3","ЛЛБ","llb","https://www.llb.su/t/5543606"],
 ["03.10","11:00","4-й этап кубка Санкт-Петербурга по пирамиде среди девушек до 16 лет 2026 [Д]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5526885"],
 ["03.10","11:00","4-й этап кубка Санкт-Петербурга по пирамиде среди юношей до 16 лет 2026 [Д]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","8","ЛЛБ","llb","https://www.llb.su/t/5526884"],
 ["03.10","11:00","Новокузнецк 2026. 7-й тур серии открытых турниров \"Лига Бороды\" по пирамиде","Новокузнецк|Кураж","пирамида","17","ЛЛБ","llb","https://www.llb.su/t/5525626"],
+["03.10","11:30","Московская пирамида (Сибирка)","Кропоткин|БК Ковбой","пирамида","22","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14620"],
 ["03.10","12:00","Санкт-Петербург 2026. ТриК3. Пирамида № 13 (блиц) [Д]","Санкт-Петербург|ТриК3","пирамида","1","ЛЛБ","llb","https://www.llb.su/t/5545206"],
 ["03.10","12:30","ЛЛБ 2026. Москва. Пирамида № 71 [К] ≤1300","Москва|33","пирамида","39","ЛЛБ","llb","https://www.llb.su/t/5545899"],
 ["04.10","05:00","Первенство Новосибирска \"Комбинированная пирамида\" (мужчины и женщины 70+)","Новосибирск|\"Федерация\"","комбинированная","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14611"],
 ["04.10","05:00","Первенство Новосибирска \"Комбинированная пирамида\" (мужчины и женщины 80+)","Новосибирск|\"Федерация\"","комбинированная","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14612"],
-["04.10","11:00","Турнир в Комбинированную пирамиду 1-4 Гр","Ульяновск|БК MATRESHKI","комбинированная","2","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14571"],
-["04.10","11:00","Турнир по \"Свободной пирамиде\" (ограничение по рейтингу до 800 ЭЛО \"ЛЛБ\")","Москва|БК \"Пирамида\"","свободная","11","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14759"],
 ["04.10","10:00","ЛЛБ 2026. Чехов. Пирамидa № 12 [К] ≤850","Чехов|BILLIARDS","пирамида","14","ЛЛБ","llb","https://www.llb.su/t/5545433"],
 ["04.10","10:30","Воронеж 2026. Турнир среди учеников школы бильярда Татьяны Максимовой по пирамиде [С]","Воронеж|Первый","пирамида","1","ЛЛБ","llb","https://www.llb.su/t/5532672"],
 ["04.10","10:30","Пенза 2026. Высота. Пирамида № 18","Пенза|Высота","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5545397"],
 ["04.10","10:45","ЛЛБ 2026. Москва. Пирамида № 72 ≤1250","Москва|БАЗА","пирамида","48","ЛЛБ","llb","https://www.llb.su/t/5545914"],
 ["04.10","11:00","ЛЛБ 2026. Калининград. Пирамида № 21 [Д] ≤950","Калининград|11","пирамида","6","ЛЛБ","llb","https://www.llb.su/t/5533303"],
+["04.10","11:00","Турнир в Комбинированную пирамиду 1-4 Гр","Ульяновск|БК MATRESHKI","комбинированная","2","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14571"],
+["04.10","11:00","Турнир по \"Свободной пирамиде\" (ограничение по рейтингу до 800 ЭЛО \"ЛЛБ\")","Москва|БК \"Пирамида\"","свободная","11","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14759"],
 ["04.10","12:00","Санкт-Петербург 2026. 2-й этап II кубка «Академии бильярда Максима Зверева» по пирамиде [Д+]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","24","ЛЛБ","llb","https://www.llb.su/t/5530725"],
+["09.10","10:00","Ташкент 2026. LIDER. Пирамида № 7 [С]","Ташкент|LIDER","пирамида","34","ЛЛБ","llb","https://www.llb.su/t/5533427"],
 ["09.10","10:00","XX Турнир «Кубок Кремля», Комбинированная пирамида (мужчины). Квалификация","Москва|\"Дворец бильярдного спорта\"","комбинированная","22","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14781"],
-["09.10","10:00","Ташкент 2026. LIDER. Пирамида № 7 [С]","Ташкент|LIDER","пирамида","32","ЛЛБ","llb","https://www.llb.su/t/5533427"],
 ["10–17.10","—","XX турнир по бильярдному спорту «Кубок Кремля», Кубок мира.Комбинированная пирамида. Свободная пирамида. Мужчины, женщины Регламент КК 2026","Москва|ДБС «Москвич»","комбинированная","—","МСБС","msbs","https://mosbilliard.ru/upload/iblock/e2b/polozhenie_kk_2026.pdf"],
-["10.10","10:00","XX Турнир «Кубок Кремля», Свободная пирамида (женщины). Квалификация","Москва|\"Дворец бильярдного спорта\"","свободная","8","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14782"],
 ["10.10","09:30","ЛЛБ 2026. Санкт-Петербург. Пирамида № 34 ЭЛО≤1150","Санкт-Петербург|PLAYPOOL","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5538344"],
 ["10.10","10:00","Новокузнецк 2026. Три Толстяка. Пирамида № 8","Новокузнецк|Три Толстяка","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5545069"],
+["10.10","10:00","XX Турнир «Кубок Кремля», Свободная пирамида (женщины). Квалификация","Москва|\"Дворец бильярдного спорта\"","свободная","8","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14782"],
 ["10.10","12:00","Ярославль 2026. 5-й этап серии открытых турниров \"Сеньоры Центра\" по пирамиде","Ярославль|У Степаныча","пирамида","11","ЛЛБ","llb","https://www.llb.su/t/5540047"],
 ["11.10","10:30","Воронеж 2026. Кубок БК \"Первый\" по пирамиде","Воронеж|Первый","пирамида","2","ЛЛБ","llb","https://www.llb.su/t/5532671"],
 ["11.10","11:00","ЛЛБ 2026. Санкт-Петербург. Пирамида № 36 [С] ЭЛО≤900","Санкт-Петербург|ЦБС «Ольгино»","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5538348"],
 ["11.10","12:00","Санкт-Петербург 2026. Открытый парный кубок «Академии бильярда Максима Зверева» по пирамиде [14+1]","Санкт-Петербург|MAXImatic","пирамида","2","ЛЛБ","llb","https://www.llb.su/t/5532790"],
-["16.10","00:00","Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(квал.)","Иркутск|БК \"Меткий\"","свободная с продолж.","14","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14495"],
-["16.10","00:00","Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(О.Л.)","Иркутск|БК \"Меткий\"","свободная с продолж.","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14497"],
-["16.10","00:00","Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(П.Л.)","Иркутск|БК \"Меткий\"","свободная с продолж.","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14496"],
+["17.10","00:00","Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(квал.)","Иркутск|БК \"Меткий\"","свободная с продолж.","14","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14495"],
+["17.10","00:00","Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(О.Л.)","Иркутск|БК \"Меткий\"","свободная с продолж.","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14497"],
+["17.10","00:00","Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(П.Л.)","Иркутск|БК \"Меткий\"","свободная с продолж.","0","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14496"],
 ["17.10","09:30","Ижевск 2026. 1-й этап серии открытых турниров \"Золотая Лига Русского бильярда 2026/2027\" среди ветеранов 60+ по пирамиде","Ижевск|Кино","пирамида","63","ЛЛБ","llb","https://www.llb.su/t/5541770"],
 ["17.10","09:30","Ижевск 2026. 1-й этап серии открытых турниров \"Золотая Лига Русского бильярда 2026\\2027\" среди ветеранов 50-59 лет по пирамиде","Ижевск|Кино","пирамида","43","ЛЛБ","llb","https://www.llb.su/t/5545615"],
 ["17.10","10:00","Москва 2026. 8-й этап Премьер Лиги \"Сеньоры России\" по пирамиде","Москва|Модус V.","пирамида","71","ЛЛБ","llb","https://www.llb.su/t/5542450"],
@@ -394,8 +488,8 @@ const ROWS = [
 ["18.10","21:00","Санкт-Петербург 2026. Турнир «Легенда-Питер - CUP 2» по пирамиде","Санкт-Петербург|Легенда-Питер","пирамида","8","ЛЛБ","llb","https://www.llb.su/t/5536586"],
 ["23.10","10:00","Ташкент 2026. LIDER. Пирамида № 8","Ташкент|LIDER","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5533428"],
 ["24–25.10","—","Открытый Кубок Москвы. Юноши и девушки до 16 лет. Юниоры и юниорки до 19 лет. 3-й этап","Москва|ДБС «Москвич»","свободная","—","МСБС","msbs","https://mosbilliard.ru/calen/"],
-["24.10","10:00","Чемпионат Ульяновской области по свободной пирамиде с продолжением 2026","Ульяновск|БК «Меркурий»","свободная с продолж.","1","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14588"],
 ["24.10","09:30","ЛЛБ 2026. Санкт-Петербург. Пирамида № 35 [К]","Санкт-Петербург|PLAYPOOL","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5538346"],
+["24.10","10:00","Чемпионат Ульяновской области по свободной пирамиде с продолжением 2026","Ульяновск|БК «Меркурий»","свободная с продолж.","1","B4Y","b4y","https://bill4you.ru/rus-billiard/tournament/14588"],
 ["24.10","11:00","Командный Чемпионат Санкт-Петербурга по пирамиде среди мужчин 2026 [С]","Санкт-Петербург|ЦБС «Ольгино»","пирамида","0","ЛЛБ","llb","https://www.llb.su/t/5541305"],
 ["24.10","11:00","Новочеркасск 2026. 16-й этап серии турниров \"Сеньоры на юге\" по пирамиде","—|Восток","пирамида","9","ЛЛБ","llb","https://www.llb.su/t/5542325"],
 ["26–31.10","—","Всероссийские соревнования «Юные легенды». Юноши и девушки до 16 лет","Москва|БК «Легенда»","свободная","—","МСБС","msbs","https://mosbilliard.ru/calen/"],
@@ -443,7 +537,7 @@ const LIST_URLS = {
 
 /* Состояние площадок на момент последней сборки. Ставится автоматом:
    tools/build.mjs — <ключ площадки>: {name, rows, stale, at, iso}. */
-const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 53, "stale": false, "at": "30.09.2026, 14:06", "iso": "2026-09-30T11:06:37.413Z" }, "msbs": { "name": "МСБС", "rows": 20, "stale": true, "at": "30.09.2026, 12:27", "iso": "2026-09-30T09:27:24.001Z" }, "b4y": { "name": "B4Y", "rows": 18, "stale": false, "at": "30.09.2026, 14:11", "iso": "2026-09-30T11:11:35.566Z" } }; // <- автосбор
+const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 53, "stale": false, "at": "30.09.2026, 14:21", "iso": "2026-09-30T11:21:02.961Z" }, "msbs": { "name": "МСБС", "rows": 20, "stale": false, "at": "30.09.2026, 14:21", "iso": "2026-09-30T11:21:04.175Z" }, "b4y": { "name": "B4Y", "rows": 18, "stale": false, "at": "30.09.2026, 14:21", "iso": "2026-09-30T11:21:04.701Z" } }; // <- автосбор
 
 /* ---------- Даты ---------- */
 /* Год и выходные считаются из самих строк, вручную их держать не нужно —
@@ -711,15 +805,8 @@ build();
   }
 })();
 
-/* ---------- Кнопки «поделиться» в подвале ---------- */
+/* ---------- Кнопка «скопировать ссылку» ---------- */
 (function shareSetup(){
-  const vk = document.getElementById("shVk");
-  const tg = document.getElementById("shTg");
-  const u = encodeURIComponent(location.href);
-  const t = encodeURIComponent(document.title);
-  if (vk) vk.href = "https://vk.com/share.php?url=" + u + "&title=" + t;
-  if (tg) tg.href = "https://t.me/share/url?url=" + u + "&text=" + t;
-
   const cp = document.getElementById("shCopy");
   if (!cp) return;
   const flash = msg => {
@@ -746,6 +833,74 @@ build();
         .catch(fallback);
     } else fallback();
   });
+})();
+
+/* ---------- Карусель фотографий кия ---------- */
+(function cueCarousel(){
+  const box = document.getElementById("cueSlider");
+  if (!box) return;
+  const slides = [...box.querySelectorAll(".cue-slide")];
+  const dotsBox = document.getElementById("cueDots");
+  const stage = box.querySelector(".cue-stage");
+  if (slides.length < 2) return;
+
+  let i = 0, timer = null;
+  const D = 7000;
+
+  const dots = slides.map((_, n) => {
+    const d = document.createElement("button");
+    d.type = "button";
+    d.className = "cue-dot";
+    d.setAttribute("aria-label", "Фото " + (n + 1) + " из " + slides.length);
+    d.addEventListener("click", () => { go(n); restart(); });
+    dotsBox.appendChild(d);
+    return d;
+  });
+
+  function go(n){
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle("on", k === i));
+    dots.forEach((d, k) => d.classList.toggle("on", k === i));
+  }
+  const step = d => { go(i + d); };
+
+  function restart(){
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => step(1), D);
+  }
+  function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+
+  document.getElementById("cuePrev").addEventListener("click", () => { step(-1); restart(); });
+  document.getElementById("cueNext").addEventListener("click", () => { step(1); restart(); });
+
+  // палец/мышь: тянем влево-вправо по фотографии
+  let x0 = null, dx = 0;
+  stage.addEventListener("pointerdown", e => { x0 = e.clientX; dx = 0; stop(); });
+  stage.addEventListener("pointermove", e => { if (x0 !== null) dx = e.clientX - x0; });
+  stage.addEventListener("pointerup", e => {
+    if (x0 !== null && Math.abs(dx) > 45) step(dx < 0 ? 1 : -1);
+    x0 = null;
+    restart();
+  });
+  stage.addEventListener("pointercancel", () => { x0 = null; restart(); });
+
+  // стрелки с клавиатуры, когда фокус внутри карусели
+  box.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft") { step(-1); restart(); }
+    if (e.key === "ArrowRight") { step(1); restart(); }
+  });
+
+  // листаем сами, но не мешаем читателю: пауза при наведении и на скрытой вкладке
+  box.addEventListener("mouseenter", stop);
+  box.addEventListener("mouseleave", restart);
+  box.addEventListener("focusin", stop);
+  box.addEventListener("focusout", restart);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop(); else restart();
+  });
+
+  go(0);
+  restart();
 })();
 </script>
 </body>
