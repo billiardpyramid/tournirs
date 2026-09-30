@@ -23,7 +23,13 @@
        background-size:auto,cover;
        background-attachment:fixed,fixed}
   .wrap{max-width:1420px;margin:0 auto}
-  .logo{display:block;width:118px;height:auto;margin:0 0 12px;border-radius:12px;
+  /* шапка: на широком экране текст слева, логотип справа на одной высоте;
+     на телефоне логотип во всю ширину экрана, текст под ним */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+    margin-bottom:18px}
+  .top-text{min-width:0}
+  .top-text .sub{margin-bottom:0}
+  .logo{order:2;flex:0 0 auto;width:118px;height:auto;border-radius:12px;
     border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.45)}
   h1{margin:0 0 6px;font-size:26px}
   .tagline{margin:0 0 8px;color:var(--accent);font-size:17px;font-weight:600;line-height:1.35}
@@ -244,6 +250,15 @@
     .cue-slider{flex:0 0 auto;width:100%;max-width:420px;margin:0 auto}
     .cue-stage{height:420px}
   }
+  @media (max-width:760px){
+    /* логотип во всю ширину экрана: отступы body равны 24px, поэтому уводим его
+       в минус на те же 24px — края логотипа идут от края экрана до края экрана */
+    .top{flex-direction:column;align-items:stretch;gap:0}
+    .top .logo{order:-1;width:calc(100% + 48px);max-width:none;
+      margin:0 0 14px -24px;border-radius:0;border-left:0;border-right:0;
+      box-shadow:0 6px 18px rgba(0,0,0,.5)}
+    h1{font-size:22px}
+  }
   @media (max-width:520px){
     .cue{padding:13px}
     .cue-stage{height:340px}
@@ -254,11 +269,15 @@
 <body>
 <div class="wrap">
 
-<img class="logo" src="logo.jpg" alt="Логотип Pro Billiard League" width="360" height="361">
-<h1>Русский бильярд — ближайшие турниры</h1>
-    <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
-    <div class="sub">
-    <span id="upd">обновлено 30.09.2026, 14:54</span> · календарь турниров по русскому бильярду
+  <div class="top">
+    <div class="top-text">
+      <h1>Русский бильярд — ближайшие турниры</h1>
+      <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
+      <div class="sub">
+      <span id="upd">обновлено 30.09.2026, 15:14</span> · календарь турниров по русскому бильярду
+      </div>
+    </div>
+    <img class="logo" src="logo.jpg" alt="Логотип Pro Billiard League" width="360" height="361">
   </div>
 
   <div class="acts acts-top">
@@ -540,7 +559,7 @@ const LIST_URLS = {
 
 /* Состояние площадок на момент последней сборки. Ставится автоматом:
    tools/build.mjs — <ключ площадки>: {name, rows, stale, at, iso}. */
-const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 53, "stale": false, "at": "30.09.2026, 14:54", "iso": "2026-09-30T11:54:44.347Z" }, "msbs": { "name": "МСБС", "rows": 20, "stale": false, "at": "30.09.2026, 14:54", "iso": "2026-09-30T11:54:44.725Z" }, "b4y": { "name": "B4Y", "rows": 18, "stale": false, "at": "30.09.2026, 14:54", "iso": "2026-09-30T11:54:44.915Z" } }; // <- автосбор
+const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 53, "stale": false, "at": "30.09.2026, 15:14", "iso": "2026-09-30T12:14:18.689Z" }, "msbs": { "name": "МСБС", "rows": 20, "stale": false, "at": "30.09.2026, 15:14", "iso": "2026-09-30T12:14:19.162Z" }, "b4y": { "name": "B4Y", "rows": 18, "stale": false, "at": "30.09.2026, 15:14", "iso": "2026-09-30T12:14:19.598Z" } }; // <- автосбор
 
 /* ---------- Даты ---------- */
 /* Год и выходные считаются из самих строк, вручную их держать не нужно —
