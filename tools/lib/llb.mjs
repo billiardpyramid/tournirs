@@ -54,7 +54,7 @@ function parseCard($tr) {
   const dateLine = lines[0];
   const rest = lines.slice(1).join(' ');
 
-  // «30.09.26» — начало; у многодневных «23.10.26 26.10» — кон��ец позже в этой же строке
+  // «30.09.26» — начало; у многодневных «23.10.26 26.10» — конец позже в этой же строке
   const startM = dateLine.match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/);
   if (!startM) return null;
   const toYear = y => (+y < 100 ? 2000 + +y : +y);
@@ -68,10 +68,17 @@ function parseCard($tr) {
     const e = new Date(start.getFullYear(), +endM[2] - 1, +endM[1]);
     if (!isNaN(e) && e >= start) end = e;
   }
-
   // время может быть во второй строке, а у части карточек — сразу после даты
   const time = (rest + ' ' + tail).match(/(\d{1,2}:\d{2})/);
   const timeStr = time ? time[1] : '';
+
+  // В дату.start кладём и время, если оно есть. Иначе турнир сегодня в 19:00
+  // сравнивается с полуночью и считается уже начавшимся.
+  const applyTime = d => {
+    if (!timeStr) return d;
+    const [hh, mm] = timeStr.split(':').map(Number);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), hh, mm);
+  };
 
   const club = clean($tr.find('a.club-link').first().text());
   const partsLink = $tr.find('a.parts-link').first();
@@ -84,7 +91,7 @@ function parseCard($tr) {
   if (!isPyramidOnly(kind, name)) return null;
 
   return {
-    from: start, to: end,
+    from: applyTime(start), to: end,
     time: timeStr,
     name,
     city: findCity(name, club) || '—',
