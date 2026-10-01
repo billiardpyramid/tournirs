@@ -298,7 +298,7 @@
       <h1>Русский бильярд — ближайшие турниры</h1>
       <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
       <div class="sub">
-      <span id="upd">обновлено 01.10.2026, 22:48</span> · календарь турниров по русскому бильярду
+      <span id="upd">обновлено 01.10.2026, 22:57</span> · календарь турниров по русскому бильярду
       </div>
     </div>
     <img class="logo" src="logo.jpg" alt="Логотип Pro Billiard League" width="360" height="361">
@@ -314,14 +314,25 @@
     <p class="lives-lead">
       Каналы, где смотрят трансляции турниров по русскому бильярду. Значок «Эфир»
       у канала — можно переключаться на любой прямо отсюда, трансляция откроется в новой вкладке.
+      Ссылки ведут сразу на страницу трансляций канала.
     </p>
     <ul class="lives-list">
+      <li>
+        <a href="https://vkvideo.ru/@club229099122/lives" target="_blank" rel="noopener noreferrer">
+          <span class="lives-txt">
+            <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
+            <b>Федерация Бильярдного Спорта России</b>
+            <span class="lives-id">https://vkvideo.ru/@club229099122/lives</span>
+          </span>
+          <img class="lives-ava" src="tv-3.jpg" alt="" width="144" height="144" loading="lazy">
+        </a>
+      </li>
       <li>
         <a href="https://vkvideo.ru/@fbs_sp/lives" target="_blank" rel="noopener noreferrer">
           <span class="lives-txt">
             <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
             <b>Федерация бильярдного спорта г. Санкт-Петербург</b>
-            <span class="lives-id">vkvideo.ru/@fbs_sp</span>
+            <span class="lives-id">https://vkvideo.ru/@fbs_sp/lives</span>
           </span>
           <img class="lives-ava" src="tv-1.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
@@ -331,19 +342,9 @@
           <span class="lives-txt">
             <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
             <b>Центр бильярдного спорта ОЛЬГИНО</b>
-            <span class="lives-id">vkvideo.ru/@billiard_olgino</span>
+            <span class="lives-id">https://vkvideo.ru/@billiard_olgino/lives</span>
           </span>
           <img class="lives-ava" src="tv-2.jpg" alt="" width="144" height="144" loading="lazy">
-        </a>
-      </li>
-      <li>
-        <a href="https://vkvideo.ru/@club229099122/lives" target="_blank" rel="noopener noreferrer">
-          <span class="lives-txt">
-            <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
-            <b>Федерация бильярдного спорта России</b>
-            <span class="lives-id">vkvideo.ru/@club229099122</span>
-          </span>
-          <img class="lives-ava" src="tv-3.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
       </li>
       <li>
@@ -351,7 +352,7 @@
           <span class="lives-txt">
             <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
             <b>BILLIARD PRO LIVE</b>
-            <span class="lives-id">vkvideo.ru/@public211757126</span>
+            <span class="lives-id">https://vkvideo.ru/@public211757126/lives</span>
           </span>
           <img class="lives-ava" src="tv-4.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
@@ -649,7 +650,7 @@ const LIST_URLS = {
 
 /* Состояние площадок на момент последней сборки. Ставится автоматом:
    tools/build.mjs — <ключ площадки>: {name, rows, stale, at, iso}. */
-const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 67, "stale": false, "at": "01.10.2026, 22:48", "iso": "2026-10-01T19:48:36.506Z" }, "msbs": { "name": "МСБС", "rows": 18, "stale": false, "at": "01.10.2026, 22:48", "iso": "2026-10-01T19:48:37.192Z" }, "b4y": { "name": "B4Y", "rows": 22, "stale": false, "at": "01.10.2026, 22:48", "iso": "2026-10-01T19:48:37.527Z" } }; // <- автосбор
+const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 67, "stale": false, "at": "01.10.2026, 22:57", "iso": "2026-10-01T19:57:52.088Z" }, "msbs": { "name": "МСБС", "rows": 18, "stale": false, "at": "01.10.2026, 22:57", "iso": "2026-10-01T19:57:52.571Z" }, "b4y": { "name": "B4Y", "rows": 22, "stale": false, "at": "01.10.2026, 22:57", "iso": "2026-10-01T19:57:52.890Z" } }; // <- автосбор
 
 /* ---------- Даты ---------- */
 /* Год и выходные считаются из самих строк, вручную их держать не нужно —
