@@ -56,10 +56,14 @@
   .lives h2{margin:0 0 6px;font-size:15px;color:var(--txt)}
   .lives-lead{margin:0 0 12px;color:var(--dim);font-size:13.5px}
   .lives-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-  .lives-list a{display:block;text-decoration:none;background:#20262f;border:1px solid var(--line);
-    border-radius:8px;padding:9px 11px;transition:border-color .15s,background .15s}
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .lives-list a{display:flex;align-items:center;gap:11px;text-decoration:none;
+    background:#20262f;border:1px solid var(--line);border-radius:8px;padding:9px 11px;
+    transition:border-color .15s,background .15s}
   .lives-list a:hover{background:#252c37;border-color:#4d5b72}
+  .lives-txt{min-width:0;flex:1 1 auto}
+  .lives-ava{flex:0 0 auto;width:52px;height:52px;border-radius:8px;object-fit:cover;
+    border:1px solid var(--line);background:#161b22}
   .live-badge{display:inline-flex;align-items:center;gap:5px;padding:1px 7px;border-radius:5px;
     background:#3a1a1f;border:1px solid #7d2b34;color:#ff9b9b;font-size:11px;font-weight:700;
     letter-spacing:.6px}
@@ -294,7 +298,7 @@
       <h1>Русский бильярд — ближайшие турниры</h1>
       <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
       <div class="sub">
-      <span id="upd">обновлено 01.10.2026, 22:23</span> · календарь турниров по русскому бильярду
+      <span id="upd">обновлено 01.10.2026, 22:48</span> · календарь турниров по русскому бильярду
       </div>
     </div>
     <img class="logo" src="logo.jpg" alt="Логотип Pro Billiard League" width="360" height="361">
@@ -314,30 +318,42 @@
     <ul class="lives-list">
       <li>
         <a href="https://vkvideo.ru/@fbs_sp/lives" target="_blank" rel="noopener noreferrer">
-          <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
-          <b>Федерация бильярдного спорта г. Санкт-Петербург</b>
-          <span class="lives-id">vkvideo.ru/@fbs_sp</span>
+          <span class="lives-txt">
+            <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
+            <b>Федерация бильярдного спорта г. Санкт-Петербург</b>
+            <span class="lives-id">vkvideo.ru/@fbs_sp</span>
+          </span>
+          <img class="lives-ava" src="tv-1.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
       </li>
       <li>
         <a href="https://vkvideo.ru/@billiard_olgino/lives" target="_blank" rel="noopener noreferrer">
-          <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
-          <b>Центр бильярдного спорта ОЛЬГИНО</b>
-          <span class="lives-id">vkvideo.ru/@billiard_olgino</span>
+          <span class="lives-txt">
+            <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
+            <b>Центр бильярдного спорта ОЛЬГИНО</b>
+            <span class="lives-id">vkvideo.ru/@billiard_olgino</span>
+          </span>
+          <img class="lives-ava" src="tv-2.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
       </li>
       <li>
         <a href="https://vkvideo.ru/@club229099122/lives" target="_blank" rel="noopener noreferrer">
-          <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
-          <b>Федерация бильярдного спорта России</b>
-          <span class="lives-id">vkvideo.ru/@club229099122</span>
+          <span class="lives-txt">
+            <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
+            <b>Федерация бильярдного спорта России</b>
+            <span class="lives-id">vkvideo.ru/@club229099122</span>
+          </span>
+          <img class="lives-ava" src="tv-3.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
       </li>
       <li>
         <a href="https://vkvideo.ru/@public211757126/lives" target="_blank" rel="noopener noreferrer">
-          <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
-          <b>BILLIARD PRO LIVE</b>
-          <span class="lives-id">vkvideo.ru/@public211757126</span>
+          <span class="lives-txt">
+            <span class="live-badge"><span class="live-dot"></span>ЭФИР</span>
+            <b>BILLIARD PRO LIVE</b>
+            <span class="lives-id">vkvideo.ru/@public211757126</span>
+          </span>
+          <img class="lives-ava" src="tv-4.jpg" alt="" width="144" height="144" loading="lazy">
         </a>
       </li>
     </ul>
@@ -633,7 +649,7 @@ const LIST_URLS = {
 
 /* Состояние площадок на момент последней сборки. Ставится автоматом:
    tools/build.mjs — <ключ площадки>: {name, rows, stale, at, iso}. */
-const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 67, "stale": false, "at": "01.10.2026, 22:23", "iso": "2026-10-01T19:23:44.368Z" }, "msbs": { "name": "МСБС", "rows": 18, "stale": false, "at": "01.10.2026, 22:23", "iso": "2026-10-01T19:23:44.721Z" }, "b4y": { "name": "B4Y", "rows": 22, "stale": false, "at": "01.10.2026, 22:23", "iso": "2026-10-01T19:23:44.909Z" } }; // <- автосбор
+const SOURCE_STATUS = { "llb": { "name": "ЛЛБ", "rows": 67, "stale": false, "at": "01.10.2026, 22:48", "iso": "2026-10-01T19:48:36.506Z" }, "msbs": { "name": "МСБС", "rows": 18, "stale": false, "at": "01.10.2026, 22:48", "iso": "2026-10-01T19:48:37.192Z" }, "b4y": { "name": "B4Y", "rows": 22, "stale": false, "at": "01.10.2026, 22:48", "iso": "2026-10-01T19:48:37.527Z" } }; // <- автосбор
 
 /* ---------- Даты ---------- */
 /* Год и выходные считаются из самих строк, вручную их держать не нужно —
