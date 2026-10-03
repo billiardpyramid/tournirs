@@ -1,36 +1,12 @@
 [
  {
-  "key": "03.10",
-  "time": "13:00",
-  "name": "Парный турнир БК \"Абриколь\" по московской пирамиде г. Астрахань",
-  "city": "Астрахань",
-  "venue": "Абриколь",
-  "kind": "пирамида",
-  "cnt": "0",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/14878"
- },
- {
-  "key": "03.10",
-  "time": "13:00",
-  "name": "ЛЛБ 2026. Таллин. Пирамида № 67 [К]",
-  "city": "—",
-  "venue": "Pepsi Piljard",
-  "kind": "пирамида",
-  "cnt": "0",
-  "src": "ЛЛБ",
-  "srcCls": "llb",
-  "url": "https://www.llb.su/t/5548516"
- },
- {
   "key": "04.10",
   "time": "05:00",
   "name": "Первенство Новосибирска \"Комбинированная пирамида\" (мужчины и женщины 70+)",
   "city": "Новосибирск",
   "venue": "\"Федерация\"",
   "kind": "комбинированная",
-  "cnt": "0",
+  "cnt": "2",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14611"
@@ -50,11 +26,35 @@
  {
   "key": "04.10",
   "time": "11:00",
+  "name": "Ростов-на-дону! Турнир МСК Пирамида в БК \"Чемпион \" 45 +",
+  "city": "Ростов-на-Дону",
+  "venue": "БК \"Чемпион\" (на Малиновского)",
+  "kind": "пирамида",
+  "cnt": "0",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14932"
+ },
+ {
+  "key": "04.10",
+  "time": "11:00",
+  "name": "Ростов-на-дону! Турнир МСК Пирамида в БК \"Чемпион \" до 45",
+  "city": "Ростов-на-Дону",
+  "venue": "БК \"Чемпион\" (на Малиновского)",
+  "kind": "пирамида",
+  "cnt": "1",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14933"
+ },
+ {
+  "key": "04.10",
+  "time": "11:00",
   "name": "Турнир в Комбинированную пирамиду 1-4 Гр",
   "city": "Ульяновск",
   "venue": "БК MATRESHKI",
   "kind": "комбинированная",
-  "cnt": "9",
+  "cnt": "11",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14571"
@@ -90,7 +90,7 @@
   "city": "Чехов",
   "venue": "BILLIARDS",
   "kind": "пирамида",
-  "cnt": "16",
+  "cnt": "18",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545433"
@@ -102,7 +102,7 @@
   "city": "Уфа",
   "venue": "Олимп",
   "kind": "пирамида",
-  "cnt": "12",
+  "cnt": "16",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5547505"
@@ -162,7 +162,7 @@
   "city": "Калининград",
   "venue": "11",
   "kind": "пирамида",
-  "cnt": "13",
+  "cnt": "14",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5533303"
@@ -178,6 +178,18 @@
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5548476"
+ },
+ {
+  "key": "04.10",
+  "time": "12:00",
+  "name": "Нижнекамск 2026. Шар. Пирамида № 37 [К]",
+  "city": "—",
+  "venue": "Шар",
+  "kind": "пирамида",
+  "cnt": "0",
+  "src": "ЛЛБ",
+  "srcCls": "llb",
+  "url": "https://www.llb.su/t/5548883"
  },
  {
   "key": "04.10",
@@ -210,7 +222,7 @@
   "city": "Санкт-Петербург",
   "venue": "FRBS-club",
   "kind": "пирамида",
-  "cnt": "8",
+  "cnt": "9",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5548182"
@@ -234,7 +246,7 @@
   "city": "Ташкент",
   "venue": "LIDER",
   "kind": "пирамида",
-  "cnt": "57",
+  "cnt": "62",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5533427"
@@ -265,8 +277,20 @@
  },
  {
   "key": "10.10",
+  "time": "10:30",
+  "name": "Чемпионат Ярославкой области по Свободной пирамиде с продолжением Женщины",
+  "city": "Ярославль",
+  "venue": "СК «Горки Парк»",
+  "kind": "свободная с продолж.",
+  "cnt": "0",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14942"
+ },
+ {
+  "key": "10.10",
   "time": "09:30",
-  "name": "ЛЛБ 2026. Санкт-Петербург. Пирамида № 34 ЭЛО≤1150",
+  "name": "ЛЛБ 2026. Санкт-Петербург. Пирамида № 34 ≤1150",
   "city": "Санкт-Петербург",
   "venue": "PLAYPOOL",
   "kind": "пирамида",
@@ -334,6 +358,18 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14895"
+ },
+ {
+  "key": "11.10",
+  "time": "10:30",
+  "name": "Чемпионат Ярославкой области по Свободной пирамиде с продолжением 2026",
+  "city": "Ярославль",
+  "venue": "СК «Горки Парк»",
+  "kind": "свободная с продолж.",
+  "cnt": "0",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14941"
  },
  {
   "key": "11.10",
@@ -450,7 +486,7 @@
   "city": "Ижевск",
   "venue": "Кино",
   "kind": "пирамида",
-  "cnt": "65",
+  "cnt": "66",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5541770"
@@ -462,7 +498,7 @@
   "city": "Ижевск",
   "venue": "Кино",
   "kind": "пирамида",
-  "cnt": "46",
+  "cnt": "48",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545615"
@@ -486,7 +522,7 @@
   "city": "—",
   "venue": "Берлога",
   "kind": "пирамида",
-  "cnt": "17",
+  "cnt": "18",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5547262"
@@ -498,7 +534,7 @@
   "city": "Омск",
   "venue": "RUSSКИЙ",
   "kind": "пирамида",
-  "cnt": "2",
+  "cnt": "19",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5547488"
@@ -894,7 +930,7 @@
   "city": "Новгород",
   "venue": "Бермудский треугольник",
   "kind": "пирамида",
-  "cnt": "39",
+  "cnt": "40",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545721"
