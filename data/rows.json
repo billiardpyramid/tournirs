@@ -13,18 +13,6 @@
  },
  {
   "key": "04.10",
-  "time": "11:21",
-  "name": "Турнир в Комбинированную пирамиду 1-4 Гр",
-  "city": "Ульяновск",
-  "venue": "БК MATRESHKI",
-  "kind": "комбинированная",
-  "cnt": "28",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/14571"
- },
- {
-  "key": "04.10",
   "time": "12:11",
   "name": "Ростов-на-дону! Турнир МСК Пирамида в БК \"Чемпион \" до 45",
   "city": "Ростов-на-Дону",
@@ -190,6 +178,42 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14724"
+ },
+ {
+  "key": "04.10",
+  "time": "22:35",
+  "name": "Московская пирамида (Сибирка)",
+  "city": "Кропоткин",
+  "venue": "БК Ковбой",
+  "kind": "пирамида",
+  "cnt": "23",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14620"
+ },
+ {
+  "key": "04.10",
+  "time": "22:40",
+  "name": "Турнир \" Первый Б Лига надежд\" по Свободной пирамиде",
+  "city": "Москва",
+  "venue": "БК \"План Б\" бильярд",
+  "kind": "свободная",
+  "cnt": "10",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14963"
+ },
+ {
+  "key": "04.10",
+  "time": "22:48",
+  "name": "Турнир в Комбинированную пирамиду 1-4 Гр",
+  "city": "Ульяновск",
+  "venue": "БК MATRESHKI",
+  "kind": "комбинированная",
+  "cnt": "28",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14571"
  },
  {
   "key": "06.10",
@@ -420,7 +444,7 @@
   "url": "https://bill4you.ru/rus-billiard/tournament/14911"
  },
  {
-  "key": "17.10",
+  "key": "16.10",
   "time": "00:00",
   "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(квал.)",
   "city": "Иркутск",
@@ -432,7 +456,7 @@
   "url": "https://bill4you.ru/rus-billiard/tournament/14495"
  },
  {
-  "key": "17.10",
+  "key": "16.10",
   "time": "00:00",
   "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(О.Л.)",
   "city": "Иркутск",
@@ -444,7 +468,7 @@
   "url": "https://bill4you.ru/rus-billiard/tournament/14497"
  },
  {
-  "key": "17.10",
+  "key": "16.10",
   "time": "00:00",
   "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(П.Л.)",
   "city": "Иркутск",
