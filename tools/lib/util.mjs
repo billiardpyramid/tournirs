@@ -155,13 +155,43 @@ export function findCity(...texts) {
 
 /* ---------- Отбор по времени ---------- */
 
+const fromDate = r => r.from instanceof Date ? r.from : new Date(r.from);
+/** Дата окончания. Если её нет (МСБС отдаёт только даты) — берём дату начала. */
+const toDateOf = r => (r.to instanceof Date ? r.to : (r.from instanceof Date ? r.from : new Date(r.from)));
+
 /**
- * Турнир уже начался? Пользователю нужны только те, что ещё не стартовали.
+ * Идёт ли турнир прямо сейчас.
+ * Конец турнира известен только по дню, поэтому «идёт» — это «начался и ещё не закончился
+ * последним днём своей даты». Для турнира без времени (МСБС) считаем, что он идёт весь день.
+ */
+export function isLive(r, now = new Date()) {
+  const a = fromDate(r), b = toDateOf(r);
+  if (isNaN(a) || isNaN(b)) return false;
+  return a.getTime() <= now.getTime() && b.getTime() >= now.getTime();
+}
+
+/**
+ * Турнир полностью закончился — его можно убирать из списка.
+ *
+ * Важно: сравниваем по СУТКАМ, а не по времени начала. Если турнир начался сегодня
+ * (пользователь за ним следит, заходит по ссылке), он обязан висеть весь день и
+ * исчезнуть только завтра. Раньше здесь было сравнение «начался раньше текущего
+ * момента», из-за чего идущий турнир пропадал из таблицы через несколько часов.
+ */
+export function isOver(r, now = new Date()) {
+  const b = toDateOf(r);
+  if (isNaN(b)) return true;
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return b.getTime() < midnight.getTime();
+}
+
+/**
+ * Турнир уже начался? (используется в проверке и в отчётах)
  * Если время известно — сравниваем с текущим моментом; если нет (МСБС отдаёт
  * только даты) — сравниваем по дню, чтобы турнир сегодняшнего дня не пропал.
  */
 export function hasStarted(r, now = new Date()) {
-  const from = r.from instanceof Date ? r.from : new Date(r.from);
+  const from = fromDate(r);
   if (isNaN(from)) return true;
   if (/^\d{1,2}:\d{2}$/.test(String(r.time || ''))) return from.getTime() < now.getTime();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
