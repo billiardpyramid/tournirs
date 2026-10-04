@@ -15,7 +15,7 @@ import { fetchLlb } from './lib/llb.mjs';
 import { fetchMsbs } from './lib/msbs.mjs';
 import { fetchB4y } from './lib/b4y.mjs';
 import { buildHtml, writeSite, sig } from './build.mjs';
-import { nowMsk, hasStarted } from './lib/util.mjs';
+import { nowMsk, isLive, isOver } from './lib/util.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'billiard-tournaments.html');
@@ -98,7 +98,9 @@ for (const s of sources) {
     if (cached && cached.rows && cached.rows.length) {
       log(`  ${s.name.padEnd(5)} НЕ ОТВЕТИЛА (${problem}) — беру прошлые данные от ${cached.at}`);
       stale.push(s.name);
-      gathered.push({ name: s.name, cls: s.cls, rows: cached.rows.map(revive), fromCache: true });
+      // из кэша тоже выкидываем то, что уже закончилось: кэш могли записать вчера
+      const revived = cached.rows.map(revive).filter(r => !isOver(r, new Date()));
+      gathered.push({ name: s.name, cls: s.cls, rows: revived, fromCache: true });
     } else {
       fail(`${s.name} не ответила: ${problem} Прошлых данных тоже нет, страница не тронута.`);
     }
@@ -106,10 +108,14 @@ for (const s of sources) {
   }
 
   const now = new Date();
-  const inHorizon = rows.filter(r => !hasStarted(r, now)).filter(r => r.to >= H.from && r.from <= H.to);
-  const skippedStarted = rows.filter(r => hasStarted(r, now)).length;
+  // Турнир убираем только когда он закончился ЦЕЛЫМ ДНЁМ раньше сегодняшнего.
+  // Начавшийся сегодня остаётся в списке весь день — за ним следят по ссылке.
+  const inHorizon = rows.filter(r => !isOver(r, now)).filter(r => r.to >= H.from && r.from <= H.to);
+  const skippedOver = rows.filter(r => isOver(r, now)).length;
+  const liveNow = inHorizon.filter(r => isLive(r, now)).length;
   log(`  ${s.name.padEnd(5)} ${String(rows.length).padStart(3)} всего, ${String(inHorizon.length).padStart(3)} в горизонте` +
-    (skippedStarted ? `, уже начавшихся пропущено ${skippedStarted}` : '') +
+    (liveNow ? `, идёт сейчас ${liveNow}` : '') +
+    (skippedOver ? `, закончившихся пропущено ${skippedOver}` : '') +
     `, ${((Date.now() - t0) / 1000).toFixed(1)} с`);
   fs.writeFileSync(cacheFile(s.cls), JSON.stringify({
     at: nowMsk().stamp, iso: new Date().toISOString(), total: rows.length, rows: inHorizon
