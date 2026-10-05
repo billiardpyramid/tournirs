@@ -1,7 +1,7 @@
 {
- "at": "05.10.2026, 14:48",
- "iso": "2026-10-05T11:48:42.320Z",
- "total": 22,
+ "at": "06.10.2026, 01:53",
+ "iso": "2026-10-05T22:53:01.157Z",
+ "total": 23,
  "rows": [
   {
    "from": "2026-10-09T07:00:00.000Z",
@@ -11,7 +11,7 @@
    "city": "Москва",
    "venue": "\"Дворец бильярдного спорта\"",
    "kind": "комбинированная",
-   "cnt": "86",
+   "cnt": "89",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14781",
@@ -39,7 +39,7 @@
    "city": "Москва",
    "venue": "\"Дворец бильярдного спорта\"",
    "kind": "свободная",
-   "cnt": "24",
+   "cnt": "32",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14782",
@@ -67,7 +67,7 @@
    "city": "Нарва",
    "venue": "Golden Club Narva",
    "kind": "омка",
-   "cnt": "5",
+   "cnt": "8",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14895",
@@ -212,6 +212,20 @@
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14953",
    "key": "25.10"
+  },
+  {
+   "from": "2026-11-10T08:00:00.000Z",
+   "to": "2026-11-10T08:00:00.000Z",
+   "time": "11:00",
+   "name": "СВОБОДНАЯ ПИРАМИДА С ПРОДОЛЖЕНИЕМ",
+   "city": "Астрахань",
+   "venue": "БК \"Пирамида\"",
+   "kind": "свободная с продолж.",
+   "cnt": "0",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/14973",
+   "key": "10.11"
   }
  ]
 }
