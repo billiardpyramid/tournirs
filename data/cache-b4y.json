@@ -1,6 +1,6 @@
 {
- "at": "05.10.2026, 14:27",
- "iso": "2026-10-05T11:27:57.952Z",
+ "at": "05.10.2026, 14:48",
+ "iso": "2026-10-05T11:48:42.320Z",
  "total": 22,
  "rows": [
   {
@@ -127,7 +127,7 @@
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14496",
-   "key": "17.10"
+   "key": "16.10"
   },
   {
    "from": "2026-10-16T21:00:00.000Z",
@@ -141,7 +141,7 @@
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14495",
-   "key": "17.10"
+   "key": "16.10"
   },
   {
    "from": "2026-10-16T21:00:00.000Z",
@@ -155,7 +155,7 @@
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/14497",
-   "key": "17.10"
+   "key": "16.10"
   },
   {
    "from": "2026-10-18T08:00:00.000Z",
