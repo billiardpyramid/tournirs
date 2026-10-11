@@ -30,34 +30,10 @@
   "city": "Нефтеюганск",
   "venue": "7 луза",
   "kind": "пирамида",
-  "cnt": "1",
+  "cnt": "10",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15058"
- },
- {
-  "key": "11.10",
-  "time": "10:00",
-  "name": "Омка Golden Club",
-  "city": "Нарва",
-  "venue": "Golden Club Narva",
-  "kind": "омка",
-  "cnt": "15",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/14895"
- },
- {
-  "key": "11.10",
-  "time": "10:48",
-  "name": "Любительский Турнир-Свободная пирамида до 20 шаров.",
-  "city": "Симферополь",
-  "venue": "БК \"Ващенков\"",
-  "kind": "свободная",
-  "cnt": "25",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15072"
  },
  {
   "key": "11.10",
@@ -85,7 +61,31 @@
  },
  {
   "key": "11.10",
-  "time": "13:10",
+  "time": "15:55",
+  "name": "XX Турнир «Кубок Кремля», Свободная пирамида (женщины). Квалификация",
+  "city": "Москва",
+  "venue": "\"Дворец бильярдного спорта\"",
+  "kind": "свободная",
+  "cnt": "59",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14782"
+ },
+ {
+  "key": "11.10",
+  "time": "16:59",
+  "name": "Пирамида №1 БК \"Свои\" г. Выборг",
+  "city": "Выборг",
+  "venue": "БК \"Свои\"",
+  "kind": "пирамида",
+  "cnt": "23",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15086"
+ },
+ {
+  "key": "11.10",
+  "time": "17:01",
   "name": "Турнир БК \"Абриколь\" по свободной пирамиде г. Астрахань",
   "city": "Астрахань",
   "venue": "Абриколь",
@@ -94,6 +94,66 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15084"
+ },
+ {
+  "key": "11.10",
+  "time": "18:52",
+  "name": "Омка Golden Club",
+  "city": "Нарва",
+  "venue": "Golden Club Narva",
+  "kind": "омка",
+  "cnt": "15",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14895"
+ },
+ {
+  "key": "11.10",
+  "time": "19:00",
+  "name": "Открытая республиканская серия турниров по пирамиде с гандикапом 7 НЕ 8 Сезон 2026/2027",
+  "city": "Минск",
+  "venue": "",
+  "kind": "пирамида",
+  "cnt": "—",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/events/111"
+ },
+ {
+  "key": "11.10",
+  "time": "19:42",
+  "name": "Любительский Турнир-Свободная пирамида до 20 шаров.",
+  "city": "Симферополь",
+  "venue": "БК \"Ващенков\"",
+  "kind": "свободная",
+  "cnt": "25",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15072"
+ },
+ {
+  "key": "11.10",
+  "time": "21:03",
+  "name": "Турнир \" Первый Б Лига надежд\" по Свободной пирамиде",
+  "city": "Москва",
+  "venue": "БК \"План Б\" бильярд",
+  "kind": "свободная",
+  "cnt": "6",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15088"
+ },
+ {
+  "key": "11.10",
+  "time": "21:15",
+  "name": "Турнир Б/К \"ПЛАН Б\"\" Первый класс\" группа \"А\" по Свободной пирамиде.",
+  "city": "Москва",
+  "venue": "БК \"План Б\" бильярд",
+  "kind": "свободная",
+  "cnt": "20",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15083"
  },
  {
   "key": "14.10",
@@ -108,6 +168,18 @@
   "url": "https://bill4you.ru/rus-billiard/tournament/14910"
  },
  {
+  "key": "14.10",
+  "time": "19:00",
+  "name": "Санкт-Петербург 2026. Ольгино. Пирамида № 51 (блиц) [Д+]",
+  "city": "Санкт-Петербург",
+  "venue": "ЦБС «Ольгино»",
+  "kind": "пирамида",
+  "cnt": "2",
+  "src": "ЛЛБ",
+  "srcCls": "llb",
+  "url": "https://www.llb.su/t/5554647"
+ },
+ {
   "key": "15.10",
   "time": "10:00",
   "name": "XX Турнир «Кубок Кремля», Свободная пирамида (женщины). Финал",
@@ -118,6 +190,18 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14911"
+ },
+ {
+  "key": "15.10",
+  "time": "19:00",
+  "name": "Санкт-Петербург 2026. Ольгино. Пирамида № 52 (блиц) [С]",
+  "city": "Санкт-Петербург",
+  "venue": "ЦБС «Ольгино»",
+  "kind": "пирамида",
+  "cnt": "7",
+  "src": "ЛЛБ",
+  "srcCls": "llb",
+  "url": "https://www.llb.su/t/5554687"
  },
  {
   "key": "16.10",
@@ -198,7 +282,7 @@
   "city": "Москва",
   "venue": "Модус V.",
   "kind": "пирамида",
-  "cnt": "80",
+  "cnt": "82",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5542450"
@@ -349,6 +433,18 @@
  },
  {
   "key": "18.10",
+  "time": "13:00",
+  "name": "Социальный блиц турнир по свободной пирамиде 18.10.2026. Групповой этап. NS",
+  "city": "Нови-Сад",
+  "venue": "KikPub",
+  "kind": "свободная",
+  "cnt": "10",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/14725"
+ },
+ {
+  "key": "18.10",
   "time": "11:00",
   "name": "ЛЛБ 2026. Калининград. Пирамида № 22 ≤1050",
   "city": "Калининград",
@@ -366,7 +462,7 @@
   "city": "Москва",
   "venue": "Великолепная партия",
   "kind": "пирамида",
-  "cnt": "0",
+  "cnt": "1",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5554127"
@@ -378,7 +474,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "18",
+  "cnt": "19",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5530726"
@@ -390,7 +486,7 @@
   "city": "Красноярск",
   "venue": "Эстет",
   "kind": "пирамида",
-  "cnt": "0",
+  "cnt": "1",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545404"
@@ -438,7 +534,7 @@
   "city": "Ташкент",
   "venue": "LIDER",
   "kind": "пирамида",
-  "cnt": "11",
+  "cnt": "12",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5533428"
@@ -474,7 +570,7 @@
   "city": "Ульяновск",
   "venue": "БК «Меркурий»",
   "kind": "свободная с продолж.",
-  "cnt": "1",
+  "cnt": "2",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14588"
@@ -498,7 +594,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "0",
+  "cnt": "1",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5541305"
@@ -642,7 +738,7 @@
   "city": "—",
   "venue": "АКАДЕМИЯ БИЛЬЯРДА",
   "kind": "пирамида",
-  "cnt": "1",
+  "cnt": "2",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5551264"
@@ -654,7 +750,7 @@
   "city": "Тюмень",
   "venue": "8:0",
   "kind": "пирамида",
-  "cnt": "141",
+  "cnt": "142",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5549236"
@@ -726,7 +822,7 @@
   "city": "Новгород",
   "venue": "Бермудский треугольник",
   "kind": "пирамида",
-  "cnt": "62",
+  "cnt": "64",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545721"
