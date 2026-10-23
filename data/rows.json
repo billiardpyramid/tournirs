@@ -1,53 +1,5 @@
 [
  {
-  "key": "22.10",
-  "time": "13:00",
-  "name": "Московская пирамида",
-  "city": "Ташкент",
-  "venue": "Prime game",
-  "kind": "пирамида",
-  "cnt": "32",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15309"
- },
- {
-  "key": "22.10",
-  "time": "14:54",
-  "name": "Вечерний турнир. Комбинированная пирамида.",
-  "city": "Кемерово",
-  "venue": "БК Волна на Октябрьском",
-  "kind": "комбинированная",
-  "cnt": "10",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15303"
- },
- {
-  "key": "22.10",
-  "time": "15:07",
-  "name": "Экспресс-турнир Rival по комбинированной пирамиде",
-  "city": "Новосибирск",
-  "venue": "БК \"Rival\"",
-  "kind": "комбинированная",
-  "cnt": "7",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15292"
- },
- {
-  "key": "23.10",
-  "time": "10:00",
-  "name": "Ташкент 2026. LIDER. Пирамида № 8",
-  "city": "Ташкент",
-  "venue": "LIDER",
-  "kind": "пирамида",
-  "cnt": "128",
-  "src": "ЛЛБ",
-  "srcCls": "llb",
-  "url": "https://www.llb.su/t/5533428"
- },
- {
   "key": "23.10",
   "time": "00:00",
   "name": "Турнир Ново-Иркутской ТЭЦ по свободной пирамиде с продолжением(квал.)",
@@ -78,7 +30,7 @@
   "city": "Красноярск",
   "venue": "БК \"Шаровая Молния\"",
   "kind": "свободная",
-  "cnt": "11",
+  "cnt": "15",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14874"
@@ -90,7 +42,7 @@
   "city": "посёлок городского типа Новотроицкое",
   "venue": "БК «Катала»",
   "kind": "пирамида",
-  "cnt": "18",
+  "cnt": "19",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15283"
@@ -114,10 +66,22 @@
   "city": "Ульяновск",
   "venue": "БК «Меркурий»",
   "kind": "свободная с продолж.",
-  "cnt": "2",
+  "cnt": "3",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/14588"
+ },
+ {
+  "key": "24.10",
+  "time": "10:00",
+  "name": "Чемпионат ХМАО-Югры \"Свободная пирамида с продолжением\"",
+  "city": "Сургут",
+  "venue": "МАУ ДО СШОР «Олимп»",
+  "kind": "свободная с продолж.",
+  "cnt": "27",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15316"
  },
  {
   "key": "24.10",
@@ -126,7 +90,7 @@
   "city": "Кузнецк",
   "venue": "Бильярдный клуб \"ПИК\"",
   "kind": "пирамида",
-  "cnt": "13",
+  "cnt": "14",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15174"
@@ -138,7 +102,7 @@
   "city": "Энгельс",
   "venue": "БК \"ШАР\"",
   "kind": "комбинированная",
-  "cnt": "17",
+  "cnt": "19",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15262"
@@ -174,7 +138,7 @@
   "city": "—",
   "venue": "Луч",
   "kind": "пирамида",
-  "cnt": "7",
+  "cnt": "15",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5563157"
@@ -186,7 +150,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "22",
+  "cnt": "25",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5541305"
@@ -222,7 +186,7 @@
   "city": "—",
   "venue": "Карамболь",
   "kind": "пирамида",
-  "cnt": "13",
+  "cnt": "16",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5552385"
@@ -258,7 +222,7 @@
   "city": "Москва",
   "venue": "33",
   "kind": "пирамида",
-  "cnt": "36",
+  "cnt": "37",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5561598"
@@ -330,7 +294,7 @@
   "city": "Уфа",
   "venue": "Барон",
   "kind": "пирамида",
-  "cnt": "5",
+  "cnt": "6",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5561288"
@@ -402,7 +366,7 @@
   "city": "Краснодар",
   "venue": "Акватория",
   "kind": "пирамида",
-  "cnt": "1",
+  "cnt": "2",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557105"
@@ -426,7 +390,7 @@
   "city": "Красноярск",
   "venue": "Эстет",
   "kind": "пирамида",
-  "cnt": "9",
+  "cnt": "10",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5548452"
@@ -498,7 +462,7 @@
   "city": "Лянтор",
   "venue": "БК \"Легенда\" (г. Лянтор)",
   "kind": "динамичная",
-  "cnt": "7",
+  "cnt": "8",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15288"
@@ -822,7 +786,7 @@
   "city": "Красноярск",
   "venue": "Шаровая молния",
   "kind": "пирамида",
-  "cnt": "2",
+  "cnt": "3",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5562913"
