@@ -18,7 +18,7 @@
   "city": "Новосибирск",
   "venue": "БК \"Rival\"",
   "kind": "свободная",
-  "cnt": "0",
+  "cnt": "9",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15400"
@@ -30,7 +30,7 @@
   "city": "Чехов",
   "venue": "BILLIARDS",
   "kind": "пирамида",
-  "cnt": "9",
+  "cnt": "10",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5563690"
@@ -42,7 +42,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "24",
+  "cnt": "25",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5566369"
@@ -54,7 +54,7 @@
   "city": "Санкт-Петербург",
   "venue": "Зебра",
   "kind": "пирамида",
-  "cnt": "32",
+  "cnt": "37",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5560883"
@@ -102,7 +102,7 @@
   "city": "Лянтор",
   "venue": "БК \"Легенда\" (г. Лянтор)",
   "kind": "динамичная",
-  "cnt": "8",
+  "cnt": "15",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15288"
@@ -118,6 +118,30 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15307"
+ },
+ {
+  "key": "31.10",
+  "time": "10:10",
+  "name": "Смоленск \"Динамичная пирамида\"",
+  "city": "Смоленск",
+  "venue": "Бильярдный клуб \"Шторм\"",
+  "kind": "динамичная",
+  "cnt": "3",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15416"
+ },
+ {
+  "key": "31.10",
+  "time": "11:00",
+  "name": "Открытая республиканская серия турниров по пирамиде с гандикапом 7 НЕ 8 Сезон 2026/2027",
+  "city": "Минск",
+  "venue": "",
+  "kind": "пирамида",
+  "cnt": "—",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/events/111"
  },
  {
   "key": "31.10",
@@ -186,7 +210,7 @@
   "city": "Тюмень",
   "venue": "8:0",
   "kind": "пирамида",
-  "cnt": "134",
+  "cnt": "129",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5549236"
@@ -198,7 +222,7 @@
   "city": "Чехов",
   "venue": "BILLIARDS",
   "kind": "пирамида",
-  "cnt": "6",
+  "cnt": "7",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5566020"
@@ -246,7 +270,7 @@
   "city": "город Пхукет",
   "venue": "SHOT billiards club",
   "kind": "пирамида",
-  "cnt": "4",
+  "cnt": "5",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15312"
@@ -270,7 +294,7 @@
   "city": "Красноярск",
   "venue": "Эстет",
   "kind": "пирамида",
-  "cnt": "4",
+  "cnt": "5",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5548454"
@@ -282,7 +306,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "0",
+  "cnt": "2",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557422"
@@ -330,7 +354,7 @@
   "city": "Новгород",
   "venue": "Бермудский треугольник",
   "kind": "пирамида",
-  "cnt": "152",
+  "cnt": "154",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5545721"
@@ -354,7 +378,7 @@
   "city": "Тюмень",
   "venue": "Бильярдный клуб \"8:0\"",
   "kind": "пирамида",
-  "cnt": "4",
+  "cnt": "5",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15107"
@@ -402,7 +426,7 @@
   "city": "—",
   "venue": "Молния Ямал",
   "kind": "пирамида",
-  "cnt": "32",
+  "cnt": "33",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557213"
@@ -541,12 +565,24 @@
  },
  {
   "key": "21.11",
+  "time": "11:00",
+  "name": "Открытый турнир в Гатчине \"Московская пирамида\"",
+  "city": "Гатчина",
+  "venue": "Pool & Bar",
+  "kind": "пирамида",
+  "cnt": "2",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15418"
+ },
+ {
+  "key": "21.11",
   "time": "09:00",
   "name": "Саранск 2026. 2-й этап серии открытых турниров \"Золотая Лига РБ 2025/2026\" среди ветеранов 50+ по пирамиде",
   "city": "—",
   "venue": "Тихон",
   "kind": "пирамида",
-  "cnt": "40",
+  "cnt": "41",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5563925"

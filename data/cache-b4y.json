@@ -1,7 +1,7 @@
 {
- "at": "27.10.2026, 00:06",
- "iso": "2026-10-26T21:06:34.051Z",
- "total": 17,
+ "at": "27.10.2026, 13:00",
+ "iso": "2026-10-27T10:00:58.579Z",
+ "total": 20,
  "rows": [
   {
    "from": "2026-10-27T11:00:00.000Z",
@@ -11,7 +11,7 @@
    "city": "Новосибирск",
    "venue": "БК \"Rival\"",
    "kind": "свободная",
-   "cnt": "0",
+   "cnt": "9",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15400",
@@ -39,7 +39,7 @@
    "city": "Лянтор",
    "venue": "БК \"Легенда\" (г. Лянтор)",
    "kind": "динамичная",
-   "cnt": "8",
+   "cnt": "15",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15288",
@@ -57,6 +57,34 @@
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15307",
+   "key": "31.10"
+  },
+  {
+   "from": "2026-10-31T07:10:00.000Z",
+   "to": "2026-10-31T07:10:00.000Z",
+   "time": "10:10",
+   "name": "Смоленск \"Динамичная пирамида\"",
+   "city": "Смоленск",
+   "venue": "Бильярдный клуб \"Шторм\"",
+   "kind": "динамичная",
+   "cnt": "3",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15416",
+   "key": "31.10"
+  },
+  {
+   "from": "2026-10-31T08:00:00.000Z",
+   "to": "2026-10-31T08:00:00.000Z",
+   "time": "11:00",
+   "name": "Открытая республиканская серия турниров по пирамиде с гандикапом 7 НЕ 8 Сезон 2026/2027",
+   "city": "Минск",
+   "venue": "",
+   "kind": "пирамида",
+   "cnt": "—",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/events/111",
    "key": "31.10"
   },
   {
@@ -81,7 +109,7 @@
    "city": "город Пхукет",
    "venue": "SHOT billiards club",
    "kind": "пирамида",
-   "cnt": "4",
+   "cnt": "5",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15312",
@@ -95,11 +123,25 @@
    "city": "Тюмень",
    "venue": "Бильярдный клуб \"8:0\"",
    "kind": "пирамида",
-   "cnt": "4",
+   "cnt": "5",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15107",
    "key": "08.11"
+  },
+  {
+   "from": "2026-11-21T08:00:00.000Z",
+   "to": "2026-11-21T08:00:00.000Z",
+   "time": "11:00",
+   "name": "Открытый турнир в Гатчине \"Московская пирамида\"",
+   "city": "Гатчина",
+   "venue": "Pool & Bar",
+   "kind": "пирамида",
+   "cnt": "2",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15418",
+   "key": "21.11"
   }
  ]
 }
