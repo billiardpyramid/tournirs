@@ -1,7 +1,7 @@
 {
- "at": "29.10.2026, 00:12",
- "iso": "2026-10-28T21:12:32.758Z",
- "total": 18,
+ "at": "29.10.2026, 14:04",
+ "iso": "2026-10-29T11:04:29.793Z",
+ "total": 19,
  "rows": [
   {
    "from": "2026-10-29T07:00:00.000Z",
@@ -15,6 +15,20 @@
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15440",
+   "key": "29.10"
+  },
+  {
+   "from": "2026-10-29T11:00:00.000Z",
+   "to": "2026-10-29T11:00:00.000Z",
+   "time": "14:00",
+   "name": "Экспресс-турнир Rival по свободной пирамиде",
+   "city": "Новосибирск",
+   "venue": "БК \"Rival\"",
+   "kind": "свободная",
+   "cnt": "9",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15451",
    "key": "29.10"
   },
   {
@@ -39,7 +53,7 @@
    "city": "Лянтор",
    "venue": "БК \"Легенда\" (г. Лянтор)",
    "kind": "динамичная",
-   "cnt": "12",
+   "cnt": "15",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15288",
@@ -95,7 +109,7 @@
    "city": "Москва",
    "venue": "БК \"Пирамида\"",
    "kind": "свободная с продолж.",
-   "cnt": "10",
+   "cnt": "11",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15280",
