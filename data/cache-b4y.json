@@ -1,6 +1,6 @@
 {
- "at": "30.10.2026, 14:02",
- "iso": "2026-10-30T11:02:05.755Z",
+ "at": "31.10.2026, 00:01",
+ "iso": "2026-10-30T21:01:31.402Z",
  "total": 20,
  "rows": [
   {
@@ -25,7 +25,7 @@
    "city": "Лянтор",
    "venue": "БК \"Легенда\" (г. Лянтор)",
    "kind": "динамичная",
-   "cnt": "14",
+   "cnt": "15",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15288",
@@ -39,7 +39,7 @@
    "city": "Лимасол",
    "venue": "БК \"Абриколь\"",
    "kind": "пирамида",
-   "cnt": "1",
+   "cnt": "3",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15307",
@@ -53,7 +53,7 @@
    "city": "Смоленск",
    "venue": "Бильярдный клуб \"Шторм\"",
    "kind": "динамичная",
-   "cnt": "8",
+   "cnt": "16",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15416",
@@ -142,6 +142,20 @@
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15312",
    "key": "01.11"
+  },
+  {
+   "from": "2026-11-02T05:00:00.000Z",
+   "to": "2026-11-02T05:00:00.000Z",
+   "time": "08:00",
+   "name": "Круговой турнир по московской пирамиде БК Луза",
+   "city": "Оренбург",
+   "venue": "БК \"Луза\"",
+   "kind": "пирамида",
+   "cnt": "27",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15325",
+   "key": "02.11"
   },
   {
    "from": "2026-11-08T07:00:00.000Z",
