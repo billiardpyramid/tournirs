@@ -42,7 +42,7 @@
   "city": "Лянтор",
   "venue": "БК \"Легенда\" (г. Лянтор)",
   "kind": "динамичная",
-  "cnt": "15",
+  "cnt": "14",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15288"
@@ -90,7 +90,7 @@
   "city": "Астрахань",
   "venue": "Абриколь",
   "kind": "пирамида",
-  "cnt": "0",
+  "cnt": "2",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15466"
@@ -114,7 +114,7 @@
   "city": "Санкт-Петербург",
   "venue": "Алиби",
   "kind": "пирамида",
-  "cnt": "18",
+  "cnt": "19",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5541299"
@@ -126,10 +126,22 @@
   "city": "—",
   "venue": "Chicago",
   "kind": "пирамида",
-  "cnt": "17",
+  "cnt": "23",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5568128"
+ },
+ {
+  "key": "31.10",
+  "time": "11:00",
+  "name": "Уфа 2026. Турнир среди сотрудников филиала ООО \"РН-ГИР\" по пирамиде [14+1]",
+  "city": "Уфа",
+  "venue": "Олимп",
+  "kind": "пирамида",
+  "cnt": "23",
+  "src": "ЛЛБ",
+  "srcCls": "llb",
+  "url": "https://www.llb.su/t/5568757"
  },
  {
   "key": "31.10",
@@ -138,7 +150,7 @@
   "city": "—",
   "venue": "Максимус",
   "kind": "пирамида",
-  "cnt": "9",
+  "cnt": "11",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5551980"
@@ -150,7 +162,7 @@
   "city": "—",
   "venue": "АКАДЕМИЯ БИЛЬЯРДА",
   "kind": "пирамида",
-  "cnt": "47",
+  "cnt": "48",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5551264"
@@ -162,10 +174,22 @@
   "city": "Москва",
   "venue": "33",
   "kind": "пирамида",
-  "cnt": "38",
+  "cnt": "39",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5567805"
+ },
+ {
+  "key": "01.11",
+  "time": "03:00",
+  "name": "БК «На Сукне» 4 этап осенней серии. Динамичная пирамида",
+  "city": "Владивосток",
+  "venue": "БК «На сукне»",
+  "kind": "динамичная",
+  "cnt": "12",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/15477"
  },
  {
   "key": "01.11",
@@ -174,7 +198,7 @@
   "city": "Москва",
   "venue": "БК \"Пирамида\"",
   "kind": "свободная с продолж.",
-  "cnt": "11",
+  "cnt": "12",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15280"
@@ -198,7 +222,7 @@
   "city": "Чехов",
   "venue": "BILLIARDS",
   "kind": "пирамида",
-  "cnt": "13",
+  "cnt": "14",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5566020"
@@ -234,7 +258,7 @@
   "city": "Москва",
   "venue": "БАЗА",
   "kind": "пирамида",
-  "cnt": "47",
+  "cnt": "48",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5567733"
@@ -246,7 +270,7 @@
   "city": "Калининград",
   "venue": "11",
   "kind": "пирамида",
-  "cnt": "32",
+  "cnt": "33",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5555310"
@@ -306,7 +330,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "17",
+  "cnt": "19",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557422"
@@ -318,7 +342,7 @@
   "city": "Москва",
   "venue": "БКМ",
   "kind": "пирамида",
-  "cnt": "14",
+  "cnt": "15",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5568064"
@@ -330,7 +354,7 @@
   "city": "Петропавловск-Камчатский",
   "venue": "Партия",
   "kind": "пирамида",
-  "cnt": "56",
+  "cnt": "54",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5548434"
@@ -378,7 +402,7 @@
   "city": "Краснодар",
   "venue": "Лидер",
   "kind": "пирамида",
-  "cnt": "9",
+  "cnt": "8",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5567102"
@@ -438,7 +462,7 @@
   "city": "—",
   "venue": "Молния Ямал",
   "kind": "пирамида",
-  "cnt": "39",
+  "cnt": "41",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557213"
@@ -493,12 +517,24 @@
  },
  {
   "key": "14.11",
+  "time": "11:30",
+  "name": "Раевская 2026. Берлога. Пирамида № 2 [С]",
+  "city": "Раевская",
+  "venue": "Берлога",
+  "kind": "пирамида",
+  "cnt": "3",
+  "src": "ЛЛБ",
+  "srcCls": "llb",
+  "url": "https://www.llb.su/t/5568826"
+ },
+ {
+  "key": "14.11",
   "time": "12:00",
   "name": "Красноярск 2026. 8-ой этап серии открытых турниров «Сеньоры Сибири 2026» по пирамиде",
   "city": "Красноярск",
   "venue": "Шаровая молния",
   "kind": "пирамида",
-  "cnt": "5",
+  "cnt": "6",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5562913"
@@ -510,7 +546,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "0",
+  "cnt": "2",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5547502"

@@ -1,6 +1,6 @@
 {
- "at": "30.10.2026, 00:16",
- "iso": "2026-10-29T21:16:02.700Z",
+ "at": "30.10.2026, 14:02",
+ "iso": "2026-10-30T11:02:05.755Z",
  "total": 20,
  "rows": [
   {
@@ -25,7 +25,7 @@
    "city": "Лянтор",
    "venue": "БК \"Легенда\" (г. Лянтор)",
    "kind": "динамичная",
-   "cnt": "15",
+   "cnt": "14",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15288",
@@ -81,11 +81,25 @@
    "city": "Астрахань",
    "venue": "Абриколь",
    "kind": "пирамида",
-   "cnt": "0",
+   "cnt": "2",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15466",
    "key": "31.10"
+  },
+  {
+   "from": "2026-11-01T00:00:00.000Z",
+   "to": "2026-11-01T00:00:00.000Z",
+   "time": "03:00",
+   "name": "БК «На Сукне» 4 этап осенней серии. Динамичная пирамида",
+   "city": "Владивосток",
+   "venue": "БК «На сукне»",
+   "kind": "динамичная",
+   "cnt": "12",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15477",
+   "key": "01.11"
   },
   {
    "from": "2026-11-01T08:00:00.000Z",
@@ -95,7 +109,7 @@
    "city": "Москва",
    "venue": "БК \"Пирамида\"",
    "kind": "свободная с продолж.",
-   "cnt": "11",
+   "cnt": "12",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15280",
