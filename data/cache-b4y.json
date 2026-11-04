@@ -1,22 +1,8 @@
 {
- "at": "04.11.2026, 15:26",
- "iso": "2026-11-04T12:26:21.795Z",
+ "at": "05.11.2026, 01:05",
+ "iso": "2026-11-04T22:05:24.983Z",
  "total": 18,
  "rows": [
-  {
-   "from": "2026-11-04T10:15:29.000Z",
-   "to": "2026-11-04T10:15:29.000Z",
-   "time": "13:15",
-   "name": "Московский пирамида",
-   "city": "Ташкент",
-   "venue": "Keles Lider Club",
-   "kind": "пирамида",
-   "cnt": "32",
-   "src": "B4Y",
-   "srcCls": "b4y",
-   "url": "https://bill4you.ru/rus-billiard/tournament/15546",
-   "key": "04.11"
-  },
   {
    "from": "2026-11-05T11:00:00.000Z",
    "to": "2026-11-05T11:00:00.000Z",
@@ -67,7 +53,7 @@
    "city": "Тюмень",
    "venue": "Бильярдный клуб \"8:0\"",
    "kind": "пирамида",
-   "cnt": "23",
+   "cnt": "49",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15107",
@@ -81,7 +67,7 @@
    "city": "Ульяновск",
    "venue": "БК MATRESHKI",
    "kind": "пирамида",
-   "cnt": "7",
+   "cnt": "8",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15575",
@@ -142,6 +128,20 @@
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15576",
    "key": "22.11"
+  },
+  {
+   "from": "2026-12-06T08:00:00.000Z",
+   "to": "2026-12-06T08:00:00.000Z",
+   "time": "11:00",
+   "name": "СУПЕРФИНАЛ «НОВИЧКИ 2026» — СВОБОДНАЯ ПИРАМИДА",
+   "city": "Ульяновск",
+   "venue": "БК MATRESHKI",
+   "kind": "свободная",
+   "cnt": "2",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15587",
+   "key": "06.12"
   }
  ]
 }
