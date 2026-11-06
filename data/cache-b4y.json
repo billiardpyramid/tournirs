@@ -1,6 +1,6 @@
 {
- "at": "06.11.2026, 01:09",
- "iso": "2026-11-05T22:09:12.141Z",
+ "at": "06.11.2026, 15:23",
+ "iso": "2026-11-06T12:23:54.662Z",
  "total": 19,
  "rows": [
   {
@@ -53,7 +53,7 @@
    "city": "Тюмень",
    "venue": "Бильярдный клуб \"8:0\"",
    "kind": "пирамида",
-   "cnt": "74",
+   "cnt": "79",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15107",
@@ -67,7 +67,7 @@
    "city": "Ульяновск",
    "venue": "БК MATRESHKI",
    "kind": "пирамида",
-   "cnt": "9",
+   "cnt": "11",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15575",

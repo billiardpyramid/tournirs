@@ -1,28 +1,30 @@
 {
- "ranAt": "06.11.2026, 01:09",
- "total": 90,
+ "ranAt": "06.11.2026, 15:23",
+ "total": 91,
  "bySource": {
-  "ЛЛБ": 66,
+  "ЛЛБ": 67,
   "МСБС": 13,
   "B4Y": 11
  },
- "exactLinks": 77,
- "added": 4,
- "removed": 4,
+ "exactLinks": 78,
+ "added": 1,
+ "removed": 0,
  "pageChanged": true,
- "staleSources": [],
+ "staleSources": [
+  "МСБС"
+ ],
  "sources": {
   "llb": {
    "name": "ЛЛБ",
-   "rows": 66,
+   "rows": 67,
    "stale": false,
-   "at": "06.11.2026, 01:09",
-   "iso": "2026-11-05T22:09:09.743Z"
+   "at": "06.11.2026, 15:18",
+   "iso": "2026-11-06T12:18:57.115Z"
   },
   "msbs": {
    "name": "МСБС",
    "rows": 13,
-   "stale": false,
+   "stale": true,
    "at": "06.11.2026, 01:09",
    "iso": "2026-11-05T22:09:11.077Z"
   },
@@ -30,8 +32,8 @@
    "name": "B4Y",
    "rows": 11,
    "stale": false,
-   "at": "06.11.2026, 01:09",
-   "iso": "2026-11-05T22:09:12.141Z"
+   "at": "06.11.2026, 15:23",
+   "iso": "2026-11-06T12:23:54.662Z"
   }
  }
 }
