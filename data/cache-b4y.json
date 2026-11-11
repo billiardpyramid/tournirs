@@ -1,35 +1,21 @@
 {
- "at": "11.11.2026, 14:59",
- "iso": "2026-11-11T11:59:28.971Z",
- "total": 24,
+ "at": "12.11.2026, 01:52",
+ "iso": "2026-11-11T22:52:27.092Z",
+ "total": 27,
  "rows": [
   {
-   "from": "2026-11-11T07:01:06.000Z",
-   "to": "2026-11-11T07:01:06.000Z",
-   "time": "10:01",
-   "name": "Чемпионат России 2026 \"Свободная пирамида с продолжением\", мужчины",
-   "city": "Калуга",
-   "venue": "БК \"Галактика\"",
-   "kind": "свободная с продолж.",
-   "cnt": "68",
-   "src": "B4Y",
-   "srcCls": "b4y",
-   "url": "https://bill4you.ru/rus-billiard/tournament/15604",
-   "key": "11.11"
-  },
-  {
-   "from": "2026-11-11T10:12:36.000Z",
-   "to": "2026-11-11T10:12:36.000Z",
-   "time": "13:12",
-   "name": "Закрытый турнир клуба \"Молодость\", комбинированная пирамида.",
-   "city": "Минск",
-   "venue": "БК \"Европа\"",
+   "from": "2026-11-13T05:00:00.000Z",
+   "to": "2026-11-13T05:00:00.000Z",
+   "time": "08:00",
+   "name": "Турнир по Комбинированной пирамиде клуб Shot",
+   "city": "город Пхукет",
+   "venue": "SHOT billiards club",
    "kind": "комбинированная",
-   "cnt": "30",
+   "cnt": "0",
    "src": "B4Y",
    "srcCls": "b4y",
-   "url": "https://bill4you.ru/rus-billiard/tournament/15541",
-   "key": "11.11"
+   "url": "https://bill4you.ru/rus-billiard/tournament/15760",
+   "key": "13.11"
   },
   {
    "from": "2026-11-14T07:15:00.000Z",
@@ -39,7 +25,7 @@
    "city": "Смоленск",
    "venue": "Бильярдный клуб \"Шторм\"",
    "kind": "свободная",
-   "cnt": "4",
+   "cnt": "5",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15723",
@@ -95,7 +81,7 @@
    "city": "Москва",
    "venue": "БК \"Пирамида\"",
    "kind": "пирамида",
-   "cnt": "18",
+   "cnt": "19",
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15721",
@@ -113,6 +99,20 @@
    "src": "B4Y",
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15574",
+   "key": "15.11"
+  },
+  {
+   "from": "2026-11-15T09:00:00.000Z",
+   "to": "2026-11-15T09:00:00.000Z",
+   "time": "12:00",
+   "name": "Турнир по Динамичной пирамиде клуб Shot",
+   "city": "город Пхукет",
+   "venue": "SHOT billiards club",
+   "kind": "динамичная",
+   "cnt": "1",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15756",
    "key": "15.11"
   },
   {
@@ -172,6 +172,20 @@
    "key": "29.11"
   },
   {
+   "from": "2026-11-29T09:00:00.000Z",
+   "to": "2026-11-29T09:00:00.000Z",
+   "time": "12:00",
+   "name": "Турнир по Cвободной пирамиде клуб Shot",
+   "city": "город Пхукет",
+   "venue": "SHOT billiards club",
+   "kind": "пирамида",
+   "cnt": "0",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15758",
+   "key": "29.11"
+  },
+  {
    "from": "2026-12-06T08:00:00.000Z",
    "to": "2026-12-06T08:00:00.000Z",
    "time": "11:00",
@@ -184,6 +198,20 @@
    "srcCls": "b4y",
    "url": "https://bill4you.ru/rus-billiard/tournament/15587",
    "key": "06.12"
+  },
+  {
+   "from": "2026-12-27T05:00:00.000Z",
+   "to": "2026-12-27T05:00:00.000Z",
+   "time": "08:00",
+   "name": "Новогодний турнир по Московской пирамиде клуб Shot",
+   "city": "город Пхукет",
+   "venue": "SHOT billiards club",
+   "kind": "пирамида",
+   "cnt": "0",
+   "src": "B4Y",
+   "srcCls": "b4y",
+   "url": "https://bill4you.ru/rus-billiard/tournament/15763",
+   "key": "27.12"
   }
  ]
 }
