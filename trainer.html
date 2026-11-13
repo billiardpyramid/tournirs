@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тренажёр — расстановка шаров</title>
+<style>
+html,body{height:100%;margin:0}
+body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;display:flex;justify-content:center;-webkit-font-smoothing:antialiased;user-select:none}
+
+  .app{
+    --bg:#15171c;
+    --panel:#1c1f26;
+    --line:#2d323c;
+    --txt:#e7e9ee;
+    --muted:#8b929f;
+    --accent:#3cb371;
+  }
+  *{box-sizing:border-box}
+  
+  
+  .app{
+    width:100%;
+    max-width:1432px;
+    padding:0 16px 16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .main{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+  }
+  .table-area{
+    flex:1 1 auto;
+    min-width:0;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  /* ── панель ── */
+  .bar{
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    padding:10px 4px 2px;
+  }
+  .seg{display:flex; gap:6px; flex-wrap:wrap}
+  .tool, .btn, .toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 13px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,#232730,#1b1e25);
+    color:var(--txt);
+    font:inherit;
+    line-height:1;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .15s, border-color .15s, transform .05s;
+  }
+  .tool:hover, .btn:hover{background:linear-gradient(180deg,#2b303b,#20242c)}
+  .tool:active, .btn:active{transform:translateY(1px)}
+  .tool.is-active{
+    background:linear-gradient(180deg,#2f8f5b,#1f6b45);
+    border-color:#42b979;
+    box-shadow:0 0 0 1px rgba(66,185,121,.22) inset, 0 0 14px rgba(60,179,113,.18);
+  }
+  .btn.primary{
+    background:linear-gradient(180deg,#2f8f5b,#1f6b45);
+    border-color:#42b979;
+  }
+  .btn.primary:hover{background:linear-gradient(180deg,#37a067,#257a4f)}
+  .btn.danger{color:#ffb3a4; border-color:#4a2b28; background:linear-gradient(180deg,#2b2124,#221a1c)}
+  .btn.danger:hover{background:linear-gradient(180deg,#38282b,#2a1f22); border-color:#6b3a35}
+  .btn:disabled{opacity:.38; cursor:default; transform:none}
+  .toggle{background:#1e222a; cursor:pointer}
+  .toggle input{margin:0; accent-color:var(--accent); width:15px; height:15px}
+  .spacer{flex:1 1 auto; min-width:8px}
+  .dot{
+    width:14px;height:14px;border-radius:50%;flex:none;
+    box-shadow:inset -2px -3px 4px rgba(0,0,0,.4), inset 2px 2px 3px rgba(255,255,255,.85), 0 1px 2px rgba(0,0,0,.5);
+  }
+  .dot.white{background:radial-gradient(circle at 33% 30%, #fff, #e2e2dc 62%, #a9a9a1)}
+  .dot.yellow{background:radial-gradient(circle at 33% 30%, #fff6c9, #f3c11c 62%, #b8860a)}
+  .dot.ghost{background:transparent; box-shadow:none; border:2px dashed #f0f0e8}
+  .dot.erase{background:radial-gradient(circle at 33% 30%, #ff9d8c, #cf4430 62%, #8c2415)}
+  .lineicon{
+    position:relative;
+    width:18px; height:0;
+    border-top:2.5px solid #ffcf4d;
+    flex:none;
+    margin-right:2px;
+  }
+  .lineicon::after{
+    content:"";
+    position:absolute;
+    right:-2px; top:-5px;
+    width:0; height:0;
+    border-left:6px solid #ffcf4d;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+  }
+  .lineicon.other{border-top-style:dashed; border-top-color:#f0f0e8}
+  .lineicon.other::after{border-left-color:#f0f0e8}
+  .tri-icon{
+    width:0; height:0;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    border-bottom:14px solid #d6dae2;
+    opacity:.82;
+    flex:none;
+  }
+  .tool.is-on{
+    border-color:#3d8f62;
+    box-shadow:0 0 0 1px rgba(66,185,121,.28) inset;
+  }
+  /* ── сцена ── */
+  .titlebar{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+  .title-input{
+    width:100%;
+    max-width:1400px;
+    height:40px;
+    padding:0 15px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,#1e222a,#191c23);
+    color:var(--txt);
+    font:inherit;
+    font-size:15px;
+    outline:none;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+  }
+  .title-input::placeholder{color:#616a77}
+  .title-input:hover{border-color:#3a414d}
+  .title-input:focus{
+    border-color:#3d8f62;
+    box-shadow:0 0 0 3px rgba(60,179,113,.13);
+  }
+  .stage{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+  .app canvas{
+    display:block;
+    border-radius:14px;
+    box-shadow:0 26px 60px -18px rgba(0,0,0,.85), 0 4px 14px rgba(0,0,0,.5);
+    touch-action:none;
+    cursor:crosshair;
+  }
+  /* ── дневник тренировок ── */
+  .log{
+    width:100%;
+    padding:12px 14px 14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:linear-gradient(180deg,#1d2129,#171a20);
+    box-shadow:0 16px 34px -24px rgba(0,0,0,.9);
+  }
+  .log-head{
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:6px 14px;
+    margin:0 2px 8px;
+  }
+  .log-title{font-size:14px; font-weight:650; letter-spacing:.01em}
+  .log-hint{font-size:12px; color:var(--muted)}
+  .log-scroll{overflow-x:auto}
+  .log-table{
+    width:100%;
+    min-width:520px;
+    border-collapse:collapse;
+    font-size:13px;
+    font-variant-numeric:tabular-nums;
+  }
+  .log-table th{
+    font-weight:550;
+    font-size:11px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    text-align:left;
+    padding:6px 8px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .log-table td{
+    height:27px;
+    padding:3px 8px;
+    border-bottom:1px solid rgba(255,255,255,.055);
+    color:var(--txt);
+  }
+  .log-table tbody tr:last-child td{border-bottom:none}
+  .log-table tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+  .log-table th:first-child, .log-table td:first-child{
+    width:34px;
+    text-align:center;
+    color:var(--muted);
+  }
+  /* ── винт и сила удара ── */
+  .spin-panel{
+    width:100%;
+    padding:12px 14px 14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:linear-gradient(180deg,#1d2129,#171a20);
+    box-shadow:0 16px 34px -24px rgba(0,0,0,.9);
+  }
+  .spin-head{
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:6px 14px;
+    margin:0 2px 6px;
+  }
+  .spin-title{font-size:14px; font-weight:650; letter-spacing:.01em}
+  .spin-hint{font-size:12px; color:var(--muted)}
+  .spin-body{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .spin-ball{position:relative; width:210px; height:210px; flex:none}
+  #spinCv{width:210px; height:210px; display:block; touch-action:none; cursor:crosshair}
+  .spin-force{display:flex; align-items:center; gap:10px; height:190px}
+  .force-track{
+    position:relative;
+    width:28px; height:170px;
+    border-radius:14px;
+    background:linear-gradient(to top,
+      #2f6bff 0%, #2ea8ff 18%, #34d399 40%,
+      #facc15 62%, #fb923c 81%, #ef4444 100%);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.14), 0 8px 20px rgba(0,0,0,.35);
+    cursor:ns-resize;
+    touch-action:none;
+  }
+  .force-thumb{
+    position:absolute;
+    left:50%;
+    width:42px; height:16px;
+    border-radius:9px;
+    background:#fff;
+    border:2px solid #14171c;
+    box-shadow:0 2px 9px rgba(0,0,0,.55);
+    transform:translate(-50%,-50%);
+    top:50%;
+    pointer-events:none;
+  }
+  .force-ticks{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    height:170px;
+    font-size:11px;
+    color:var(--muted);
+    font-variant-numeric:tabular-nums;
+    padding:1px 0;
+  }
+  .force-caption{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    /* ширина задана жёстко: иначе длинная подпись винта раздвигает колонку,
+       панель растёт, мишень уезжает из-под курсора и винт прыгает */
+    width:112px;
+    flex:none;
+    overflow:hidden;
+  }
+  .force-caption b{font-size:26px; line-height:1.05; font-weight:700}
+  .force-caption span{font-size:13px; color:#cfd4dd}
+  .force-caption small{font-size:11px; color:var(--muted); letter-spacing:.03em; text-transform:uppercase}
+  .force-caption .spin-side{font-size:13px; font-weight:650; line-height:1.25; margin-top:8px;
+    max-width:100%; white-space:normal}
+  .force-caption .btn{margin-top:8px}
+  .spin-readout{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    min-width:220px;
+    flex:1 1 220px;
+  }
+  .ro-row{display:flex; align-items:baseline; gap:8px}
+  .ro-row span{font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); min-width:48px}
+  .ro-row b{font-size:15px; font-weight:600; color:var(--txt)}
+  .ro-hint{font-size:12px; color:var(--muted); margin-top:2px}
+  .spin-actions{display:flex; align-items:center; gap:8px}
+  .btn.mini{padding:7px 11px; font-size:12.5px; border-radius:9px}
+  /* ── прицел: мишень с винтом, белый прицельный шар позади и ползунок резки ── */
+  .aim{display:flex; flex-direction:column; align-items:center; gap:8px; width:100%}
+  .spin-ball{overflow:visible}
+  .cut-ball.white{
+    position:absolute; top:50%; width:150px; height:150px; border-radius:50%;
+    transform:translate(-50%,-50%);
+    left:50%;
+    z-index:0;
+    background:radial-gradient(circle at 34% 30%, #fff, #ecece6 60%, #b9b9b1);
+    box-shadow:inset -7px -9px 14px rgba(0,0,0,.28), inset 4px 4px 8px rgba(255,255,255,.9), 0 4px 9px rgba(0,0,0,.45);
+  }
+  #spinCv{position:relative; z-index:1}
+  .cut-range{width:100%; accent-color:#f2b91c; cursor:ew-resize; margin:0}
+  .cut-label{font-size:13px; font-weight:650; color:var(--txt); text-align:center; min-height:18px}
+  .cut-label.thin{color:#ffb057}
+  /* панель слева от стола: сверху прицел с резкой, под ним сила удара */
+  .main{flex-direction:row; align-items:flex-start; gap:12px}
+  .spin-panel{width:392px; flex:none; position:sticky; top:8px; overflow:visible}
+  .spin-body{flex-direction:column; align-items:stretch; gap:14px}
+  .spin-force{align-self:center}
+  .spin-hint{display:none}
+  .spin-ball, #spinCv{width:200px; height:200px}
+  .spin-force{height:auto; flex:none}
+  .force-caption{min-width:0}
+  .spin-readout{min-width:0; width:100%; flex:none;
+    padding-top:10px; border-top:1px solid var(--line)}
+  /* сводка по левому краю: подписи одной ширины, значения не прыгают */
+  .ro-row{justify-content:flex-start}
+  .ro-row span{min-width:58px}
+  .ro-hint{text-align:left}
+  .spin-actions{justify-content:flex-start}
+  /* на узком экране панель уходит наверх, стол под ней */
+  @media (max-width: 759px) {
+    .main{flex-direction:column}
+    .spin-panel{width:100%; position:static}
+    .spin-hint{display:inline}
+  }
+  /* ── подвал ── */
+  .foot{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    padding:0 6px;
+    font-size:12.5px;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+  .count b{color:#cfd4dd; font-weight:600}
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:26px;
+    transform:translate(-50%, 14px);
+    padding:9px 16px;
+    border-radius:10px;
+    background:rgba(20,23,28,.94);
+    border:1px solid #3a414d;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    font-size:13px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s, transform .18s;
+  }
+  .toast.show{opacity:1; transform:translate(-50%, 0)}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Шары">
+      <button class="tool is-active" data-mode="white" title="Поставить белый шар (клавиша 1)"><i class="dot white"></i>Белый шар</button>
+      <button class="tool" data-mode="yellow" title="Поставить жёлтый биток (клавиша 2)"><i class="dot yellow"></i>Жёлтый биток</button>
+      <button class="tool" data-mode="ghost" title="Мнимый шар: куда должен прийти биток (клавиша 7)"><i class="dot ghost"></i>Мнимый шар</button>
+      <button class="tool" data-mode="erase" title="Убирать шары и траектории (клавиша 3)"><i class="dot erase"></i>Убрать</button>
+    </div>
+
+    <div class="seg" role="group" aria-label="Траектории">
+      <button class="tool" data-mode="own" title="Траектория своего шара (битка): зажмите и потяните (клавиша 4)"><i class="lineicon"></i>Свой</button>
+      <button class="tool" data-mode="other" title="Траектория чужого шара: зажмите и потяните (клавиша 5)"><i class="lineicon other"></i>Чужой</button>
+    </div>
+
+    <div class="seg" role="group" aria-label="Пирамида">
+      <button class="btn" id="btnPyramid" title="Поставить 15 белых шаров пирамидой на точку (3/4 длины)">Расставить пирамиду</button>
+      <button class="tool" data-mode="rack" id="btnRack" title="Треугольник-шаблон: тяните — двигать, клик — поворот на 15° (клавиша 6)"><i class="tri-icon"></i>Треугольник</button>
+      <button class="btn" id="btnRackRotate" title="Повернуть треугольник на 15°" disabled>Повернуть</button>
+      <button class="btn" id="btnRackFill" title="Заполнить треугольник белыми шарами" disabled>Заполнить</button>
+    </div>
+
+    <div class="seg" role="group" aria-label="Отображение">
+      <label class="toggle"><input type="checkbox" id="chkGrid" checked><span>Сетка</span></label>
+      <label class="toggle"><input type="checkbox" id="chkMarks" checked><span>Разметка</span></label>
+      <label class="toggle"><input type="checkbox" id="chkSnap"><span>Привязка</span></label>
+    </div>
+
+    <div class="spacer"></div>
+
+    <button class="btn" id="btnUndo" disabled title="Ctrl+Z">↶ Отменить</button>
+    <button class="btn danger" id="btnClear">Очистить</button>
+    <button class="btn primary" id="btnSave">Скачать PNG</button>
+  </div>
+
+  <div class="titlebar">
+    <input id="titleInput" class="title-input" type="text" maxlength="90"
+           placeholder="Тема упражнения — появится над столом и попадёт в скриншот"
+           autocomplete="off" spellcheck="false" />
+  </div>
+
+  <div class="main">
+  <div class="spin-panel" id="spinPanel">
+    <div class="spin-head">
+      <span class="spin-title">Винт и сила</span>
+      <span class="spin-hint">Клик по битку — точка удара. Панель в скриншоте.</span>
+    </div>
+    <div class="spin-body">
+      <div class="aim">
+        <div class="spin-ball">
+          <div class="cut-ball white" id="cutWhite" aria-hidden="true"></div>
+          <canvas id="spinCv" width="210" height="210" aria-label="Точка удара по битку"></canvas>
+        </div>
+        <input class="cut-range" id="cutRange" type="range" min="-100" max="100" step="1" value="0"
+               aria-label="Резка: сдвиг прицельного шара влево или вправо">
+        <div class="cut-label" id="cutLabel">в лоб</div>
+      </div>
+
+      <div class="spin-force">
+        <div class="force-track" id="forceTrack" role="slider" tabindex="0"
+             aria-label="Сила удара" aria-valuemin="1" aria-valuemax="5" aria-valuenow="3">
+          <div class="force-thumb" id="forceThumb"></div>
+        </div>
+        <div class="force-ticks" aria-hidden="true">
+          <span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+        </div>
+        <div class="force-caption">
+          <b id="forceNum">3</b>
+          <span id="forceWord">борта</span>
+          <small>сила удара</small>
+          <b id="roSpin" class="spin-side">центральный 0%</b>
+          <small>винт</small>
+          <button class="btn mini" id="btnSpinReset" type="button" title="Сбросить винт и силу">Сброс</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="table-area" id="tableArea">
+    <div class="stage" id="stage"><canvas id="cv"></canvas></div>
+
+    <div class="log" id="log">
+    <div class="log-head">
+      <span class="log-title">Дневник тренировок</span>
+      <span class="log-hint">10 строк — заполните от руки или на скриншоте</span>
+    </div>
+    <div class="log-scroll">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>№</th><th>Дата</th><th>Удары</th><th>Попал</th><th>Мимо</th><th>Точность</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>6</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>7</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>8</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>9</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>10</td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <div class="foot">
+    <span class="count" id="count">Белых: 0 · Биток: нет</span>
+    <span class="hint">ЛКМ — поставить / перетащить · «Свой» / «Чужой» — потяните (Shift — 15°) · Треугольник: тяните — двигать, клик — поворот · ПКМ — убрать · Ctrl+Z — отмена</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+(() => {
+  'use strict';
+
+  /* ══════════════ Геометрия стола (в миллиметрах) ══════════════ */
+  const PLAY_W = 2840;                 // игровое поле 2840 × 1420 мм
+  const PLAY_H = 1420;
+  const RAIL   = 150;                  // борт
+  const TOTAL_W = PLAY_W + RAIL * 2;
+  const TOTAL_H = PLAY_H + RAIL * 2;
+  const R      = 34;                   // радиус шара (68 мм)
+  const GRAB_R = R * 4;                // радиус захвата = 4 диаметра шара (136 мм)
+  const GRID   = PLAY_W / 8;           // 355 мм — равные сектора (8 × 4)
+  const SNAP   = GRID / 2;             // шаг привязки
+  const MAX_WHITE = 15;
+  const HEADER_H = 190;                // полоса с названием упражнения над столом
+
+  const RACK_STEP   = R * 2 + 1.5;                    // шаг шаров в пирамиде
+  const RACK_ROW    = RACK_STEP * Math.sqrt(3) / 2;   // шаг между рядами
+  const RACK_DEPTH  = RACK_ROW * 4;
+  const RACK_MARGIN = 16;                             // выступ рамки за шары
+  const PYRAMID     = { x: PLAY_W * 0.25, y: PLAY_H / 2 };  // точка пирамиды (слева)
+  // биток в доме: на линии дома (1/4 длины от короткого борта) и ровно по центру стола
+  const HOUSE_CUE   = { x: PLAY_W * 0.75, y: PLAY_H / 2 };
+
+  /* ══════════════ Состояние ══════════════ */
+  const state = {
+    balls: [],        // {id, kind:'white'|'yellow', x, y}
+    lines: [],        // {id, kind:'own'|'other', x1, y1, x2, y2}
+    mode: 'white',
+    title: '',
+    grid: true,
+    marks: true,
+    snap: false,
+    hover: null,      // шар под курсором
+    hoverLine: null,  // траектория под курсором
+    hoverRack: false, // курсор над треугольником
+    draft: null,      // рисуемая траектория
+    rack: { on: false, x: PYRAMID.x, y: PYRAMID.y, angle: Math.PI },
+    spin: { x: 0, y: 0 },   // точка удара по битку, -1..1 (x — вправо, y — вниз)
+    force: 3,               // сила удара, 1..5 бортов
+    history: [],
+    nextId: 1,
+  };
+
+  // общие точки для траекторий: центры луз (в координатах игрового поля)
+  const POCKETS = [
+    { x: 0, y: 0 }, { x: PLAY_W / 2, y: 0 }, { x: PLAY_W, y: 0 },
+    { x: 0, y: PLAY_H }, { x: PLAY_W / 2, y: PLAY_H }, { x: PLAY_W, y: PLAY_H },
+  ];
+
+  const cv     = document.getElementById('cv');
+  const ctx    = cv.getContext('2d');
+  const stage  = document.getElementById('stage');
+  const countEl = document.getElementById('count');
+  const undoBtn = document.getElementById('btnUndo');
+  const toastEl = document.getElementById('toast');
+  const btnRack = document.getElementById('btnRack');
+  const btnRackRotate = document.getElementById('btnRackRotate');
+  const btnRackFill = document.getElementById('btnRackFill');
+  const spinCv = document.getElementById('spinCv');
+  const spinCtx = spinCv.getContext('2d');
+  const forceTrack = document.getElementById('forceTrack');
+  const forceThumb = document.getElementById('forceThumb');
+  const forceNumEl = document.getElementById('forceNum');
+  const forceWordEl = document.getElementById('forceWord');
+  const roSpinEl = document.getElementById('roSpin');
+
+  /* ══════════════ Утилиты ══════════════ */
+  const TAU = Math.PI * 2;
+
+  function rr(c, x, y, w, h, r) {
+    const rad = Math.min(r, w / 2, h / 2);
+    c.beginPath();
+    c.moveTo(x + rad, y);
+    c.arcTo(x + w, y, x + w, y + h, rad);
+    c.arcTo(x + w, y + h, x, y + h, rad);
+    c.arcTo(x, y + h, x, y, rad);
+    c.arcTo(x, y, x + w, y, rad);
+    c.closePath();
+  }
+
+  let toastTimer = 0;
+  function flash(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1500);
+  }
+
+  /* ══════════════ Отрисовка ══════════════ */
+  function drawFrame(c) {
+    // дерево
+    const g = c.createLinearGradient(0, 0, TOTAL_W * 0.85, TOTAL_H);
+    g.addColorStop(0,    '#8d5a34');
+    g.addColorStop(0.28, '#6a3d21');
+    g.addColorStop(0.55, '#7d4a29');
+    g.addColorStop(0.80, '#58301a');
+    g.addColorStop(1,    '#3d1e0e');
+    rr(c, 0, 0, TOTAL_W, TOTAL_H, 54);
+    c.fillStyle = g;
+    c.fill();
+
+    // блик по внешнему краю
+    rr(c, 5, 5, TOTAL_W - 10, TOTAL_H - 10, 50);
+    c.lineWidth = 3;
+    c.strokeStyle = 'rgba(255,214,170,0.13)';
+    c.stroke();
+
+    // тёмный паз по периметру сукна
+    rr(c, RAIL - 16, RAIL - 16, PLAY_W + 32, PLAY_H + 32, 12);
+    c.lineWidth = 12;
+    c.strokeStyle = 'rgba(0,0,0,0.5)';
+    c.stroke();
+
+    // светлая фаска у паза
+    rr(c, RAIL - 26, RAIL - 26, PLAY_W + 52, PLAY_H + 52, 16);
+    c.lineWidth = 2;
+    c.strokeStyle = 'rgba(255,220,180,0.12)';
+    c.stroke();
+  }
+
+  function drawCloth(c) {
+    const cx = RAIL + PLAY_W / 2;
+    const cy = RAIL + PLAY_H / 2;
+    const g = c.createRadialGradient(cx, cy, 120, cx, cy, PLAY_W * 0.62);
+    g.addColorStop(0,    '#2f8552');
+    g.addColorStop(0.50, '#277245');
+    g.addColorStop(1,    '#1a5132');
+    c.fillStyle = g;
+    c.fillRect(RAIL, RAIL, PLAY_W, PLAY_H);
+  }
+
+  function drawClothShade(c) {
+    const D = 95;
+    let g;
+
+    g = c.createLinearGradient(0, RAIL, 0, RAIL + D);
+    g.addColorStop(0, 'rgba(0,0,0,0.34)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g;
+    c.fillRect(RAIL, RAIL, PLAY_W, D);
+
+    g = c.createLinearGradient(0, RAIL + PLAY_H, 0, RAIL + PLAY_H - D);
+    g.addColorStop(0, 'rgba(0,0,0,0.34)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g;
+    c.fillRect(RAIL, RAIL + PLAY_H - D, PLAY_W, D);
+
+    g = c.createLinearGradient(RAIL, 0, RAIL + D, 0);
+    g.addColorStop(0, 'rgba(0,0,0,0.30)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g;
+    c.fillRect(RAIL, RAIL, D, PLAY_H);
+
+    g = c.createLinearGradient(RAIL + PLAY_W, 0, RAIL + PLAY_W - D, 0);
+    g.addColorStop(0, 'rgba(0,0,0,0.30)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g;
+    c.fillRect(RAIL + PLAY_W - D, RAIL, D, PLAY_H);
+  }
+
+  function drawGrid(c) {
+    c.save();
+    c.lineWidth = 2;
+    c.strokeStyle = 'rgba(255,255,255,0.10)';
+    for (let i = 1; i < 8; i++) {
+      const x = RAIL + i * GRID;
+      c.beginPath();
+      c.moveTo(x, RAIL);
+      c.lineTo(x, RAIL + PLAY_H);
+      c.stroke();
+    }
+    for (let j = 1; j < 4; j++) {
+      const y = RAIL + j * GRID;
+      c.beginPath();
+      c.moveTo(RAIL, y);
+      c.lineTo(RAIL + PLAY_W, y);
+      c.stroke();
+    }
+    c.restore();
+  }
+
+  function drawMarks(c) {
+    c.save();
+    const midY = RAIL + PLAY_H / 2;
+
+    c.setLineDash([18, 15]);
+    c.lineWidth = 1.7;
+    c.strokeStyle = 'rgba(255,255,255,0.12)';
+
+    // длинная (продольная) линия
+    c.beginPath();
+    c.moveTo(RAIL, midY);
+    c.lineTo(RAIL + PLAY_W, midY);
+    c.stroke();
+
+    // линия дома (1/4 длины)
+    c.beginPath();
+    c.moveTo(RAIL + PLAY_W / 4, RAIL);
+    c.lineTo(RAIL + PLAY_W / 4, RAIL + PLAY_H);
+    c.stroke();
+
+    c.setLineDash([]);
+    c.fillStyle = 'rgba(255,255,255,0.22)';
+    for (const f of [0.25, 0.5, 0.75]) {
+      c.beginPath();
+      c.arc(RAIL + PLAY_W * f, midY, 5, 0, TAU);
+      c.fill();
+    }
+    // точка пирамиды
+    c.beginPath();
+    c.arc(RAIL + PYRAMID.x, midY, 9, 0, TAU);
+    c.strokeStyle = 'rgba(255,255,255,0.20)';
+    c.lineWidth = 2;
+    c.stroke();
+    c.restore();
+  }
+
+  /* ── треугольник-шаблон ── */
+  function rackVertsLocal() {
+    // контур центров шаров: равносторонний треугольник с вершиной (0,0)
+    // и основанием x = RACK_DEPTH, y = ±2·RACK_STEP.
+    const d = RACK_DEPTH;
+    const h = RACK_STEP * 2;
+    const side = Math.hypot(d, h);
+    const rIn = (d * h) / (side + h);          // радиус вписанной окружности
+    const grow = (rIn + R + RACK_MARGIN) / rIn; // отступ рамки от шаров
+    const ix = d - rIn;                         // центр вписанной окружности
+    const p = (x, y) => ({ x: ix + (x - ix) * grow, y: y * grow });
+    return [p(0, 0), p(d, -h), p(d, h)];
+  }
+
+  function rackWorld(lx, ly, rack) {
+    const r = rack || state.rack;
+    const ca = Math.cos(r.angle), sa = Math.sin(r.angle);
+    return {
+      x: r.x + lx * ca - ly * sa,
+      y: r.y + lx * sa + ly * ca,
+    };
+  }
+
+  function rackSlotLocal(i, j) {
+    return { x: i * RACK_ROW, y: (j - i / 2) * RACK_STEP };
+  }
+
+  function rackSlots(rack) {
+    const out = [];
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j <= i; j++) {
+        const l = rackSlotLocal(i, j);
+        out.push(rackWorld(l.x, l.y, rack));
+      }
+    }
+    return out;
+  }
+
+  function drawRack(c, live) {
+    if (!state.rack.on) return;
+    const V = rackVertsLocal().map(v => {
+      const w = rackWorld(v.x, v.y);
+      return { x: w.x + RAIL, y: w.y + RAIL };
+    });
+    const hot = live && state.hoverRack;
+
+    c.save();
+    c.lineJoin = 'round';
+
+    // еле видимая рамка
+    c.beginPath();
+    c.moveTo(V[0].x, V[0].y);
+    c.lineTo(V[1].x, V[1].y);
+    c.lineTo(V[2].x, V[2].y);
+    c.closePath();
+    c.fillStyle = hot ? 'rgba(255,255,255,0.055)' : 'rgba(255,255,255,0.028)';
+    c.fill();
+    c.lineWidth = hot ? 3.6 : 2.6;
+    c.strokeStyle = hot ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.17)';
+    c.stroke();
+
+    // лунки под шары
+    c.fillStyle = hot ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.13)';
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j <= i; j++) {
+        const l = rackSlotLocal(i, j);
+        const p = rackWorld(l.x, l.y);
+        c.beginPath();
+        c.arc(p.x + RAIL, p.y + RAIL, 7, 0, TAU);
+        c.fill();
+      }
+    }
+
+    // метка вершины — вокруг неё идёт поворот
+    const a0 = rackWorld(0, 0);
+    const a = { x: a0.x + RAIL, y: a0.y + RAIL };
+    c.strokeStyle = hot ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.22)';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(a.x - 12, a.y); c.lineTo(a.x + 12, a.y);
+    c.moveTo(a.x, a.y - 12); c.lineTo(a.x, a.y + 12);
+    c.stroke();
+    c.restore();
+  }
+
+  function drawPocket(c, x, y, r) {
+    // мягкая тень вокруг лузы
+    const sg = c.createRadialGradient(x, y, r * 0.6, x, y, r * 1.75);
+    sg.addColorStop(0, 'rgba(0,0,0,0.55)');
+    sg.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = sg;
+    c.beginPath();
+    c.arc(x, y, r * 1.75, 0, TAU);
+    c.fill();
+
+    // отверстие
+    const g = c.createRadialGradient(x - r * 0.3, y - r * 0.35, r * 0.05, x, y, r);
+    g.addColorStop(0,    '#2b1c10');
+    g.addColorStop(0.55, '#120a04');
+    g.addColorStop(1,    '#000000');
+    c.fillStyle = g;
+    c.beginPath();
+    c.arc(x, y, r, 0, TAU);
+    c.fill();
+
+    // латунный ободок
+    c.lineWidth = 3;
+    c.strokeStyle = 'rgba(216,180,112,0.30)';
+    c.beginPath();
+    c.arc(x, y, r - 1.5, 0, TAU);
+    c.stroke();
+  }
+
+  function drawPockets(c) {
+    const x0 = RAIL, x1 = RAIL + PLAY_W;
+    const y0 = RAIL, y1 = RAIL + PLAY_H;
+    drawPocket(c, x0, y0, 54);
+    drawPocket(c, x1, y0, 54);
+    drawPocket(c, x0, y1, 54);
+    drawPocket(c, x1, y1, 54);
+    drawPocket(c, x0 + PLAY_W / 2, y0, 58);
+    drawPocket(c, x0 + PLAY_W / 2, y1, 58);
+  }
+
+  function drawBall(c, b) {
+    const x = RAIL + b.x, y = RAIL + b.y, r = R;
+
+    // тень
+    c.save();
+    c.translate(x + 3, y + 5);
+    c.scale(1, 0.82);
+    const sg = c.createRadialGradient(0, 0, r * 0.25, 0, 0, r * 1.3);
+    sg.addColorStop(0,    'rgba(0,0,0,0.50)');
+    sg.addColorStop(0.55, 'rgba(0,0,0,0.22)');
+    sg.addColorStop(1,    'rgba(0,0,0,0)');
+    c.fillStyle = sg;
+    c.beginPath();
+    c.arc(0, 0, r * 1.3, 0, TAU);
+    c.fill();
+    c.restore();
+
+    // тело шара
+    const g = c.createRadialGradient(x - r * 0.38, y - r * 0.44, r * 0.05, x, y, r * 1.16);
+    if (b.kind === 'yellow') {
+      g.addColorStop(0,    '#fffbe2');
+      g.addColorStop(0.22, '#ffe57e');
+      g.addColorStop(0.62, '#f0b81e');
+      g.addColorStop(0.92, '#c98d08');
+      g.addColorStop(1,    '#a8730a');
+    } else {
+      g.addColorStop(0,    '#ffffff');
+      g.addColorStop(0.32, '#f7f7f4');
+      g.addColorStop(0.72, '#dcdcd6');
+      g.addColorStop(0.94, '#ababa3');
+      g.addColorStop(1,    '#8f8f88');
+    }
+    c.beginPath();
+    c.arc(x, y, r, 0, TAU);
+    c.fillStyle = g;
+    c.fill();
+    c.lineWidth = 1;
+    c.strokeStyle = 'rgba(0,0,0,0.22)';
+    c.stroke();
+
+    // блик
+    c.save();
+    c.beginPath();
+    c.arc(x, y, r, 0, TAU);
+    c.clip();
+    const hg = c.createRadialGradient(
+      x - r * 0.42, y - r * 0.48, 0,
+      x - r * 0.42, y - r * 0.48, r * 0.66
+    );
+    hg.addColorStop(0,    'rgba(255,255,255,0.95)');
+    hg.addColorStop(0.45, 'rgba(255,255,255,0.32)');
+    hg.addColorStop(1,    'rgba(255,255,255,0)');
+    c.fillStyle = hg;
+    c.beginPath();
+    c.arc(x, y, r, 0, TAU);
+    c.fill();
+    c.restore();
+  }
+
+  /* ══════════════ Биток: винт и сила ══════════════ */
+  // Наклейка диаметр 13мм, шар 67мм -> 13/67 ≈ 0.194 от радиуса
+  const STICKER_RADIUS_RATIO = 13 / 67;
+  // Максимальный винт: 65% от радиуса (дальше будет кикс)
+  const MAX_SPIN_RADIUS = 0.65;
+
+  function drawSpinBall(c, cx, cy, r, sx, sy) {
+    c.save();
+
+    // мягкая тень под шаром
+    const sh = c.createRadialGradient(cx + r * 0.06, cy + r * 0.12, r * 0.2,
+                                      cx + r * 0.06, cy + r * 0.12, r * 1.16);
+    sh.addColorStop(0, 'rgba(0,0,0,0.38)');
+    sh.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = sh;
+    c.beginPath();
+    c.arc(cx + r * 0.06, cy + r * 0.12, r * 1.16, 0, TAU);
+    c.fill();
+
+    // тело битка (жёлтый Aramith Pro Cup)
+    const g = c.createRadialGradient(cx - r * 0.38, cy - r * 0.44, r * 0.05,
+                                     cx, cy, r * 1.16);
+    g.addColorStop(0,    '#fffbe2');
+    g.addColorStop(0.20, '#ffe680');
+    g.addColorStop(0.60, '#f2b91c');
+    g.addColorStop(0.90, '#c98d08');
+    g.addColorStop(1,    '#a8730a');
+    c.beginPath();
+    c.arc(cx, cy, r, 0, TAU);
+    c.fillStyle = g;
+    c.fill();
+    c.lineWidth = Math.max(1, r * 0.02);
+    c.strokeStyle = 'rgba(0,0,0,0.25)';
+    c.stroke();
+
+    // мишень: кольца на 34%, 67%, 100% + перекрестие
+    c.save();
+    for (const f of [0.34, 0.67, 1]) {
+      c.beginPath();
+      c.arc(cx, cy, r * f, 0, TAU);
+      c.lineWidth = Math.max(1.4, r * 0.018);
+      c.strokeStyle = 'rgba(70,45,0,0.30)';
+      c.stroke();
+      c.lineWidth = Math.max(1, r * 0.009);
+      c.strokeStyle = 'rgba(255,255,255,0.55)';
+      c.stroke();
+    }
+    // кольцо максимального винта (65%)
+    c.beginPath();
+    c.arc(cx, cy, r * MAX_SPIN_RADIUS, 0, TAU);
+    c.lineWidth = Math.max(1.5, r * 0.02);
+    c.strokeStyle = 'rgba(255,100,100,0.55)';
+    c.setLineDash([r * 0.05, r * 0.04]);
+    c.stroke();
+    c.setLineDash([]);
+    c.restore();
+
+    // перекрестие
+    c.lineWidth = Math.max(1, r * 0.012);
+    c.strokeStyle = 'rgba(70,45,0,0.28)';
+    c.setLineDash([r * 0.06, r * 0.05]);
+    c.beginPath();
+    c.moveTo(cx - r, cy); c.lineTo(cx + r, cy);
+    c.moveTo(cx, cy - r); c.lineTo(cx, cy + r);
+    c.stroke();
+    c.setLineDash([]);
+
+    // точка удара (мишень) — размер как наклейка 13мм
+    // (sx, sy) — точка удара = ближний к центру край наклейки;
+    // центр наклейки смещён наружу на её радиус (плавно: 0 в центре, полный сдвиг на 100%)
+    const sl = Math.hypot(sx, sy);
+    const stk = STICKER_RADIUS_RATIO * Math.min(1, sl / MAX_SPIN_RADIUS);
+    const dux = sl > 0 ? sx / sl : 0;
+    const duy = sl > 0 ? sy / sl : 0;
+    const mx = cx + (sx + dux * stk) * r;
+    const my = cy + (sy + duy * stk) * r;
+    c.save();
+    c.setLineDash([r * 0.055, r * 0.045]);
+    c.lineWidth = Math.max(1.2, r * 0.014);
+    c.strokeStyle = 'rgba(255,255,255,0.78)';
+    c.beginPath();
+    c.moveTo(cx, cy);
+    c.lineTo(mx, my);
+    c.stroke();
+    c.setLineDash([]);
+
+    // внешнее свечение
+    const tg = c.createRadialGradient(mx, my, 0, mx, my, r * 0.26);
+    tg.addColorStop(0, 'rgba(255,255,255,0.55)');
+    tg.addColorStop(1, 'rgba(255,255,255,0)');
+    c.fillStyle = tg;
+    c.beginPath();
+    c.arc(mx, my, r * 0.26, 0, TAU);
+    c.fill();
+
+    // сама точка — диаметр как наклейка 13мм
+    const markerR = r * STICKER_RADIUS_RATIO;
+    c.beginPath();
+    c.arc(mx, my, markerR, 0, TAU);
+    c.fillStyle = '#d21f1f';
+    c.fill();
+    c.lineWidth = Math.max(1.5, r * 0.028);
+    c.strokeStyle = '#ffffff';
+    c.stroke();
+
+    // блик на маркере
+    c.beginPath();
+    c.arc(mx - markerR * 0.3, my - markerR * 0.3, markerR * 0.25, 0, TAU);
+    c.fillStyle = 'rgba(255,200,190,0.6)';
+    c.fill();
+
+    // центр битка
+    c.beginPath();
+    c.arc(cx, cy, r * 0.035, 0, TAU);
+    c.fillStyle = 'rgba(60,40,0,0.55)';
+    c.fill();
+    c.restore();
+
+    c.restore();
+  }
+
+  /* Сила винта растёт нелинейно: у центра удар почти ничего не даёт,
+     а к краю битка эффект быстро нарастает. В жизни удар на полнаклейки
+     от центра даёт 5–10% винта, а не 20. Степень 3.2: четверть радиуса ~1%,
+     половина ~11%, три четверти ~40%, и только у самого края все 100%. */
+  function spinEffect(len) {
+    const t = Math.min(1, len / MAX_SPIN_RADIUS);
+    return Math.pow(t, 3.2);
+  }
+
+  function spinLabel() {
+    const { x, y } = state.spin;
+    const len = Math.hypot(x, y);
+    const pct = Math.round(spinEffect(len) * 20) * 5;
+    const parts = [];
+    const eps = len * 0.38;
+    if (y < -eps) parts.push('верхний');
+    else if (y > eps) parts.push('нижний');
+    if (x < -eps) parts.push('левый');
+    else if (x > eps) parts.push('правый');
+    const dir = parts.length ? parts.join(' ') : 'центр';
+    return `${dir} ${pct}%`;
+  }
+
+  function forceWord(n) {
+    // для дробных значений используем "борта"
+    if (n % 1 !== 0) return 'борта';
+    const whole = Math.floor(n);
+    if (whole === 1) return 'борт';
+    if (whole >= 2 && whole <= 4) return 'борта';
+    return 'бортов';
+  }
+
+  function forceColor(n) {
+    // интерполируем цвет между ключевыми точками 1..5
+    const stops = [
+      { v: 1, c: [59, 130, 246] },   // #3b82f6 blue
+      { v: 2, c: [34, 211, 238] },   // #22d3ee cyan
+      { v: 3, c: [250, 204, 21] },   // #facc15 yellow
+      { v: 4, c: [251, 146, 60] },   // #fb923c orange
+      { v: 5, c: [239, 68, 68] },    // #ef4444 red
+    ];
+    if (n <= 1) return '#3b82f6';
+    if (n >= 5) return '#ef4444';
+    const i = Math.floor(n) - 1;
+    const t = n - (i + 1);
+    const c1 = stops[i].c;
+    const c2 = stops[i + 1].c;
+    const r = Math.round(c1[0] + (c2[0] - c1[0]) * t);
+    const g = Math.round(c1[1] + (c2[1] - c1[1]) * t);
+    const b = Math.round(c1[2] + (c2[2] - c1[2]) * t);
+    return `rgb(${r},${g},${b})`;
+  }
+
+  function drawForceScalePNG(c, x, y, w, h, force) {
+    c.save();
+
+    const g = c.createLinearGradient(0, y + h, 0, y);
+    g.addColorStop(0,    '#2f6bff');
+    g.addColorStop(0.18, '#2ea8ff');
+    g.addColorStop(0.40, '#34d399');
+    g.addColorStop(0.62, '#facc15');
+    g.addColorStop(0.81, '#fb923c');
+    g.addColorStop(1,    '#ef4444');
+    c.fillStyle = g;
+    rr(c, x, y, w, h, w / 2);
+    c.fill();
+    c.lineWidth = 2;
+    c.strokeStyle = 'rgba(255,255,255,0.16)';
+    rr(c, x, y, w, h, w / 2);
+    c.stroke();
+
+    // деления
+    c.lineWidth = 2;
+    c.strokeStyle = 'rgba(255,255,255,0.30)';
+    for (let i = 1; i <= 5; i++) {
+      const ty = y + h - (i - 1) / 4 * h;
+      c.beginPath();
+      c.moveTo(x + w + 20, ty);
+      c.lineTo(x + w + 34, ty);
+      c.stroke();
+    }
+
+    // бегунок
+    const ty = y + h - (force - 1) / 4 * h;
+    c.shadowColor = 'rgba(0,0,0,0.55)';
+    c.shadowBlur = 12;
+    c.shadowOffsetY = 3;
+    c.fillStyle = '#ffffff';
+    rr(c, x - w * 0.40, ty - w * 0.22, w * 1.80, w * 0.44, w * 0.22);
+    c.fill();
+    c.shadowColor = 'transparent';
+    c.shadowBlur = 0;
+    c.shadowOffsetY = 0;
+    c.lineWidth = 3;
+    c.strokeStyle = '#14171c';
+    rr(c, x - w * 0.40, ty - w * 0.22, w * 1.80, w * 0.44, w * 0.22);
+    c.stroke();
+
+    c.restore();
+  }
+
+  function renderSpin() {
+    const S = 210;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const px = Math.round(S * dpr);
+    if (spinCv.width !== px || spinCv.height !== px) {
+      spinCv.width = px;
+      spinCv.height = px;
+    }
+    const c = spinCtx;
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, S, S);
+
+    // подписи направлений
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.font = '600 10px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#8b929f';
+    c.fillText('верх', 105, 11);
+    c.fillText('низ', 105, S - 11);
+    c.textAlign = 'left';
+    c.fillText('лев.', 4, 105);
+    c.textAlign = 'right';
+    c.fillText('прав.', S - 4, 105);
+
+    // подписи процентов на кольцах
+    const r = 78;
+    for (const pct of [25, 50, 75, 100]) {
+      const rr = r * (pct / 100) * MAX_SPIN_RADIUS;
+      c.font = '500 9px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+      c.fillStyle = pct === 100 ? 'rgba(255,100,100,0.7)' : 'rgba(139,146,159,0.5)';
+      c.textAlign = 'right';
+      c.textBaseline = 'middle';
+      c.fillText(`${pct}%`, 105 - rr - 4, 105);
+    }
+
+    drawSpinBall(c, 105, 105, 78, state.spin.x, state.spin.y);
+  }
+
+  /* ══════════════ Резка ══════════════
+     Белый прицельный стоит на месте, жёлтый биток сдвигается влево-вправо.
+     Совпали центрами — в лоб. Чем дальше биток, тем тоньше резка, и самая
+     тонкая, когда шары едва цепляются краями, — 1/8 шара.
+     По пути только понятные дроби: 7/8 почти в лоб, затем 3/4, 2/3, 3/5,
+     половина 1/2, и дальше 2/5, 1/3, 1/4 до 1/8. */
+  const cutRange = document.getElementById('cutRange');
+  const cutCue = document.getElementById('cutCue');
+  const cutLabel = document.getElementById('cutLabel');
+  // порог сдвига (0…1), с которого резка называется этой дробью
+  const CUT_STEPS = [
+    { at: 0.06, name: '7/8' },
+    { at: 0.18, name: '3/4' },
+    { at: 0.30, name: '2/3' },
+    { at: 0.42, name: '3/5' },
+    { at: 0.54, name: '1/2' },
+    { at: 0.64, name: '2/5' },
+    { at: 0.74, name: '1/3' },
+    { at: 0.84, name: '1/4' },
+    { at: 0.93, name: '1/8' },
+  ];
+
+  function cutText(shift) {
+    const t = Math.abs(shift);
+    const side = shift < -0.03 ? 'слева' : shift > 0.03 ? 'справа' : '';
+    let name = 'в лоб';
+    if (t >= CUT_STEPS[0].at) {
+      name = CUT_STEPS[0].name;
+      for (const s of CUT_STEPS) if (t >= s.at) name = s.name;
+    }
+    return name === 'в лоб' ? 'в лоб' : 'резка ' + name + ' шара' + (side ? ' ' + side : '');
+  }
+
+  function renderCut() {
+    if (!cutRange) return;
+    const v = Number(cutRange.value);        // −100…100, край = полный диаметр
+    const white = document.getElementById('cutWhite');
+    // белый прицельный шар позади битка; крайний сдвиг — ровно на диаметр битка
+    if (white) white.style.left = 'calc(50% + ' + (v / 100 * 150) + 'px)';
+    if (cutLabel) {
+      cutLabel.textContent = cutText(v / 100);
+      cutLabel.classList.toggle('thin', Math.abs(v) >= 93);
+    }
+    cutRange.setAttribute('aria-valuetext', cutText(v / 100));
+  }
+
+  if (cutRange) {
+    cutRange.addEventListener('input', renderCut);
+    // клик или протяжка мимо битка — тоже резка: слева от него или справа
+    const aim = document.querySelector('.aim');
+    if (aim) {
+      let drag = false;
+      const move = e => {
+        if (!drag) return;
+        const ball = spinCv.getBoundingClientRect();
+        const t = Math.max(-1, Math.min(1, (e.clientX - (ball.left + ball.width / 2)) / ball.width));
+        cutRange.value = String(Math.round(t * 100));
+        renderCut();
+      };
+      aim.addEventListener('pointerdown', ev => {
+        if (ev.target === spinCv || ev.target === cutRange) return;
+        drag = true;
+        if (aim.setPointerCapture) { try { aim.setPointerCapture(ev.pointerId); } catch (e) {} }
+        move(ev);
+      });
+      aim.addEventListener('pointermove', move);
+      const stop = () => { drag = false; };
+      aim.addEventListener('pointerup', stop);
+      aim.addEventListener('pointercancel', stop);
+    }
+    renderCut();
+  }
+
+  function updateSpinUI() {
+    const f = state.force;
+    forceThumb.style.top = (8 + (5 - f) / 4 * (170 - 16)) + 'px';
+    forceNumEl.textContent = f.toFixed(2);
+    forceNumEl.style.color = forceColor(f);
+    forceWordEl.textContent = forceWord(f);
+    forceTrack.setAttribute('aria-valuenow', f.toFixed(2));
+    roSpinEl.textContent = spinLabel();
+  }
+
+  function setForce(n) {
+    state.force = Math.max(1, Math.min(5, Math.round(n * 10) / 10));
+    updateSpinUI();
+  }
+
+  function setSpinFromEvent(ev) {
+    const rect = spinCv.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const x = (ev.clientX - rect.left) * (210 / rect.width);
+    const y = (ev.clientY - rect.top) * (210 / rect.height);
+    let nx = (x - 105) / 78;
+    let ny = (y - 105) / 78;
+    const len = Math.hypot(nx, ny);
+    // край наклейки не дальше 65% радиуса; шаг винта 5%
+    const t = Math.min(1, Math.round(len / MAX_SPIN_RADIUS * 20) / 20);
+    if (len > 0 && t > 0) {
+      const k = t * MAX_SPIN_RADIUS / len;
+      nx *= k;
+      ny *= k;
+    } else {
+      nx = 0;
+      ny = 0;
+    }
+    state.spin = { x: nx, y: ny };
+    renderSpin();
+    updateSpinUI();
+  }
+
+  function forceFromEvent(ev) {
+    const rect = forceTrack.getBoundingClientRect();
+    if (!rect.height) return state.force;
+    const t = 1 - Math.min(1, Math.max(0, (ev.clientY - rect.top) / rect.height));
+    return Math.round((1 + t * 4) * 20) / 20; // шаг 0.05
+  }
+
+  function setForce(n) {
+    state.force = Math.max(1, Math.min(5, Math.round(n * 20) / 20));
+    updateSpinUI();
+  }
+
+  /* ── траектории ── */
+  const LINE_STYLE = {
+    own:   { color: 'rgba(255,207,77,0.97)',  dash: [],       width: 5.0 },
+    other: { color: 'rgba(248,248,240,0.95)', dash: [26, 17], width: 4.4 },
+  };
+
+  function drawArrow(c, x1, y1, x2, y2, kind) {
+    // если остриё упирается в шар — отступаем, чтобы наконечник не прятался под ним
+    const dx0 = x2 - x1, dy0 = y2 - y1;
+    const len0 = Math.hypot(dx0, dy0);
+    if (len0 > 1) {
+      const ux0 = dx0 / len0, uy0 = dy0 / len0;
+      let cut = 0;
+      for (const b of state.balls) {
+        if (Math.hypot(x2 - b.x, y2 - b.y) <= R + 3) cut = Math.max(cut, R + 8);
+      }
+      if (cut && len0 - cut > 45) {
+        x2 -= ux0 * cut;
+        y2 -= uy0 * cut;
+      }
+    }
+
+    const st = LINE_STYLE[kind] || LINE_STYLE.own;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    if (len < 2) return;
+    const ux = dx / len, uy = dy / len;
+    const head = Math.min(58, len * 0.42);
+    const hw = head * 0.40;
+    const bx = x2 - ux * head, by = y2 - uy * head;
+
+    c.save();
+    c.lineCap = 'round';
+    c.lineJoin = 'round';
+    c.strokeStyle = st.color;
+    c.fillStyle = st.color;
+    c.lineWidth = st.width;
+
+    c.setLineDash(st.dash);
+    c.beginPath();
+    c.moveTo(x1, y1);
+    c.lineTo(bx, by);
+    c.stroke();
+
+    c.setLineDash([]);
+    c.beginPath();
+    c.moveTo(x2, y2);
+    c.lineTo(bx - uy * hw, by + ux * hw);
+    c.lineTo(bx + uy * hw, by - ux * hw);
+    c.closePath();
+    c.fill();
+    c.restore();
+  }
+
+  function drawLineHalo(c, l) {
+    c.save();
+    c.lineCap = 'round';
+    c.lineWidth = 15;
+    c.strokeStyle = state.mode === 'erase' ? 'rgba(255,90,70,0.40)' : 'rgba(255,255,255,0.16)';
+    c.beginPath();
+    c.moveTo(RAIL + l.x1, RAIL + l.y1);
+    c.lineTo(RAIL + l.x2, RAIL + l.y2);
+    c.stroke();
+    c.restore();
+  }
+
+  function drawLines(c, live) {
+    for (const l of state.lines) {
+      if (state.hoverLine === l.id) drawLineHalo(c, l);
+      drawArrow(c, RAIL + l.x1, RAIL + l.y1, RAIL + l.x2, RAIL + l.y2, l.kind);
+    }
+    if (live && state.draft) {
+      const d = state.draft;
+      drawArrow(c, RAIL + d.x1, RAIL + d.y1, RAIL + d.x2, RAIL + d.y2, d.kind);
+    }
+  }
+
+  function drawGhost(c, b) {
+    const x = RAIL + b.x, y = RAIL + b.y;
+    c.save();
+    c.lineCap = 'round';
+    c.setLineDash([16, 11]);
+    c.lineWidth = 4.4;
+    c.strokeStyle = 'rgba(248,248,240,0.95)';
+    c.beginPath();
+    c.arc(x, y, R, 0, TAU);
+    c.stroke();
+    c.restore();
+  }
+
+  function drawBalls(c) {
+    for (const b of state.balls) if (b.kind === 'white') drawBall(c, b);
+    for (const b of state.balls) if (b.kind === 'yellow') drawBall(c, b);
+    for (const b of state.balls) if (b.kind === 'ghost') drawGhost(c, b);
+  }
+
+  function drawHover(c) {
+    if (!state.hover) return;
+    const b = state.balls.find(v => v.id === state.hover);
+    if (!b) return;
+    const erase = state.mode === 'erase';
+    const bx = RAIL + b.x, by = RAIL + b.y;
+
+    c.save();
+
+    // мягкий ореол по границе зоны захвата (4 диаметра)
+    c.lineWidth = 8;
+    c.strokeStyle = erase ? 'rgba(255,96,74,0.20)' : 'rgba(255,236,150,0.18)';
+    c.beginPath();
+    c.arc(bx, by, GRAB_R + 4, 0, TAU);
+    c.stroke();
+
+    // пунктирная обводка зоны захвата — 4 диаметра вокруг шара
+    c.lineWidth = 3.5;
+    c.setLineDash([14, 10]);
+    c.strokeStyle = erase ? 'rgba(255,96,74,0.98)' : 'rgba(255,236,150,0.98)';
+    c.beginPath();
+    c.arc(bx, by, GRAB_R, 0, TAU);
+    c.stroke();
+    c.setLineDash([]);
+
+    if (erase) {
+      c.lineWidth = 5;
+      c.beginPath();
+      c.moveTo(bx - 11, by - 11); c.lineTo(bx + 11, by + 11);
+      c.moveTo(bx + 11, by - 11); c.lineTo(bx - 11, by + 11);
+      c.stroke();
+    }
+    c.restore();
+  }
+
+  /* ── название упражнения ── */
+  function hasTitle() {
+    return state.title.trim().length > 0;
+  }
+
+  function drawTitle(c) {
+    const txt = state.title.trim();
+    if (!txt) return;
+
+    const h = HEADER_H - 46;                       // высота плашки, ниже — зазор до стола
+    rr(c, 0, 0, TOTAL_W, h, 34);
+    const g = c.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#20242c');
+    g.addColorStop(1, '#171a20');
+    c.fillStyle = g;
+    c.fill();
+    c.lineWidth = 2.5;
+    c.strokeStyle = 'rgba(255,255,255,0.09)';
+    c.stroke();
+
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    let size = 78;
+    const maxW = TOTAL_W - 200;
+    for (;;) {
+      c.font = '600 ' + size + 'px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+      if (c.measureText(txt).width <= maxW || size <= 30) break;
+      size -= 2;
+    }
+    c.fillStyle = '#eef1f6';
+    c.fillText(txt, TOTAL_W / 2, h / 2 + size * 0.03);
+  }
+
+  function drawScene(c, pxW, live) {
+    const k = pxW / TOTAL_W;
+    const top = hasTitle() ? HEADER_H : 0;
+    c.setTransform(k, 0, 0, k, 0, 0);
+    c.clearRect(0, 0, TOTAL_W, TOTAL_H + top);
+
+    if (top) drawTitle(c);
+
+    c.save();
+    c.translate(0, top);
+
+    drawFrame(c);
+
+    c.save();
+    c.beginPath();
+    c.rect(RAIL, RAIL, PLAY_W, PLAY_H);
+    c.clip();
+    drawCloth(c);
+    drawClothShade(c);
+    if (state.grid)  drawGrid(c);
+    if (state.marks) drawMarks(c);
+    drawRack(c, live);
+    c.restore();
+
+    drawPockets(c);
+    drawLines(c, live);
+    drawBalls(c);
+    if (live) drawHover(c);
+
+    c.restore();
+  }
+
+  /* ══════════════ Рендер на экран ══════════════ */
+  let rafId = 0;
+  function schedule() {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => { rafId = 0; render(); });
+  }
+
+  function render() {
+    const availW = stage.clientWidth;
+    if (!availW) return;
+    const fullH = TOTAL_H + (hasTitle() ? HEADER_H : 0);
+    const barH = document.querySelector('.bar').offsetHeight;
+    const titleH = document.querySelector('.titlebar').offsetHeight;
+    const footH = document.querySelector('.foot').offsetHeight;
+    // дневник стоит ниже стола — не сжимаем ради него сцену, страница прокручивается
+    const availH = Math.max(280, window.innerHeight - barH - titleH - footH - 56);
+    const cssW = Math.min(availW, 1400, availH * TOTAL_W / fullH);
+    const cssH = cssW * fullH / TOTAL_W;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const pw = Math.round(cssW * dpr);
+    const ph = Math.round(cssH * dpr);
+
+    if (cv.width !== pw || cv.height !== ph) {
+      cv.width = pw;
+      cv.height = ph;
+    }
+    const wAttr = cssW + 'px';
+    const hAttr = cssH + 'px';
+    if (cv.style.width !== wAttr) cv.style.width = wAttr;
+    if (cv.style.height !== hAttr) cv.style.height = hAttr;
+    if (titleInput !== null && titleInput.style.width !== wAttr) titleInput.style.width = wAttr;
+
+    drawScene(ctx, pw, true);
+    updateUI();
+  }
+
+  function updateUI() {
+    const whites = state.balls.filter(b => b.kind === 'white').length;
+    const hasCue = state.balls.some(b => b.kind === 'yellow');
+    const nLines = state.lines.length;
+    countEl.innerHTML =
+      'Белых: <b>' + whites + '</b> · Биток: <b>' + (hasCue ? 'на столе' : 'нет') + '</b>' +
+      (nLines ? ' · Траекторий: <b>' + nLines + '</b>' : '');
+    undoBtn.disabled = state.history.length === 0;
+
+    document.querySelectorAll('.tool').forEach(btn => {
+      const m = btn.dataset.mode;
+      btn.classList.toggle('is-active', m === state.mode);
+    });
+    btnRack.classList.toggle('is-on', state.rack.on && state.mode !== 'rack');
+    btnRackRotate.disabled = !state.rack.on;
+    btnRackFill.disabled = !state.rack.on;
+  }
+
+  /* ══════════════ Координаты / коллизии ══════════════ */
+  function toPlay(ev) {
+    const rect = cv.getBoundingClientRect();
+    const k = TOTAL_W / rect.width;
+    const top = hasTitle() ? HEADER_H : 0;
+    return {
+      x: (ev.clientX - rect.left) * k - RAIL,
+      y: (ev.clientY - rect.top) * k - RAIL - top,
+    };
+  }
+
+  function clampBall(p) {
+    const lo = R + 0.5;
+    return {
+      x: Math.min(PLAY_W - lo, Math.max(lo, p.x)),
+      y: Math.min(PLAY_H - lo, Math.max(lo, p.y)),
+    };
+  }
+
+  function snapPoint(p) {
+    return {
+      x: Math.round(p.x / SNAP) * SNAP,
+      y: Math.round(p.y / SNAP) * SNAP,
+    };
+  }
+
+  // строго ближайший к клику шар; при точном равенстве — стабильно меньший id
+  function pickBall(p, pad) {
+    const lim = R + (pad == null ? 22 : pad);
+    const lim2 = lim * lim;
+    let best = null, bestD = Infinity;
+    for (const b of state.balls) {
+      const dx = b.x - p.x, dy = b.y - p.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < bestD) {
+        bestD = d2;
+        best = b;
+      } else if (d2 === bestD && best && b.id < best.id) {
+        best = b;
+      }
+    }
+    return best && bestD <= lim2 ? best : null;
+  }
+
+  // зона захвата шара — 4 диаметра (как и пунктирная обводка)
+  function pickPad(ev) {
+    let pad = GRAB_R - R;
+    if (ev && ev.pointerType === 'touch') {
+      const rect = cv.getBoundingClientRect();
+      if (rect.width > 0) {
+        // на узком экране миллиметры «мельчают» — держим минимум ~16 css-пикселей
+        pad = Math.max(pad, 16 * (TOTAL_W / rect.width) - R);
+      }
+    }
+    return pad;
+  }
+
+  function overlaps(p, ignoreId) {
+    return state.balls.some(b =>
+      b.kind !== 'ghost' && b.id !== ignoreId && Math.hypot(b.x - p.x, b.y - p.y) < R * 2 - 0.5
+    );
+  }
+
+  function findFreeSpot(p) {
+    const q = { x: p.x, y: p.y };
+    for (let i = 0; i < 120; i++) {
+      const near = state.balls.find(b => b.kind !== 'ghost' && Math.hypot(b.x - q.x, b.y - q.y) < R * 2 - 0.5);
+      if (!near) return clampBall(q);
+      const dx = q.x - near.x;
+      const dy = q.y - near.y;
+      const d = Math.hypot(dx, dy) || 0.001;
+      const need = R * 2 - d + 0.5;
+      q.x += (dx / d) * need;
+      q.y += (dy / d) * need;
+    }
+    return null;
+  }
+
+  /* ══════════════ Траектории: хит-тест / привязка ══════════════ */
+  function distToSeg(px, py, x1, y1, x2, y2) {
+    const dx = x2 - x1, dy = y2 - y1;
+    const l2 = dx * dx + dy * dy;
+    if (!l2) return Math.hypot(px - x1, py - y1);
+    let t = ((px - x1) * dx + (py - y1) * dy) / l2;
+    t = Math.max(0, Math.min(1, t));
+    return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+  }
+
+  function pickLine(p) {
+    for (let i = state.lines.length - 1; i >= 0; i--) {
+      const l = state.lines[i];
+      if (distToSeg(p.x, p.y, l.x1, l.y1, l.x2, l.y2) <= 24) return l;
+    }
+    return null;
+  }
+
+  function isLineMode(m) {
+    return m === 'own' || m === 'other';
+  }
+
+  // начало траектории (битка) притягивается ТОЛЬКО к жёлтому шару или лузе
+  function snapStart(p) {
+    let best = null, bd = 62;
+    // только биток (жёлтый шар)
+    for (const b of state.balls) {
+      if (b.kind !== 'yellow') continue;
+      const d = Math.hypot(b.x - p.x, b.y - p.y);
+      if (d < bd) { bd = d; best = b; }
+    }
+    // лузы
+    for (const q of POCKETS) {
+      const d = Math.hypot(q.x - p.x, q.y - p.y);
+      if (d < bd) { bd = d; best = q; }
+    }
+    if (best) return { x: best.x, y: best.y, snapped: true };
+    return { x: p.x, y: p.y, snapped: false };
+  }
+
+  // конец траектории НЕ притягивается к шарам: удар чаще вскользь,
+  // поэтому целимся в край шара или мимо, а не в его центр.
+  // К лузе конец по-прежнему может притянуться.
+  function snapEnd(p) {
+    let best = null, bd = 62;
+    for (const q of POCKETS) {
+      const d = Math.hypot(q.x - p.x, q.y - p.y);
+      if (d < bd) { bd = d; best = q; }
+    }
+    if (best) return { x: best.x, y: best.y, snapped: true };
+    return { x: p.x, y: p.y, snapped: false };
+  }
+
+  function clampLine(p) {
+    return {
+      x: Math.min(PLAY_W, Math.max(0, p.x)),
+      y: Math.min(PLAY_H, Math.max(0, p.y)),
+    };
+  }
+
+  /* ══════════════ Треугольник: привязка / хит-тест ══════════════ */
+  function rackBBox(rack) {
+    const V = rackVertsLocal().map(v => rackWorld(v.x, v.y, rack));
+    return {
+      minX: Math.min(V[0].x, V[1].x, V[2].x),
+      maxX: Math.max(V[0].x, V[1].x, V[2].x),
+      minY: Math.min(V[0].y, V[1].y, V[2].y),
+      maxY: Math.max(V[0].y, V[1].y, V[2].y),
+    };
+  }
+
+  // сдвигаем треугольник внутрь стола, если он вылез за борт;
+  // у самой рамы включаем «магнит», чтобы треугольник вставал заподлицо
+  function fitRack() {
+    const MAG = 30;
+    const b = rackBBox(state.rack);
+    if (b.minX < MAG) state.rack.x -= b.minX;
+    else if (b.maxX > PLAY_W - MAG) state.rack.x += PLAY_W - b.maxX;
+    if (b.minY < MAG) state.rack.y -= b.minY;
+    else if (b.maxY > PLAY_H - MAG) state.rack.y += PLAY_H - b.maxY;
+  }
+
+  const RACK_SNAP_POINTS = [
+    PYRAMID,
+    { x: PLAY_W / 4, y: PLAY_H / 2 },
+    { x: PLAY_W / 2, y: PLAY_H / 2 },
+    ...POCKETS,
+  ];
+
+  function snapRack(p) {
+    let best = null, bd = 62;
+    for (const q of RACK_SNAP_POINTS) {
+      const d = Math.hypot(q.x - p.x, q.y - p.y);
+      if (d < bd) { bd = d; best = q; }
+    }
+    if (best) return { x: best.x, y: best.y };
+    return { x: p.x, y: p.y };
+  }
+
+  function pointInTri(p, a, b, c) {
+    const d1 = (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y);
+    const d2 = (p.x - c.x) * (b.y - c.y) - (b.x - c.x) * (p.y - c.y);
+    const d3 = (p.x - a.x) * (c.y - a.y) - (c.x - a.x) * (p.y - a.y);
+    const neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    const pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+    return !(neg && pos);
+  }
+
+  function rackHit(p) {
+    if (!state.rack.on) return false;
+    const ca = Math.cos(-state.rack.angle), sa = Math.sin(-state.rack.angle);
+    const dx = p.x - state.rack.x, dy = p.y - state.rack.y;
+    const l = { x: dx * ca - dy * sa, y: dx * sa + dy * ca };
+    const V = rackVertsLocal();
+    if (pointInTri(l, V[0], V[1], V[2])) return true;
+    for (let i = 0; i < 3; i++) {
+      const a = V[i], b = V[(i + 1) % 3];
+      if (distToSeg(l.x, l.y, a.x, a.y, b.x, b.y) <= 26) return true;
+    }
+    return false;
+  }
+
+  // ближайшая свободная лунка треугольника (для клика белым шаром)
+  function slotAt(p) {
+    if (!state.rack.on || !rackHit(p)) return null;
+    let best = null, bd = Infinity;
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j <= i; j++) {
+        const l = rackSlotLocal(i, j);
+        const s = rackWorld(l.x, l.y);
+        if (state.balls.some(b => Math.hypot(b.x - s.x, b.y - s.y) < R * 2 - 0.5)) continue;
+        const d = Math.hypot(s.x - p.x, s.y - p.y);
+        if (d < bd) { bd = d; best = s; }
+      }
+    }
+    return best;
+  }
+
+  /* ══════════════ История ══════════════ */
+  function snapshot() {
+    return {
+      balls: state.balls.map(b => ({ ...b })),
+      lines: state.lines.map(l => ({ ...l })),
+      rack: { x: state.rack.x, y: state.rack.y, angle: state.rack.angle },
+    };
+  }
+
+  function pushHistory() {
+    state.history.push(snapshot());
+    if (state.history.length > 80) state.history.shift();
+  }
+
+  function undo() {
+    const prev = state.history.pop();
+    if (!prev) return;
+    state.balls = prev.balls;
+    state.lines = prev.lines;
+    if (prev.rack) {
+      state.rack.x = prev.rack.x;
+      state.rack.y = prev.rack.y;
+      state.rack.angle = prev.rack.angle;
+    }
+    state.hover = null;
+    state.hoverLine = null;
+    state.hoverRack = false;
+    schedule();
+  }
+
+  /* ══════════════ Действия ══════════════ */
+  function placeBall(kind, raw) {
+    if (kind === 'yellow' && state.balls.some(b => b.kind === 'yellow')) {
+      flash('Биток уже на столе');
+      return;
+    }
+    if (kind === 'white' && state.balls.filter(b => b.kind === 'white').length >= MAX_WHITE) {
+      flash('На столе уже все 15 белых шаров');
+      return;
+    }
+    if (kind === 'ghost') {
+      if (state.balls.some(b => b.kind === 'ghost')) {
+        flash('Мнимый шар уже на столе — перетащите его');
+        return;
+      }
+      let g = state.snap ? snapPoint(raw) : raw;
+      g = clampBall(g);
+      pushHistory();
+      state.balls.push({ id: state.nextId++, kind: 'ghost', x: g.x, y: g.y });
+      schedule();
+      return;
+    }
+
+    // клик внутри треугольника — шар встаёт в ближайшую свободную лунку
+    if (kind === 'white' && state.rack.on && rackHit(raw)) {
+      const slot = slotAt(raw);
+      if (!slot) { flash('Треугольник уже заполнен'); return; }
+      pushHistory();
+      state.balls.push({ id: state.nextId++, kind, x: slot.x, y: slot.y });
+      schedule();
+      return;
+    }
+
+    let p = state.snap ? snapPoint(raw) : raw;
+    p = clampBall(p);
+    if (overlaps(p, -1)) {
+      const free = findFreeSpot(p);
+      if (!free) { flash('Здесь не хватает места'); return; }
+      p = free;
+    }
+    pushHistory();
+    state.balls.push({ id: state.nextId++, kind, x: p.x, y: p.y });
+    schedule();
+  }
+
+  function removeBall(id) {
+    const i = state.balls.findIndex(b => b.id === id);
+    if (i < 0) return;
+    pushHistory();
+    state.balls.splice(i, 1);
+    state.hover = null;
+    schedule();
+  }
+
+  function removeLine(id) {
+    const i = state.lines.findIndex(l => l.id === id);
+    if (i < 0) return;
+    pushHistory();
+    state.lines.splice(i, 1);
+    state.hoverLine = null;
+    schedule();
+  }
+
+  function clearAll() {
+    if (!state.balls.length && !state.lines.length) return;
+    pushHistory();
+    state.balls = [];
+    state.lines = [];
+    state.hover = null;
+    state.hoverLine = null;
+    state.draft = null;
+    schedule();
+  }
+
+  /* ══════════════ Пирамида и треугольник ══════════════ */
+  function defaultRack() {
+    return { on: true, x: PYRAMID.x, y: PYRAMID.y, angle: Math.PI };
+  }
+
+  function placePyramid() {
+    // если треугольник виден — ставим пирамиду ровно там, где он стоит
+    if (state.rack.on) { fillRack(); return; }
+    pushHistory();
+    const cue = state.balls.find(b => b.kind === 'yellow');
+    const rack = defaultRack();
+    const slots = rackSlots(rack);
+
+    if (cue) {
+      const clash = slots.some(s => Math.hypot(s.x - cue.x, s.y - cue.y) < R * 2 - 0.5);
+      if (clash) { cue.x = HOUSE_CUE.x; cue.y = HOUSE_CUE.y; }
+    }
+    state.balls = (cue ? [cue] : []).concat(state.balls.filter(b => b.kind === 'ghost'));
+    if (!cue) {
+      state.balls.push({
+        id: state.nextId++, kind: 'yellow',
+        x: HOUSE_CUE.x, y: HOUSE_CUE.y,
+      });
+    }
+    for (const s of slots) {
+      state.balls.push({ id: state.nextId++, kind: 'white', x: s.x, y: s.y });
+    }
+    state.hover = null;
+    state.hoverLine = null;
+    flash('Пирамида расставлена: 15 белых шаров');
+    schedule();
+  }
+
+  function freeCueSpot(slots) {
+    const cand = [
+      HOUSE_CUE,
+      { x: PLAY_W * 0.88, y: PLAY_H * 0.28 },
+      { x: PLAY_W * 0.88, y: PLAY_H * 0.72 },
+      { x: PLAY_W * 0.5, y: PLAY_H / 2 },
+    ];
+    for (const c of cand) {
+      if (!slots.some(s => Math.hypot(s.x - c.x, s.y - c.y) < R * 2 - 0.5)) return c;
+    }
+    return HOUSE_CUE;
+  }
+
+  function fillRack() {
+    if (!state.rack.on) return;
+    fitRack(); // гарантируем, что рама в пределах стола перед заполнением
+    const slots = rackSlots(state.rack);
+    const cue = state.balls.find(b => b.kind === 'yellow');
+    pushHistory();
+
+    let cueMoved = false;
+    if (cue) {
+      const clash = slots.some(s => Math.hypot(s.x - cue.x, s.y - cue.y) < R * 2 - 0.5);
+      if (clash) {
+        const spot = freeCueSpot(slots);
+        cue.x = spot.x;
+        cue.y = spot.y;
+        cueMoved = true;
+      }
+    }
+
+    state.balls = (cue ? [cue] : []).concat(state.balls.filter(b => b.kind === 'ghost'));
+    let n = 0;
+    for (const s of slots) {
+      if (s.x < R + 0.5 || s.y < R + 0.5 ||
+          s.x > PLAY_W - R - 0.5 || s.y > PLAY_H - R - 0.5) continue;
+      state.balls.push({ id: state.nextId++, kind: 'white', x: s.x, y: s.y });
+      n++;
+    }
+    state.hover = null;
+    flash('В треугольнике ' + n + ' шаров' + (cueMoved ? ' · биток в доме' : ''));
+    schedule();
+  }
+
+  function rotateRack(delta) {
+    if (!state.rack.on) return;
+    pushHistory();
+    state.rack.angle = (state.rack.angle + delta) % TAU;
+    fitRack();
+    schedule();
+  }
+
+  function toggleRack(on) {
+    state.rack.on = on;
+    state.mode = on ? 'rack' : 'white';
+    state.draft = null;
+    state.hover = null;
+    state.hoverLine = null;
+    state.hoverRack = false;
+    if (on) {
+      // при включении — вершина треугольника (апекс) ровно на пирамидной точке,
+      // повёрнута вершиной К ДОМУ (вправо, к битку)
+      state.rack.x = PYRAMID.x;
+      state.rack.y = PYRAMID.y;
+      state.rack.angle = Math.PI; // вершина смотрит вправо, к дому и битку
+      fitRack();
+      flash('Треугольник: тяните — двигать, клик — поворот на 15°');
+    }
+    schedule();
+  }
+
+  /* ══════════════ Мышь / тач ══════════════ */
+  let drag = null;
+  let rackDrag = null;
+
+  cv.addEventListener('pointerdown', ev => {
+    if (ev.button === 2) return;          // правая кнопка — через contextmenu
+    const p = toPlay(ev);
+    const hit = pickBall(p, pickPad(ev));
+
+    if (state.mode === 'rack') {
+      if (ev.button !== 0) return;
+      if (p.x < -RAIL || p.y < -RAIL || p.x > PLAY_W + RAIL || p.y > PLAY_H + RAIL) return;
+      if (rackHit(p)) {
+        rackDrag = { dx: state.rack.x - p.x, dy: state.rack.y - p.y, moved: false };
+        cv.style.cursor = 'grabbing';
+        if (cv.setPointerCapture) { try { cv.setPointerCapture(ev.pointerId); } catch (e) {} }
+      } else {
+        pushHistory();
+        const s = snapRack(p);
+        state.rack.x = s.x;
+        state.rack.y = s.y;
+        fitRack();
+        schedule();
+      }
+      return;
+    }
+
+    if (state.mode === 'erase') {
+      if (hit) { removeBall(hit.id); return; }
+      const ln = pickLine(p);
+      if (ln) removeLine(ln.id);
+      return;
+    }
+    if (ev.button !== 0) return;
+
+    // клики вне сукна (полоса с названием, борта) шар не ставят
+    if (!isLineMode(state.mode) &&
+        (p.x < 0 || p.y < 0 || p.x > PLAY_W || p.y > PLAY_H)) return;
+
+    if (isLineMode(state.mode)) {
+      const s = clampLine(snapStart(p));
+      state.draft = { kind: state.mode, x1: s.x, y1: s.y, x2: s.x, y2: s.y };
+      state.hover = null;
+      state.hoverLine = null;
+      cv.style.cursor = 'crosshair';
+      schedule();
+      return;
+    }
+
+    // внутри треугольника: точное попадание по шару — тащим, иначе ставим в лунку
+    if (state.mode === 'white' && state.rack.on && rackHit(p)) {
+      const direct = pickBall(p, 6);
+      if (direct) {
+        state.hover = direct.id;
+        drag = { id: direct.id, dx: direct.x - p.x, dy: direct.y - p.y, moved: false };
+        cv.style.cursor = 'grabbing';
+        if (cv.setPointerCapture) { try { cv.setPointerCapture(ev.pointerId); } catch (e) {} }
+        schedule();
+        return;
+      }
+      placeBall('white', p);
+      return;
+    }
+
+    if (hit) {
+      state.hover = hit.id;
+      drag = { id: hit.id, dx: hit.x - p.x, dy: hit.y - p.y, moved: false };
+      cv.style.cursor = 'grabbing';
+      if (cv.setPointerCapture) { try { cv.setPointerCapture(ev.pointerId); } catch (e) {} }
+      schedule();
+      return;
+    }
+    placeBall(state.mode, p);
+  });
+
+  window.addEventListener('pointermove', ev => {
+    const p = toPlay(ev);
+
+    if (rackDrag) {
+      if (!rackDrag.moved) { pushHistory(); rackDrag.moved = true; }
+      const s = snapRack({ x: p.x + rackDrag.dx, y: p.y + rackDrag.dy });
+      state.rack.x = s.x;
+      state.rack.y = s.y;
+      fitRack();
+      schedule();
+      return;
+    }
+
+    if (state.mode === 'rack') {
+      const over = rackHit(p);
+      if (over !== state.hoverRack) { state.hoverRack = over; schedule(); }
+      state.hover = null;
+      state.hoverLine = null;
+      cv.style.cursor = over ? 'grab' : 'crosshair';
+      return;
+    }
+
+    if (state.draft) {
+      const s = snapEnd(p);
+      let q = s;
+      if (!s.snapped && ev.shiftKey) {
+        const dx = s.x - state.draft.x1;
+        const dy = s.y - state.draft.y1;
+        const len = Math.hypot(dx, dy);
+        const step = Math.PI / 12;                     // шаг 15°
+        const a = Math.round(Math.atan2(dy, dx) / step) * step;
+        q = { x: state.draft.x1 + Math.cos(a) * len, y: state.draft.y1 + Math.sin(a) * len };
+      }
+      const qq = clampLine(q);
+      state.draft.x2 = qq.x;
+      state.draft.y2 = qq.y;
+      schedule();
+      return;
+    }
+
+    if (drag) {
+      const b = state.balls.find(v => v.id === drag.id);
+      if (!b) { drag = null; return; }
+      let target = { x: p.x + drag.dx, y: p.y + drag.dy };
+      if (state.snap) target = snapPoint(target);
+      target = clampBall(target);
+      if (b.kind === 'ghost' || !overlaps(target, b.id)) {
+        if (!drag.moved) { pushHistory(); drag.moved = true; }
+        b.x = target.x;
+        b.y = target.y;
+        schedule();
+      }
+      return;
+    }
+
+    if (ev.target !== cv) {
+      if (state.hover !== null || state.hoverLine !== null || state.hoverRack) {
+        state.hover = null;
+        state.hoverLine = null;
+        state.hoverRack = false;
+        schedule();
+      }
+      return;
+    }
+
+    const hit = pickBall(p, pickPad(ev));
+    const ln = hit ? null : pickLine(p);
+    const overRack = state.rack.on && rackHit(p);
+    const id = hit ? hit.id : null;
+    const lid = ln ? ln.id : null;
+    if (id !== state.hover || lid !== state.hoverLine || overRack !== state.hoverRack) {
+      state.hover = id;
+      state.hoverLine = lid;
+      state.hoverRack = overRack;
+      schedule();
+    }
+
+    if (state.mode === 'erase') {
+      cv.style.cursor = (hit || ln) ? 'pointer' : 'default';
+    } else if (isLineMode(state.mode)) {
+      cv.style.cursor = 'crosshair';
+    } else {
+      cv.style.cursor = hit ? 'grab' : 'crosshair';
+    }
+  });
+
+  window.addEventListener('pointerup', ev => {
+    if (rackDrag) {
+      const moved = rackDrag.moved;
+      rackDrag = null;
+      cv.style.cursor = 'crosshair';
+      if (!moved) rotateRack(ev.shiftKey ? -Math.PI / 12 : Math.PI / 12);
+      schedule();
+      return;
+    }
+    if (state.draft) {
+      const d = state.draft;
+      state.draft = null;
+      if (Math.hypot(d.x2 - d.x1, d.y2 - d.y1) >= 30) {
+        pushHistory();
+        state.lines.push({
+          id: state.nextId++, kind: d.kind,
+          x1: d.x1, y1: d.y1, x2: d.x2, y2: d.y2,
+        });
+      }
+      schedule();
+      return;
+    }
+    if (drag) {
+      drag = null;
+      if (ev.pointerType === 'touch') state.hover = null;
+      cv.style.cursor = state.mode === 'erase' ? 'default' : 'crosshair';
+      schedule();
+    }
+  });
+
+  cv.addEventListener('pointerleave', () => {
+    if (state.hover !== null || state.hoverLine !== null || state.hoverRack) {
+      state.hover = null;
+      state.hoverLine = null;
+      state.hoverRack = false;
+      schedule();
+    }
+  });
+
+  cv.addEventListener('contextmenu', ev => {
+    ev.preventDefault();
+    if (state.mode === 'rack') {
+      if (rackHit(toPlay(ev))) rotateRack(-Math.PI / 12);
+      return;
+    }
+    if (state.mode === 'erase') return;
+    const p = toPlay(ev);
+    const hit = pickBall(p, pickPad(ev));
+    if (hit) { removeBall(hit.id); return; }
+    const ln = pickLine(p);
+    if (ln) removeLine(ln.id);
+  });
+
+  /* ══════════════ Интерфейс ══════════════ */
+  const titleInput = document.getElementById('titleInput');
+  titleInput.addEventListener('input', () => {
+    state.title = titleInput.value;
+    schedule();
+  });
+  titleInput.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') titleInput.blur();
+  });
+
+  document.querySelectorAll('.tool').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const m = btn.dataset.mode;
+      if (m === 'rack') {
+        if (state.mode === 'rack') toggleRack(false);
+        else toggleRack(true);
+        return;
+      }
+      setMode(m);
+    });
+  });
+
+  document.getElementById('btnPyramid').addEventListener('click', placePyramid);
+  btnRackRotate.addEventListener('click', () => rotateRack(Math.PI / 12));
+  btnRackFill.addEventListener('click', fillRack);
+
+  document.getElementById('chkGrid').addEventListener('change', e => {
+    state.grid = e.target.checked;
+    schedule();
+  });
+  document.getElementById('chkMarks').addEventListener('change', e => {
+    state.marks = e.target.checked;
+    schedule();
+  });
+  document.getElementById('chkSnap').addEventListener('change', e => {
+    state.snap = e.target.checked;
+    schedule();
+  });
+
+  undoBtn.addEventListener('click', undo);
+  document.getElementById('btnClear').addEventListener('click', clearAll);
+  document.getElementById('btnSave').addEventListener('click', exportPNG);
+
+  /* ── винт: клик/перетаскивание по битку ── */
+  let spinDrag = false;
+  spinCv.addEventListener('pointerdown', ev => {
+    ev.preventDefault();
+    spinDrag = true;
+    if (spinCv.setPointerCapture) { try { spinCv.setPointerCapture(ev.pointerId); } catch (e) {} }
+    setSpinFromEvent(ev);
+  });
+  spinCv.addEventListener('pointermove', ev => {
+    if (spinDrag) setSpinFromEvent(ev);
+  });
+  const endSpinDrag = () => { spinDrag = false; };
+  spinCv.addEventListener('pointerup', endSpinDrag);
+  spinCv.addEventListener('pointercancel', endSpinDrag);
+  spinCv.addEventListener('lostpointercapture', endSpinDrag);
+
+  /* ── сила: ползунок ── */
+  let forceDrag = false;
+  const applyForce = ev => setForce(forceFromEvent(ev));
+  forceTrack.addEventListener('pointerdown', ev => {
+    ev.preventDefault();
+    forceDrag = true;
+    if (forceTrack.setPointerCapture) { try { forceTrack.setPointerCapture(ev.pointerId); } catch (e) {} }
+    applyForce(ev);
+    forceTrack.focus();
+  });
+  forceTrack.addEventListener('pointermove', ev => {
+    if (forceDrag) applyForce(ev);
+  });
+  const endForceDrag = () => { forceDrag = false; };
+  forceTrack.addEventListener('pointerup', endForceDrag);
+  forceTrack.addEventListener('pointercancel', endForceDrag);
+  forceTrack.addEventListener('lostpointercapture', endForceDrag);
+
+  forceTrack.addEventListener('keydown', ev => {
+    if (ev.key === 'ArrowUp' || ev.key === 'ArrowRight') {
+      ev.preventDefault();
+      setForce(state.force + 0.05);
+    } else if (ev.key === 'ArrowDown' || ev.key === 'ArrowLeft') {
+      ev.preventDefault();
+      setForce(state.force - 0.05);
+    } else if (ev.key === 'Home') {
+      ev.preventDefault();
+      setForce(1);
+    } else if (ev.key === 'End') {
+      ev.preventDefault();
+      setForce(5);
+    }
+  });
+
+  document.getElementById('btnSpinReset').addEventListener('click', () => {
+    state.spin = { x: 0, y: 0 };
+    setForce(3);
+    renderSpin();
+  });
+
+  document.addEventListener('keydown', ev => {
+    const t = ev.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    const k = ev.key.toLowerCase();
+    if ((ev.ctrlKey || ev.metaKey) && k === 'z') {
+      ev.preventDefault();
+      undo();
+      return;
+    }
+    if (k === 'escape') {
+      if (state.draft) { state.draft = null; schedule(); }
+      else if (state.rack.on) toggleRack(false);
+      return;
+    }
+    if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (k === '1') setMode('white');
+    else if (k === '2') setMode('yellow');
+    else if (k === '3') setMode('erase');
+    else if (k === '7') setMode('ghost');
+    else if (k === '4') setMode('own');
+    else if (k === '5') setMode('other');
+    else if (k === '6') {
+      if (state.mode === 'rack') toggleRack(false);
+      else toggleRack(true);
+    }
+    else if (k === 'delete' || k === 'backspace') {
+      if (state.hover) removeBall(state.hover);
+      else if (state.hoverLine) removeLine(state.hoverLine);
+    }
+  });
+
+  function setMode(mode) {
+    state.mode = mode;
+    state.draft = null;
+    state.hover = null;
+    state.hoverLine = null;
+    cv.style.cursor = mode === 'erase' ? 'default' : 'crosshair';
+    schedule();
+  }
+
+  /* ══════════════ Дневник тренировок в PNG ══════════════ */
+  function drawLogTable(c, y0, w, h) {
+    c.save();
+    c.setTransform(1, 0, 0, 1, 0, 0);
+
+    c.fillStyle = '#15171c';
+    c.fillRect(0, y0, w, h);
+
+    const padX = Math.round(w * 0.046);
+    const tableW = w - padX * 2;
+
+    // заголовок
+    c.textAlign = 'left';
+    c.textBaseline = 'alphabetic';
+    c.fillStyle = '#eef1f6';
+    c.font = '600 34px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillText('Дневник тренировок', padX, y0 + Math.round(h * 0.085));
+    c.fillStyle = '#8b929f';
+    c.font = '400 22px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.textAlign = 'right';
+    c.fillText('10 строк — заполните от руки или на скриншоте', w - padX, y0 + Math.round(h * 0.085));
+
+    // геометрия
+    const cols = [0.08, 0.24, 0.17, 0.17, 0.17, 0.17];
+    const xs = [padX];
+    for (let i = 0; i < cols.length; i++) xs.push(xs[i] + tableW * cols[i]);
+
+    const headH = Math.round(h * 0.075);
+    const rowH = Math.round((h * 0.79 - headH) / 10);
+    const tableH = headH + rowH * 10;
+    const tableY = y0 + h - Math.round(h * 0.06) - tableH;
+
+    // панель
+    c.fillStyle = '#1c1f26';
+    rr(c, padX, tableY, tableW, tableH, 18);
+    c.fill();
+
+    // шапка
+    c.save();
+    c.beginPath();
+    c.rect(padX, tableY, tableW, headH);
+    c.clip();
+    c.fillStyle = '#20242c';
+    rr(c, padX, tableY, tableW, tableH, 18);
+    c.fill();
+    c.restore();
+
+    // сетка
+    c.strokeStyle = 'rgba(255,255,255,0.10)';
+    c.lineWidth = 1.5;
+    c.beginPath();
+    for (let i = 1; i < 10; i++) {
+      const y = tableY + headH + rowH * i;
+      c.moveTo(padX, y);
+      c.lineTo(padX + tableW, y);
+    }
+    for (let i = 1; i < xs.length; i++) {
+      c.moveTo(xs[i], tableY);
+      c.lineTo(xs[i], tableY + tableH);
+    }
+    c.stroke();
+
+    c.strokeStyle = 'rgba(255,255,255,0.16)';
+    c.lineWidth = 2;
+    rr(c, padX, tableY, tableW, tableH, 18);
+    c.stroke();
+
+    // шапка — текст
+    const labels = ['№', 'Дата', 'Удары', 'Попал', 'Мимо', 'Точность'];
+    c.font = '600 20px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#8b929f';
+    c.textBaseline = 'middle';
+    for (let i = 0; i < labels.length; i++) {
+      const cx = xs[i] + (xs[i + 1] - xs[i]) / 2;
+      c.textAlign = i === 0 ? 'center' : 'left';
+      c.fillText(labels[i], i === 0 ? cx : xs[i] + 16, tableY + headH / 2 + 1);
+    }
+
+    // номера строк
+    c.font = '500 22px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#5f6673';
+    c.textAlign = 'center';
+    for (let i = 0; i < 10; i++) {
+      c.fillText(String(i + 1), (xs[0] + xs[1]) / 2, tableY + headH + rowH * i + rowH / 2 + 1);
+    }
+
+    c.restore();
+  }
+
+  /* ══════════════ Панель винта в PNG ══════════════ */
+  function drawSpinPanelPNG(c, y0, w, h) {
+    c.save();
+    c.setTransform(1, 0, 0, 1, 0, 0);
+
+    c.fillStyle = '#15171c';
+    c.fillRect(0, y0, w, h);
+
+    const padX = Math.round(w * 0.046);
+    const panelW = w - padX * 2;
+    const panelY = y0 + Math.round(h * 0.19);
+    const panelH = Math.round(h * 0.70);
+
+    c.fillStyle = '#1c1f26';
+    rr(c, padX, panelY, panelW, panelH, 22);
+    c.fill();
+    c.lineWidth = 2;
+    c.strokeStyle = 'rgba(255,255,255,0.10)';
+    rr(c, padX, panelY, panelW, panelH, 22);
+    c.stroke();
+
+    // заголовок
+    c.textAlign = 'left';
+    c.textBaseline = 'alphabetic';
+    c.fillStyle = '#eef1f6';
+    c.font = '600 34px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillText('Винт и сила удара', padX, y0 + Math.round(h * 0.115));
+
+    c.textAlign = 'right';
+    c.fillStyle = '#8b929f';
+    c.font = '400 22px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillText('точка удара · сила в бортах (шаг 0.05)', w - padX, y0 + Math.round(h * 0.115));
+
+    // биток
+    const br = Math.round(panelH * 0.345);
+    const bx = padX + Math.round(panelW * 0.115);
+    const by = panelY + Math.round(panelH * 0.50);
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.font = '600 20px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#8b929f';
+    c.fillText('верх', bx, by - br - 34);
+    c.fillText('низ', bx, by + br + 34);
+    c.textAlign = 'right';
+    c.fillText('лев.', bx - br - 26, by);
+    c.textAlign = 'left';
+    c.fillText('прав.', bx + br + 26, by);
+    drawSpinBall(c, bx, by, br, state.spin.x, state.spin.y);
+
+    // шкала силы
+    const sw = Math.round(w * 0.021);
+    const sh = Math.round(panelH * 0.80);
+    const sx = padX + Math.round(panelW * 0.325);
+    const sy = panelY + Math.round((panelH - sh) / 2);
+    drawForceScalePNG(c, sx, sy, sw, sh, state.force);
+
+    c.textAlign = 'left';
+    c.textBaseline = 'middle';
+    c.font = '600 22px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#cfd4dd';
+    // основные деления 1..5
+    for (let i = 5; i >= 1; i--) {
+      const ty = sy + sh - (i - 1) / 4 * sh;
+      c.fillText(String(i), sx + sw + 58, ty);
+    }
+    c.fillStyle = '#8b929f';
+    c.font = '400 20px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.textAlign = 'center';
+    c.fillText('борта', sx + sw / 2, sy + sh + 44);
+
+    // расшифровка
+    const rx = padX + Math.round(panelW * 0.435);
+    const row1 = panelY + Math.round(panelH * 0.30);
+    const row2 = panelY + Math.round(panelH * 0.68);
+
+    c.textAlign = 'left';
+    c.textBaseline = 'alphabetic';
+    c.font = '600 19px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#8b929f';
+    c.fillText('ВИНТ', rx, row1 - 54);
+    c.font = '700 40px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#eef1f6';
+    c.fillText(spinLabel(), rx, row1);
+
+    c.font = '600 19px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#8b929f';
+    c.fillText('СИЛА УДАРА', rx, row2 - 54);
+    c.font = '700 40px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = forceColor(state.force);
+    c.fillText(state.force.toFixed(2) + ' ' + forceWord(state.force), rx, row2);
+
+    c.font = '400 21px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.fillStyle = '#8b929f';
+    c.fillText('Биток должен пройти по жёлтой стрелке', rx, panelY + panelH - 44);
+
+    c.restore();
+  }
+
+  /* ══════════════ Панель винта слева от стола (PNG) ══════════════ */
+  function drawSpinSidePNG(c, x0, y0, w, h) {
+    const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+    c.save();
+    c.setTransform(1, 0, 0, 1, 0, 0);
+
+    c.fillStyle = '#1c1f26';
+    rr(c, x0, y0, w, h, 22);
+    c.fill();
+    c.lineWidth = 2;
+    c.strokeStyle = 'rgba(255,255,255,0.10)';
+    rr(c, x0, y0, w, h, 22);
+    c.stroke();
+
+    const cx = x0 + w / 2;
+
+    c.textAlign = 'center';
+    c.textBaseline = 'alphabetic';
+    c.fillStyle = '#eef1f6';
+    c.font = '600 34px ' + FONT;
+    c.fillText('Винт и сила удара', cx, y0 + 64);
+
+    // биток
+    const br = Math.min(190, Math.round(w * 0.30));
+    const by = y0 + 140 + br;
+    c.textBaseline = 'middle';
+    c.font = '600 20px ' + FONT;
+    c.fillStyle = '#8b929f';
+    c.textAlign = 'center';
+    c.fillText('верх', cx, by - br - 34);
+    c.fillText('низ', cx, by + br + 34);
+    c.textAlign = 'right';
+    c.fillText('лев.', cx - br - 24, by);
+    c.textAlign = 'left';
+    c.fillText('прав.', cx + br + 24, by);
+    drawSpinBall(c, cx, by, br, state.spin.x, state.spin.y);
+
+    // винт текстом
+    c.textBaseline = 'alphabetic';
+    c.textAlign = 'center';
+    c.font = '600 19px ' + FONT;
+    c.fillStyle = '#8b929f';
+    c.fillText('ВИНТ', cx, y0 + 624);
+    c.font = '700 36px ' + FONT;
+    c.fillStyle = '#eef1f6';
+    c.fillText(spinLabel(), cx, y0 + 672);
+
+    // шкала силы
+    const sw = 56;
+    const sx = x0 + 70;
+    const sy = y0 + 730;
+    const sh = Math.max(300, h - 730 - 66);
+    drawForceScalePNG(c, sx, sy, sw, sh, state.force);
+
+    c.textAlign = 'left';
+    c.textBaseline = 'middle';
+    c.font = '600 22px ' + FONT;
+    c.fillStyle = '#cfd4dd';
+    for (let i = 5; i >= 1; i--) {
+      c.fillText(String(i), sx + sw + 58, sy + sh - (i - 1) / 4 * sh);
+    }
+    c.fillStyle = '#8b929f';
+    c.font = '400 20px ' + FONT;
+    c.textAlign = 'center';
+    c.fillText('борта', sx + sw / 2, sy + sh + 36);
+
+    // сила текстом
+    const rx = x0 + 250;
+    const ry = sy + Math.round(sh * 0.30);
+    c.textAlign = 'left';
+    c.textBaseline = 'alphabetic';
+    c.font = '600 19px ' + FONT;
+    c.fillStyle = '#8b929f';
+    c.fillText('СИЛА УДАРА', rx, ry - 50);
+    c.font = '700 40px ' + FONT;
+    c.fillStyle = forceColor(state.force);
+    c.fillText(state.force.toFixed(2) + ' ' + forceWord(state.force), rx, ry);
+
+    c.font = '400 20px ' + FONT;
+    c.fillStyle = '#8b929f';
+    c.fillText('Биток должен пройти', rx, sy + sh - 36);
+    c.fillText('по жёлтой стрелке', rx, sy + sh - 8);
+
+    c.restore();
+  }
+
+  /* ══════════════ Экспорт PNG ══════════════ */
+  function exportPNG() {
+    const sceneW = 2600;
+    const sceneH = Math.round(sceneW * (TOTAL_H + (hasTitle() ? HEADER_H : 0)) / TOTAL_W);
+    const panelW = 640;
+    const gap = 40;
+    const W = panelW + gap + sceneW;
+    const tableH = 900;
+    const H = sceneH + tableH;
+
+    // стол рисуем на отдельном холсте и ставим справа от панели
+    const sc = document.createElement('canvas');
+    sc.width = sceneW;
+    sc.height = sceneH;
+    const sctx = sc.getContext('2d');
+    sctx.fillStyle = '#15171c';
+    sctx.fillRect(0, 0, sceneW, sceneH);
+    drawScene(sctx, sceneW, false);
+
+    const oc = document.createElement('canvas');
+    oc.width = W;
+    oc.height = H;
+    const octx = oc.getContext('2d');
+    octx.fillStyle = '#15171c';
+    octx.fillRect(0, 0, W, H);
+    drawSpinSidePNG(octx, 0, 0, panelW, sceneH);
+    octx.drawImage(sc, panelW + gap, 0);
+    drawLogTable(octx, sceneH, W, tableH);
+
+    oc.toBlob(blob => {
+      if (!blob) { flash('Не удалось сохранить PNG'); return; }
+      const d = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const name = 'бильярд-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' +
+                   pad(d.getDate()) + '_' + pad(d.getHours()) + pad(d.getMinutes()) + '.png';
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    }, 'image/png');
+  }
+
+  /* ══════════════ Старт ══════════════ */
+  window.addEventListener('resize', () => {
+    schedule();
+    renderSpin();
+  });
+  renderSpin();
+  updateSpinUI();
+  render();
+})();
+
+</script>
+</body>
+</html>
