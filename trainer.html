@@ -336,9 +336,21 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   .cut-range{width:100%; accent-color:#f2b91c; cursor:ew-resize; margin:0}
   .cut-label{font-size:13px; font-weight:650; color:var(--txt); text-align:center; min-height:18px}
   .cut-label.thin{color:#ffb057}
-  /* панель слева от стола: сверху прицел с резкой, под ним сила удара */
-  .main{flex-direction:row; align-items:flex-start; gap:12px}
-  .spin-panel{width:392px; flex:none; position:sticky; top:8px; overflow:visible}
+  /* панель слева от стола, а под столом — дневник и QR-код */
+  .main{
+    display:grid;
+    grid-template-columns:392px minmax(0,1fr);
+    grid-template-areas:
+      "spin table"
+      "spin log"
+      "spin share";
+    align-items:start;
+    gap:12px;
+  }
+  .table-area{grid-area:table}
+  .log{grid-area:log}
+  .share{grid-area:share}
+  .spin-panel{width:392px; flex:none; position:sticky; top:8px; overflow:visible; grid-area:spin}
   .spin-body{flex-direction:column; align-items:stretch; gap:14px}
   .spin-force{align-self:center}
   .spin-hint{display:none}
@@ -352,18 +364,65 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   .ro-row span{min-width:58px}
   .ro-hint{text-align:left}
   .spin-actions{justify-content:flex-start}
-  /* на узком экране стол идёт сразу под кнопками, а винт с резкой — под стол:
-     так стол оказывается на виду, а не прячется под панелью */
+  /* на узком экране: кнопки → стол → винт → дневник → QR */
   @media (max-width: 759px) {
     .app{display:flex; flex-direction:column}
     .bar{order:1}
     .titlebar{order:2}
-    .main{order:3; flex-direction:column}
+    .main{order:3; display:flex; flex-direction:column}
     .table-area{order:1}
     .spin-panel{order:2; width:100%; position:static}
+    .log{order:3}
+    .share{order:4}
     .spin-hint{display:inline}
     .foot{order:4}
   }
+  /* ── шапка страницы: возврат на главную ── */
+  .topline{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 2px 0;
+  }
+  .back{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px; height:40px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,#232730,#1b1e25);
+    color:var(--txt);
+    font-size:23px; line-height:1; text-decoration:none;
+    flex:none;
+  }
+  .back:hover{border-color:#3a414d}
+  .topline b{font-size:15px; font-weight:650}
+  .topline small{color:var(--muted); font-size:12px}
+  /* ── QR на тренажёр: поделиться ссылкой ── */
+  .share{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:linear-gradient(180deg,#1d2129,#171a20);
+    box-shadow:0 16px 34px -24px rgba(0,0,0,.9);
+  }
+  .share-qr{
+    width:132px; height:132px; flex:none;
+    background:#fff; border-radius:10px; padding:6px;
+  }
+  .share-qr img{display:block; width:100%; height:100%}
+  .share-body{min-width:200px; flex:1 1 220px; display:flex; flex-direction:column; gap:6px}
+  .share-body b{font-size:15px; font-weight:650}
+  .share-body span{color:var(--muted); font-size:12.5px}
+  .share-link{color:#7ad3a0; font-size:12.5px; line-height:1.5; word-break:break-all}
+  .share-body .btn{align-self:flex-start; margin-top:2px}
   /* ── подвал ── */
   .foot{
     width:100%;
@@ -398,6 +457,14 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
 </head>
 <body>
 <div class="app">
+
+  <div class="topline">
+    <a class="back" id="backHome" href="./" aria-label="Вернуться на главную" title="На главную">×</a>
+    <div>
+      <b>Тренажёр</b>
+      <br><small>расстановка шаров, винт и сила удара</small>
+    </div>
+  </div>
 
   <div class="bar">
     <div class="seg" role="group" aria-label="Шары">
@@ -479,11 +546,12 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
 
   <div class="table-area" id="tableArea">
     <div class="stage" id="stage"><canvas id="cv"></canvas></div>
+  </div>
 
-    <div class="log" id="log">
+  <div class="log" id="log">
     <div class="log-head">
-      <span class="log-title">Дневник тренировок</span>
-      <span class="log-hint">10 строк — заполните от руки или на скриншоте</span>
+      <span class="log-title">Таблица прогресса</span>
+      <span class="log-hint">дневник тренировок, 10 строк — заполните от руки или на скриншоте</span>
     </div>
     <div class="log-scroll">
       <table class="log-table">
@@ -507,6 +575,18 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
       </table>
     </div>
   </div>
+
+  <div class="share" id="share">
+    <div class="share-qr">
+      <img src="qr-trainer.svg" alt="QR-код: ссылка на тренажёр" width="132" height="132">
+    </div>
+    <div class="share-body">
+      <b>Поделись с другом и пользуйся сам</b>
+      <span>Это ссылка на тренажёр. Наведите камеру телефона на код или отправьте адрес.</span>
+      <a class="share-link" id="shareLink"
+         href="https://billiardpyramid.github.io/tournirs/trainer.html">https://billiardpyramid.github.io/tournirs/trainer.html</a>
+      <button class="btn mini" type="button" id="shareCopy">Скопировать ссылку</button>
+    </div>
   </div>
   </div>
 
@@ -534,6 +614,7 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   const GRID   = PLAY_W / 8;           // 355 мм — равные сектора (8 × 4)
   const SNAP   = GRID / 2;             // шаг привязки
   const MAX_WHITE = 15;
+  const MAX_GHOST = 8;                 // мнимых шаров — до восьми
   const HEADER_H = 190;                // полоса с названием упражнения над столом
 
   const RACK_STEP   = R * 2 + 1.5;                    // шаг шаров в пирамиде
@@ -1556,9 +1637,11 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   function updateUI() {
     const whites = state.balls.filter(b => b.kind === 'white').length;
     const hasCue = state.balls.some(b => b.kind === 'yellow');
+    const ghosts = state.balls.filter(b => b.kind === 'ghost').length;
     const nLines = state.lines.length;
     countEl.innerHTML =
       'Белых: <b>' + whites + '</b> · Биток: <b>' + (hasCue ? 'на столе' : 'нет') + '</b>' +
+      (ghosts ? ' · Мнимых: <b>' + ghosts + '</b>/' + MAX_GHOST : '') +
       (nLines ? ' · Траекторий: <b>' + nLines + '</b>' : '');
     undoBtn.disabled = state.history.length === 0;
 
@@ -1834,8 +1917,9 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
       return;
     }
     if (kind === 'ghost') {
-      if (state.balls.some(b => b.kind === 'ghost')) {
-        flash('Мнимый шар уже на столе — перетащите его');
+      // мнимых шаров можно ставить до восьми: они отмечают точки прицела
+      if (state.balls.filter(b => b.kind === 'ghost').length >= MAX_GHOST) {
+        flash('Мнимых шаров уже ' + MAX_GHOST + ' — больше не нужно');
         return;
       }
       let g = state.snap ? snapPoint(raw) : raw;
@@ -2345,6 +2429,46 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   undoBtn.addEventListener('click', undo);
   document.getElementById('btnClear').addEventListener('click', clearAll);
   document.getElementById('btnSave').addEventListener('click', exportPNG);
+
+  /* ── возврат на главную и ссылка на тренажёр ──
+     Крестик возвращает назад, если пришли с сайта; иначе ведёт на главную. */
+  const backHome = document.getElementById('backHome');
+  if (backHome) {
+    backHome.addEventListener('click', ev => {
+      const cameFromSite = document.referrer &&
+        document.referrer.indexOf(location.origin + '/tournirs') === 0;
+      if (cameFromSite && history.length > 1) {
+        ev.preventDefault();
+        history.back();
+      }
+    });
+  }
+
+  const shareCopy = document.getElementById('shareCopy');
+  const shareLink = document.getElementById('shareLink');
+  if (shareCopy && shareLink) {
+    shareCopy.addEventListener('click', () => {
+      const text = shareLink.textContent.trim();
+      const done = ok => flash(ok
+        ? 'Ссылка скопирована — отправьте другу'
+        : 'Не вышло скопировать: выделите ссылку вручную');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => done(true), () => done(false));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        done(ok);
+      }
+    });
+  }
 
   /* ── винт: клик/перетаскивание по битку ── */
   let spinDrag = false;

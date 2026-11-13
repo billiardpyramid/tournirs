@@ -70,18 +70,13 @@
   .power i{position:absolute;left:0;right:0;bottom:0;height:62%;border-radius:5px;
     background:linear-gradient(0deg,#39b46b,#c8d63a 55%,#f0b429 78%,#e24a3b)}
 
-  /* ---------- Окна шапки: тренажёр и QR ---------- */
+  /* ---------- Окна шапки: QR и поддержка ---------- */
   .trn{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(8,10,14,.76)}
   .trn[hidden]{display:none}
   .trn-panel{position:relative;width:100%;max-width:660px;max-height:calc(100vh - 40px);
     overflow:auto;padding:20px 22px 22px;background:var(--card);border:1px solid var(--line);
     border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
-  /* окно тренажёра — почти на весь экран: внутри полноценный стол */
-  .trn-wide{max-width:1480px;height:calc(100vh - 40px);padding:14px 14px 10px;
-    display:flex;flex-direction:column}
-  .trn-wide .trn-head{margin-bottom:8px;flex:0 0 auto}
-  .trn-frame{flex:1 1 auto;width:100%;min-height:0;border:0;border-radius:10px;background:#15171c}
   .trn-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .trn-head h2{margin:0 0 4px;font-size:20px}
   .trn-head p{margin:0;color:var(--dim);font-size:13.5px}
@@ -399,8 +394,8 @@
         <span class="tt-cap">турниры</span>
       </a>
 
-      <button class="tile tile-train" type="button" id="trainOpen" aria-label="Открыть тренажёр"
-              title="Тренажёр — расстановка шаров">
+      <a class="tile tile-train" href="trainer.html" id="trainOpen" aria-label="Открыть тренажёр"
+         title="Тренажёр — расстановка шаров">
         <span class="tt-row">
           <svg class="tt-ball" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
             <defs>
@@ -431,7 +426,7 @@
           <span class="power" aria-hidden="true"><i style="height:50%"></i></span>
         </span>
         <span class="tt-cap">тренажёр</span>
-      </button>
+      </a>
 
       <a class="tile tile-tg" href="https://t.me/+K4dL-XzcI8BmYmUy" target="_blank" rel="noopener"
          aria-label="Группа в Telegram" title="Группа в Telegram">
@@ -695,23 +690,6 @@
       изображение изменено — затемнение, размытие, кадрирование.</div>
   </footer>
 
-</div>
-
-<!-- Окно «Тренажёр». Сам тренажёр — отдельная страница trainer.html внутри рамки:
-     так его стили и скрипт не пересекаются со страницей турниров, а функционал
-     (стол, шары, траектории, винт, сила, дневник, скачивание PNG) сохраняется целиком.
-     Рамка грузится только при первом открытии. -->
-<div class="trn" id="trnModal" role="dialog" aria-modal="true" aria-labelledby="trnTitle" hidden>
-  <div class="trn-panel trn-wide">
-    <div class="trn-head">
-      <div>
-        <h2 id="trnTitle">Тренажёр</h2>
-        <p>Расстановка шаров, винт и сила удара — готовое можно скачать картинкой</p>
-      </div>
-      <button class="trn-x" type="button" id="trnClose" aria-label="Закрыть окно тренажёра">×</button>
-    </div>
-    <iframe class="trn-frame" id="trnFrame" title="Тренажёр расстановки шаров"></iframe>
-  </div>
 </div>
 
 <!-- Окно с QR-кодом: ссылка на сам сайт, чтобы быстро переслать или показать с экрана. -->
@@ -1210,13 +1188,12 @@ build();
   });
 })();
 
-/* ---------- Окна шапки: тренажёр, QR-ссылка, поддержка ----------
-   Каждое открывается своей плиткой. Закрывается крестиком, кликом по фону и Esc.
-   Открыто всегда только одно. Тренажёр вставим внутрь #trnModal .trn-panel —
-   обработчик менять не придётся. */
+/* ---------- Окна шапки: QR-ссылка и поддержка ----------
+   Открываются плитками, закрываются крестиком, кликом по фону и Esc.
+   Открыто всегда только одно. Тренажёр — отдельная страница trainer.html,
+   плитка просто ведёт на неё (крестик там возвращает на главную). */
 (function headModals(){
   const pairs = [
-    ["trainOpen", "trnModal", "trnClose"],
     ["qrOpen", "qrModal", "qrClose"],
     ["qrSupportOpen", "qrSupportModal", "qrSupportClose"]
   ].map(([openId, modalId, closeId]) => ({
@@ -1236,11 +1213,6 @@ build();
   const openOf = p => {
     lastFocus = document.activeElement;
     closeAll();
-    // тренажёр тяжёлый — грузим его страницу только в момент первого открытия
-    if (p.modal.id === "trnModal") {
-      const frame = document.getElementById("trnFrame");
-      if (frame && !frame.getAttribute("src")) frame.src = "trainer.html";
-    }
     p.modal.hidden = false;
     document.body.classList.add("trn-open");
     if (p.close) p.close.focus();
