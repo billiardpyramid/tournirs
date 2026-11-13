@@ -325,16 +325,8 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     opacity:0.4;
     background:radial-gradient(circle at 34% 30%, rgba(255,255,255,.9), rgba(236,236,230,.5) 62%, rgba(150,150,144,.35));
   }
-  /* тень битка: смещена вниз-вправо и лежит МЕЖДУ белым шаром и битком,
-     поэтому ложится на белый и показывает, что биток впереди */
-  .cut-shadow{
-    position:absolute; top:calc(50% + 13px); left:calc(50% + 9px);
-    width:168px; height:168px; border-radius:50%;
-    transform:translate(-50%,-50%);
-    z-index:0;
-    pointer-events:none;
-    background:radial-gradient(circle, rgba(0,0,0,.5) 0 46%, rgba(0,0,0,0) 72%);
-  }
+  /* в лоб шары совпали — дымки нет, биток просто яркий */
+  .aim.straight .cut-ball.ghost{opacity:0}
   /* у мишени нет квадратной рамки: скругление и тень заданы всем холстам сразу,
      а здесь они рисовали бы квадрат поверх белого прицельного шара */
   #spinCv{position:relative; z-index:1; border-radius:0; box-shadow:none; background:transparent}
@@ -447,7 +439,6 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
       <div class="aim">
         <div class="spin-ball">
           <div class="cut-ball white" id="cutWhite" aria-hidden="true"></div>
-          <div class="cut-shadow" aria-hidden="true"></div>
           <div class="cut-ball ghost" id="cutGhost" aria-hidden="true"></div>
           <canvas id="spinCv" width="210" height="210" aria-label="Точка удара по битку"></canvas>
         </div>
@@ -1191,16 +1182,18 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   const cutCue = document.getElementById('cutCue');
   const cutLabel = document.getElementById('cutLabel');
   // порог сдвига (0…1), с которого резка называется этой дробью
+  // «1/2» стоит ровно на сдвиге в радиус: край белого шара приходится на центр битка.
+  // Остальные дроби разложены равномерно по обе стороны от этой точки.
   const CUT_STEPS = [
-    { at: 0.06, name: '7/8' },
-    { at: 0.18, name: '3/4' },
-    { at: 0.30, name: '2/3' },
+    { at: 0.10, name: '7/8' },
+    { at: 0.22, name: '3/4' },
+    { at: 0.34, name: '2/3' },
     { at: 0.42, name: '3/5' },
-    { at: 0.54, name: '1/2' },
-    { at: 0.64, name: '2/5' },
-    { at: 0.74, name: '1/3' },
-    { at: 0.84, name: '1/4' },
-    { at: 0.93, name: '1/8' },
+    { at: 0.50, name: '1/2' },
+    { at: 0.66, name: '2/5' },
+    { at: 0.76, name: '1/3' },
+    { at: 0.86, name: '1/4' },
+    { at: 0.94, name: '1/8' },
   ];
 
   function cutText(shift) {
@@ -1225,8 +1218,11 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     }
     if (cutLabel) {
       cutLabel.textContent = cutText(v / 100);
-      cutLabel.classList.toggle('thin', Math.abs(v) >= 93);
+      cutLabel.classList.toggle('thin', Math.abs(v) >= 86);
     }
+    // дымка пересечения появляется только когда резка есть
+    const aim = document.querySelector('.aim');
+    if (aim) aim.classList.toggle('straight', v === 0);
     cutRange.setAttribute('aria-valuetext', cutText(v / 100));
   }
 
