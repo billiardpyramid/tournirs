@@ -28,46 +28,60 @@
        background-size:auto,cover;
        background-attachment:fixed,fixed}
   .wrap{max-width:1420px;margin:0 auto}
-  /* шапка: на широком экране текст слева, логотип справа на одной высоте;
-     на телефоне логотип во всю ширину экрана, текст под ним */
-  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
-    margin-bottom:18px}
-  .top-text{order:2;min-width:0;flex:1 1 auto}
-  .top-text .sub{margin-bottom:0}
-  /* порядок в DOM: плитка тренировок, текст, логотип; на телефоне плитка и логотип
-     переезжают наверх и центрируются */
-  .logo{order:3;flex:0 0 auto;width:118px;height:auto;border-radius:12px;
-    border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.45)}
-
-  /* ---------- Плитка «Тренировки» слева от текста ----------
-     Размер и оформление — как у логотипа, чтобы шапка была симметричной.
-     Внутри: биток-мишень с выбранным винтом и полосочка силы удара справа. */
-  .train-tile{order:1;flex:0 0 auto;width:118px;min-height:118px;padding:8px 8px 6px;
+  /* шапка версии 2: заголовок сверху на всю ширину, под ним ряд одинаковых
+     квадратных плиток: турниры, тренажёр, ТГ, QR распространение, QR поддержка */
+  .top{margin-bottom:18px}
+  .tiles{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 16px}
+  .tile{position:relative;flex:0 0 auto;width:118px;height:118px;padding:8px 8px 6px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
     background:linear-gradient(160deg,#242b36,#161b23);border:1px solid var(--line);
     border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.45);color:var(--txt);
-    font:inherit;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
-  .train-tile:hover{border-color:#4d5b72;transform:translateY(-1px);
+    font:inherit;text-decoration:none;cursor:pointer;overflow:hidden;
+    transition:border-color .15s,transform .15s,box-shadow .15s}
+  .tile:hover{border-color:#4d5b72;transform:translateY(-1px);
     box-shadow:0 9px 22px rgba(0,0,0,.55)}
-  .train-tile:active{transform:translateY(0)}
-  .train-tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .train-tile .tt-row{display:flex;align-items:center;justify-content:center;gap:7px}
-  .train-tile .tt-ball{display:block;width:72px;height:72px}
-  .train-tile .tt-cap{font-size:9px;letter-spacing:.6px;text-transform:uppercase;
+  .tile:active{transform:translateY(0)}
+  .tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .tile .tt-row{display:flex;align-items:center;justify-content:center;gap:7px}
+  .tile .tt-ball{display:block;width:72px;height:72px}
+  .tile .tt-cap{font-size:9px;letter-spacing:.6px;text-transform:uppercase;
     color:#a9b6c7;line-height:1}
+  .tile-logo{padding:0}
+  .tile-logo img{display:block;width:100%;height:100%;object-fit:cover}
+  .tile-logo .tt-cap{position:absolute;left:0;right:0;bottom:0;padding:3px 0;
+    background:rgba(9,12,17,.76);text-align:center;color:#dbe4ef}
+  .tile-tg svg{display:block;width:64px;height:64px}
+  .tile-qr svg{display:block;width:80px;height:80px;border-radius:4px;background:#fff}
+  .tile-qr .tt-cap{margin-top:-2px}
+  /* окно с QR: большой код + ссылка, которую можно скопировать */
+  .qrbox{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+  .qrbox svg{width:240px;height:240px;background:#fff;border-radius:10px;padding:8px}
+  .qrbox .qr-url{margin:0;font-size:14px;color:#9fd0ff;word-break:break-all;
+    background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:underline;
+    text-underline-offset:3px}
+  .qrbox .qr-url:hover{color:#cfe6ff}
+  .qrbox .qr-url:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .qrbox .qr-pay{font-size:13.5px;color:var(--dim);line-height:1.5}
+  .qrbox .qr-pay b{color:var(--txt)}
+  .qrbox .qr-hint{margin:0;color:var(--dim);font-size:13px;line-height:1.5}
   /* полосочка силы удара: заполнение снизу вверх, зелёный → жёлтый → красный */
   .power{position:relative;display:block;flex:0 0 auto;width:10px;height:62px;
     border-radius:6px;background:#0d1117;border:1px solid #333c4b;overflow:hidden}
   .power i{position:absolute;left:0;right:0;bottom:0;height:62%;border-radius:5px;
     background:linear-gradient(0deg,#39b46b,#c8d63a 55%,#f0b429 78%,#e24a3b)}
 
-  /* ---------- Окно «Тренировки» (пока заглушка) ---------- */
+  /* ---------- Окна шапки: тренажёр и QR ---------- */
   .trn{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(8,10,14,.76)}
   .trn[hidden]{display:none}
   .trn-panel{position:relative;width:100%;max-width:660px;max-height:calc(100vh - 40px);
     overflow:auto;padding:20px 22px 22px;background:var(--card);border:1px solid var(--line);
     border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+  /* окно тренажёра — почти на весь экран: внутри полноценный стол */
+  .trn-wide{max-width:1480px;height:calc(100vh - 40px);padding:14px 14px 10px;
+    display:flex;flex-direction:column}
+  .trn-wide .trn-head{margin-bottom:8px;flex:0 0 auto}
+  .trn-frame{flex:1 1 auto;width:100%;min-height:0;border:0;border-radius:10px;background:#15171c}
   .trn-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .trn-head h2{margin:0 0 4px;font-size:20px}
   .trn-head p{margin:0;color:var(--dim);font-size:13.5px}
@@ -351,17 +365,15 @@
     .cue-stage{height:420px}
   }
   @media (max-width:760px){
-    /* на телефоне логотип по центру и вполовину меньше прежней полноэкранной плитки */
-    .top .logo{order:-1;width:50vw;max-width:230px;height:auto;margin:0 auto 16px;
-      border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.45)}
-    /* плитка тренировок — компактная, по центру, над логотипом */
-    .top .train-tile{order:-2;width:auto;min-height:0;margin:0 auto 12px;padding:8px 12px;
-      flex-direction:row;gap:10px}
-    .top .train-tile .tt-row{gap:9px}
-    .top .train-tile .tt-ball{width:52px;height:52px}
-    .top .train-tile .power{height:46px;width:9px}
-    .top .train-tile .tt-cap{display:none}
+    /* пять плиток: на узком экране переносятся во второй ряд, прокрутки вбок нет */
+    .tiles{gap:10px;margin:12px 0 14px}
+    .tile{width:96px;height:96px;padding:6px}
+    .tile .tt-ball{width:56px;height:56px}
+    .tile .power{height:48px;width:9px}
+    .tile-tg svg{width:52px;height:52px}
+    .tile-qr svg{width:64px;height:64px}
     h1{font-size:22px}
+    .qrbox svg{width:200px;height:200px}
     .trn{padding:12px}
     .trn-panel{padding:16px}
     .trn-demo{gap:16px;padding:12px}
@@ -379,44 +391,83 @@
 <div class="wrap">
 
   <div class="top">
-    <button class="train-tile" type="button" id="trainOpen" aria-label="Открыть тренировки"
-            title="Тренировки — откроется окно тренажёра">
-      <span class="tt-row">
-        <svg class="tt-ball" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-          <defs>
-            <radialGradient id="ballTile" cx="36%" cy="30%" r="72%">
-              <stop offset="0" stop-color="#ffffff"/>
-              <stop offset="60%" stop-color="#f4f2ec"/>
-              <stop offset="100%" stop-color="#c8c4b8"/>
-            </radialGradient>
-          </defs>
-          <circle cx="60" cy="63" r="52" fill="rgba(0,0,0,.45)"/>
-          <circle cx="60" cy="60" r="52" fill="url(#ballTile)" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/>
-          <circle cx="60" cy="60" r="36" fill="none" stroke="rgba(20,20,20,.18)" stroke-width="1.4"/>
-          <circle cx="60" cy="60" r="21" fill="none" stroke="rgba(20,20,20,.18)" stroke-width="1.4"/>
-          <circle cx="60" cy="60" r="1.8" fill="rgba(20,20,20,.35)"/>
-          <circle cx="37" cy="44" r="6" fill="#c62b32"/>
-          <circle cx="42" cy="79" r="6" fill="#c62b32"/>
-          <circle cx="79" cy="70" r="6" fill="#c62b32"/>
-          <circle cx="79" cy="38" r="9.5" fill="#f0b429" stroke="#ffffff" stroke-width="2.5"/>
-          <circle cx="79" cy="38" r="3.6" fill="#7a4b00"/>
+    <h1>Русский бильярд — ближайшие турниры</h1>
+    <div class="tiles">
+      <a class="tile tile-logo" href="index.html" aria-label="Турниры — на главную"
+         title="Турниры — на главную">
+        <img src="logo.jpg" alt="Логотип Pro Billiard League" width="360" height="361">
+        <span class="tt-cap">турниры</span>
+      </a>
+
+      <button class="tile tile-train" type="button" id="trainOpen" aria-label="Открыть тренажёр"
+              title="Тренажёр — расстановка шаров">
+        <span class="tt-row">
+          <svg class="tt-ball" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="ballTile" cx="32%" cy="28%" r="78%">
+                <stop offset="0" stop-color="#fffbe2"/>
+                <stop offset="20%" stop-color="#ffe680"/>
+                <stop offset="60%" stop-color="#f2b91c"/>
+                <stop offset="90%" stop-color="#c98d08"/>
+                <stop offset="100%" stop-color="#a8730a"/>
+              </radialGradient>
+            </defs>
+            <circle cx="63" cy="66" r="50" fill="rgba(0,0,0,.4)"/>
+            <circle cx="60" cy="60" r="50" fill="url(#ballTile)" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(70,45,0,.3)" stroke-width="1.1"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.55)" stroke-width=".6"/>
+            <circle cx="60" cy="60" r="33.5" fill="none" stroke="rgba(70,45,0,.3)" stroke-width="1.1"/>
+            <circle cx="60" cy="60" r="33.5" fill="none" stroke="rgba(255,255,255,.55)" stroke-width=".6"/>
+            <circle cx="60" cy="60" r="17" fill="none" stroke="rgba(70,45,0,.3)" stroke-width="1.1"/>
+            <circle cx="60" cy="60" r="17" fill="none" stroke="rgba(255,255,255,.55)" stroke-width=".6"/>
+            <circle cx="60" cy="60" r="32.5" fill="none" stroke="rgba(255,100,100,.7)"
+                    stroke-width="1.1" stroke-dasharray="2.6 2.1"/>
+            <path d="M10 60h100M60 10v100" fill="none" stroke="rgba(70,45,0,.35)"
+                  stroke-width=".8" stroke-dasharray="3.2 2.6"/>
+            <circle cx="60" cy="60" r="1.6" fill="rgba(60,40,0,.55)"/>
+            <circle cx="82" cy="38" r="9.7" fill="#d21f1f" stroke="#ffffff" stroke-width="2"/>
+            <circle cx="79.5" cy="35.5" r="2.2" fill="rgba(255,200,190,.6)"/>
+          </svg>
+          <span class="power" aria-hidden="true"><i style="height:50%"></i></span>
+        </span>
+        <span class="tt-cap">тренажёр</span>
+      </button>
+
+      <a class="tile tile-tg" href="https://t.me/+K4dL-XzcI8BmYmUy" target="_blank" rel="noopener"
+         aria-label="Группа в Telegram" title="Группа в Telegram">
+        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <circle cx="32" cy="32" r="30" fill="#2aabee"/>
+          <path d="M47.8 18.9 42 45.3c-.4 1.9-1.6 2.4-3.2 1.5l-8.8-6.5-4.2 4.1c-.5.5-.9.9-1.8.9l.6-8.9 16.2-14.6c.7-.6-.1-1-.9-.4L19.9 32.5l-8.6-2.7c-1.9-.6-1.9-1.9.4-2.8l33.5-12.9c1.6-.6 2.9.4 2.6 4.8z"
+                fill="#ffffff"/>
         </svg>
-        <span class="power" aria-hidden="true"><i style="height:62%"></i></span>
-      </span>
-      <span class="tt-cap">тренировки</span>
-    </button>
-    <div class="top-text">
-      <h1>Русский бильярд — ближайшие турниры</h1>
-      <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
-      <div class="sub">
-      <span id="upd">обновлено 13.11.2026, 21:02</span> · календарь турниров по русскому бильярду
-      </div>
+        <span class="tt-cap">телеграм канал</span>
+      </a>
+
+      <button class="tile tile-qr" type="button" id="qrOpen" aria-label="QR-код со ссылкой на сайт"
+              title="QR-код — ссылка на этот сайт">
+        <svg viewBox="0 0 35 35" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+          <path fill="#ffffff" d="M0 0h35v35H0z"/>
+          <path stroke="#111111" d="M1 1.5h7m2 0h3m4 0h1m1 0h4m1 0h1m2 0h7M1 2.5h1m5 0h1m2 0h3m3 0h2m1 0h1m1 0h2m4 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m3 0h3m3 0h3m1 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h5m2 0h1m2 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h4m2 0h3m3 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m1 0h1m1 0h2m4 0h2m1 0h1m1 0h2m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m1 0h1m1 0h1m3 0h1m2 0h5M1 9.5h1m1 0h5m3 0h2m1 0h1m2 0h2m1 0h1m2 0h3m1 0h5M1 10.5h1m3 0h1m2 0h1m2 0h4m2 0h5m1 0h2m2 0h2m1 0h2m1 0h1M1 11.5h1m1 0h1m2 0h2m3 0h2m1 0h3m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m1 0h1M4 12.5h1m1 0h1m1 0h2m2 0h1m1 0h1m1 0h1m1 0h2m7 0h1m1 0h5M2 13.5h6m2 0h2m3 0h1m1 0h1m3 0h6m1 0h3m1 0h2M5 14.5h2m2 0h1m1 0h1m1 0h2m1 0h1m2 0h1m2 0h1m2 0h1m1 0h1m2 0h1m1 0h2M3 15.5h1m3 0h3m1 0h3m1 0h3m3 0h1m4 0h5m1 0h1M1 16.5h3m5 0h1m4 0h3m2 0h1m2 0h1m1 0h1m1 0h3m1 0h2M1 17.5h1m5 0h1m3 0h1m2 0h1m1 0h1m1 0h2m3 0h4m1 0h3m2 0h1M1 18.5h2m2 0h1m2 0h4m1 0h2m2 0h1m1 0h4m1 0h1m2 0h2m1 0h2m1 0h1M4 19.5h1m2 0h2m1 0h3m3 0h1m2 0h1m2 0h1m2 0h1m1 0h3m1 0h2M1 20.5h2m1 0h2m2 0h3m1 0h6m2 0h1m1 0h2m2 0h1m1 0h5M1 21.5h4m1 0h2m4 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3m2 0h2m2 0h1M1 22.5h1m2 0h3m1 0h1m2 0h1m4 0h3m2 0h7m2 0h2m1 0h1M1 23.5h1m4 0h2m1 0h2m2 0h3m2 0h1m1 0h1m1 0h2m7 0h2M1 24.5h1m1 0h1m1 0h2m1 0h1m2 0h2m1 0h2m1 0h1m1 0h4m1 0h2m1 0h1m2 0h4M1 25.5h1m1 0h1m3 0h3m2 0h1m1 0h1m2 0h2m1 0h2m1 0h1m1 0h5m3 0h1M9 26.5h6m2 0h5m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1M1 27.5h7m2 0h1m1 0h1m2 0h4m2 0h1m1 0h3m1 0h1m1 0h1m1 0h2M1 28.5h1m5 0h1m1 0h1m1 0h3m1 0h2m1 0h2m4 0h2m3 0h3m1 0h1M1 29.5h1m1 0h3m1 0h1m1 0h4m4 0h1m2 0h4m1 0h6m1 0h2M1 30.5h1m1 0h3m1 0h1m1 0h5m1 0h2m2 0h1m2 0h1m1 0h3m2 0h2m2 0h1M1 31.5h1m1 0h3m1 0h1m1 0h2m4 0h4m2 0h2m4 0h2m1 0h1M1 32.5h1m5 0h1m2 0h4m2 0h1m5 0h1m1 0h1m4 0h3M1 33.5h7m1 0h1m2 0h3m1 0h1m1 0h1m2 0h1m1 0h3m1 0h2m1 0h1m1 0h1"/>
+        </svg>
+        <span class="tt-cap">поделиться</span>
+      </button>
+
+      <button class="tile tile-qr" type="button" id="qrSupportOpen"
+              aria-label="Поддержать сайт — перевод через ЮMoney" title="Поддержать сайт">
+        <svg viewBox="0 0 31 31" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+          <path fill="#ffffff" d="M0 0h31v31H0z"/>
+          <path stroke="#111111" d="M1 1.5h7m2 0h1m1 0h1m3 0h2m1 0h1m1 0h1m1 0h7M1 2.5h1m5 0h1m1 0h2m3 0h2m1 0h2m2 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m1 0h2m1 0h1m3 0h2m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h2m6 0h1m1 0h3m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h4m2 0h2m2 0h2m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m3 0h1m1 0h3m1 0h1m1 0h1M1 9.5h1m5 0h1m1 0h2m2 0h1m4 0h2m1 0h3m2 0h3M1 10.5h1m1 0h1m1 0h2m2 0h1m1 0h1m2 0h1m2 0h2m1 0h1m3 0h2m1 0h2M2 11.5h3m1 0h3m4 0h4m2 0h1m1 0h1m1 0h3M1 12.5h3m1 0h1m4 0h1m1 0h3m3 0h1m1 0h5m1 0h1M2 13.5h2m2 0h3m1 0h3m1 0h1m3 0h2m1 0h1m1 0h2m4 0h1M4 14.5h1m1 0h1m1 0h1m1 0h1m5 0h3m1 0h1m2 0h3m2 0h2M1 15.5h1m2 0h2m1 0h2m3 0h1m3 0h1m1 0h2m1 0h1m1 0h2m1 0h2M2 16.5h1m2 0h2m1 0h2m3 0h1m5 0h1m4 0h1m2 0h1m1 0h1M1 17.5h7m9 0h1m1 0h1m1 0h1m4 0h2M1 18.5h2m2 0h2m3 0h1m2 0h4m2 0h3m1 0h3m1 0h3M1 19.5h2m2 0h5m1 0h1m1 0h1m3 0h2m1 0h2m1 0h1m2 0h1m2 0h1M1 20.5h1m1 0h3m2 0h1m1 0h1m1 0h1m1 0h1m3 0h3m1 0h1m1 0h1M1 21.5h1m1 0h1m1 0h6m4 0h2m2 0h1m1 0h5m1 0h3M9 22.5h4m2 0h1m1 0h1m1 0h3m3 0h2M1 23.5h7m4 0h2m2 0h2m1 0h3m1 0h1m1 0h3M1 24.5h1m5 0h1m2 0h3m2 0h1m4 0h2m3 0h1m2 0h2M1 25.5h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h2m4 0h7m2 0h1M1 26.5h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h2m2 0h1m1 0h2m3 0h3M1 27.5h1m1 0h3m1 0h1m2 0h2m2 0h1m1 0h1m2 0h3m1 0h6M1 28.5h1m5 0h1m2 0h3m1 0h4m1 0h1m4 0h4m1 0h1M1 29.5h7m1 0h2m1 0h3m1 0h2m8 0h2"/>
+        </svg>
+        <span class="tt-cap">поддержать</span>
+      </button>
     </div>
-    <img class="logo" src="logo.jpg" alt="Логотип Pro Billiard League" width="360" height="361">
+    <p class="tagline">Все ближайшие турниры собраны в одном месте, на одном листе</p>
+    <div class="sub">
+      <span id="upd">обновлено 13.11.2026, 21:02</span> · календарь турниров по русскому бильярду
+    </div>
   </div>
 
   <div class="acts acts-top">
-    <a class="btn btn-tg" href="https://t.me/+K4dL-XzcI8BmYmUy" target="_blank" rel="noopener">Вступить в группу в Telegram</a>
     <button class="btn" type="button" id="shCopy">Скопировать ссылку</button>
   </div>
 
@@ -646,48 +697,64 @@
 
 </div>
 
-<!-- Окно «Тренировки». Пока заглушка: внутри биток-мишень с выбранным винтом
-     и полосочка силы удара. Готовый тренажёр (стол, расстановка шаров, скриншот)
-     вставим внутрь .trn-panel вместо .trn-note. -->
+<!-- Окно «Тренажёр». Сам тренажёр — отдельная страница trainer.html внутри рамки:
+     так его стили и скрипт не пересекаются со страницей турниров, а функционал
+     (стол, шары, траектории, винт, сила, дневник, скачивание PNG) сохраняется целиком.
+     Рамка грузится только при первом открытии. -->
 <div class="trn" id="trnModal" role="dialog" aria-modal="true" aria-labelledby="trnTitle" hidden>
-  <div class="trn-panel">
+  <div class="trn-panel trn-wide">
     <div class="trn-head">
       <div>
-        <h2 id="trnTitle">Тренировки</h2>
-        <p>Биток, винт и сила удара — тренажёр постановки удара</p>
+        <h2 id="trnTitle">Тренажёр</h2>
+        <p>Расстановка шаров, винт и сила удара — готовое можно скачать картинкой</p>
       </div>
-      <button class="trn-x" type="button" id="trnClose" aria-label="Закрыть окно тренировок">×</button>
+      <button class="trn-x" type="button" id="trnClose" aria-label="Закрыть окно тренажёра">×</button>
     </div>
+    <iframe class="trn-frame" id="trnFrame" title="Тренажёр расстановки шаров"></iframe>
+  </div>
+</div>
 
-    <div class="trn-demo">
-      <svg class="trn-ball" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-        <defs>
-          <radialGradient id="ballBig" cx="36%" cy="30%" r="72%">
-            <stop offset="0" stop-color="#ffffff"/>
-            <stop offset="60%" stop-color="#f4f2ec"/>
-            <stop offset="100%" stop-color="#c8c4b8"/>
-          </radialGradient>
-        </defs>
-        <circle cx="60" cy="63" r="52" fill="rgba(0,0,0,.45)"/>
-        <circle cx="60" cy="60" r="52" fill="url(#ballBig)" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/>
-        <circle cx="60" cy="60" r="36" fill="none" stroke="rgba(20,20,20,.18)" stroke-width="1.4"/>
-        <circle cx="60" cy="60" r="21" fill="none" stroke="rgba(20,20,20,.18)" stroke-width="1.4"/>
-        <circle cx="60" cy="60" r="1.8" fill="rgba(20,20,20,.35)"/>
-        <circle cx="37" cy="44" r="6" fill="#c62b32"/>
-        <circle cx="42" cy="79" r="6" fill="#c62b32"/>
-        <circle cx="79" cy="70" r="6" fill="#c62b32"/>
-        <circle cx="79" cy="38" r="9.5" fill="#f0b429" stroke="#ffffff" stroke-width="2.5"/>
-        <circle cx="79" cy="38" r="3.6" fill="#7a4b00"/>
+<!-- Окно с QR-кодом: ссылка на сам сайт, чтобы быстро переслать или показать с экрана. -->
+<div class="trn" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrTitle" hidden>
+  <div class="trn-panel" style="max-width:420px">
+    <div class="trn-head">
+      <div>
+        <h2 id="qrTitle">Поделиться сайтом</h2>
+        <p>Это ссылка именно на этот сайт — покажите код или отправьте адрес</p>
+      </div>
+      <button class="trn-x" type="button" id="qrClose" aria-label="Закрыть">×</button>
+    </div>
+    <div class="qrbox">
+      <svg viewBox="0 0 35 35" shape-rendering="crispEdges" role="img" aria-label="QR-код со ссылкой на сайт">
+        <path fill="#ffffff" d="M0 0h35v35H0z"/>
+        <path stroke="#111111" d="M1 1.5h7m2 0h3m4 0h1m1 0h4m1 0h1m2 0h7M1 2.5h1m5 0h1m2 0h3m3 0h2m1 0h1m1 0h2m4 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m3 0h3m3 0h3m1 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h5m2 0h1m2 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h4m2 0h3m3 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m1 0h1m1 0h2m4 0h2m1 0h1m1 0h2m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m1 0h1m1 0h1m3 0h1m2 0h5M1 9.5h1m1 0h5m3 0h2m1 0h1m2 0h2m1 0h1m2 0h3m1 0h5M1 10.5h1m3 0h1m2 0h1m2 0h4m2 0h5m1 0h2m2 0h2m1 0h2m1 0h1M1 11.5h1m1 0h1m2 0h2m3 0h2m1 0h3m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m1 0h1M4 12.5h1m1 0h1m1 0h2m2 0h1m1 0h1m1 0h1m1 0h2m7 0h1m1 0h5M2 13.5h6m2 0h2m3 0h1m1 0h1m3 0h6m1 0h3m1 0h2M5 14.5h2m2 0h1m1 0h1m1 0h2m1 0h1m2 0h1m2 0h1m2 0h1m1 0h1m2 0h1m1 0h2M3 15.5h1m3 0h3m1 0h3m1 0h3m3 0h1m4 0h5m1 0h1M1 16.5h3m5 0h1m4 0h3m2 0h1m2 0h1m1 0h1m1 0h3m1 0h2M1 17.5h1m5 0h1m3 0h1m2 0h1m1 0h1m1 0h2m3 0h4m1 0h3m2 0h1M1 18.5h2m2 0h1m2 0h4m1 0h2m2 0h1m1 0h4m1 0h1m2 0h2m1 0h2m1 0h1M4 19.5h1m2 0h2m1 0h3m3 0h1m2 0h1m2 0h1m2 0h1m1 0h3m1 0h2M1 20.5h2m1 0h2m2 0h3m1 0h6m2 0h1m1 0h2m2 0h1m1 0h5M1 21.5h4m1 0h2m4 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3m2 0h2m2 0h1M1 22.5h1m2 0h3m1 0h1m2 0h1m4 0h3m2 0h7m2 0h2m1 0h1M1 23.5h1m4 0h2m1 0h2m2 0h3m2 0h1m1 0h1m1 0h2m7 0h2M1 24.5h1m1 0h1m1 0h2m1 0h1m2 0h2m1 0h2m1 0h1m1 0h4m1 0h2m1 0h1m2 0h4M1 25.5h1m1 0h1m3 0h3m2 0h1m1 0h1m2 0h2m1 0h2m1 0h1m1 0h5m3 0h1M9 26.5h6m2 0h5m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1M1 27.5h7m2 0h1m1 0h1m2 0h4m2 0h1m1 0h3m1 0h1m1 0h1m1 0h2M1 28.5h1m5 0h1m1 0h1m1 0h3m1 0h2m1 0h2m4 0h2m3 0h3m1 0h1M1 29.5h1m1 0h3m1 0h1m1 0h4m4 0h1m2 0h4m1 0h6m1 0h2M1 30.5h1m1 0h3m1 0h1m1 0h5m1 0h2m2 0h1m2 0h1m1 0h3m2 0h2m2 0h1M1 31.5h1m1 0h3m1 0h1m1 0h2m4 0h4m2 0h2m4 0h2m1 0h1M1 32.5h1m5 0h1m2 0h4m2 0h1m5 0h1m1 0h1m4 0h3M1 33.5h7m1 0h1m2 0h3m1 0h1m1 0h1m2 0h1m1 0h3m1 0h2m1 0h1m1 0h1"/>
       </svg>
-      <div class="trn-side">
-        <span class="power" aria-hidden="true"><i style="height:68%"></i></span>
-        <span>сила<br>удара</span>
-      </div>
+      <button class="qr-url" type="button" id="qrCopyLink"
+              data-copy="https://billiardpyramid.github.io/tournirs/">https://billiardpyramid.github.io/tournirs/</button>
+      <p class="qr-hint" id="qrCopyNote">Нажмите на ссылку — адрес сайта скопируется, и его можно отправить.</p>
     </div>
+  </div>
+</div>
 
-    <p class="trn-note"><b>Здесь скоро появится тренажёр.</b>
-      Внутри будет бильярдный стол: расставляйте шары по позициям и делайте скриншот.
-      Пока это заглушка — готовую страницу вставим на это место.</p>
+<!-- Окно «Поддержать сайт»: перевод через ЮMoney, сумма на стороне получателя. -->
+<div class="trn" id="qrSupportModal" role="dialog" aria-modal="true" aria-labelledby="qrSupportTitle" hidden>
+  <div class="trn-panel" style="max-width:420px">
+    <div class="trn-head">
+      <div>
+        <h2 id="qrSupportTitle">Поддержать сайт</h2>
+        <p>Перевод через ЮMoney — наведите камеру</p>
+      </div>
+      <button class="trn-x" type="button" id="qrSupportClose" aria-label="Закрыть">×</button>
+    </div>
+    <div class="qrbox">
+      <svg viewBox="0 0 31 31" shape-rendering="crispEdges" role="img" aria-label="QR-код для перевода через ЮMoney">
+        <path fill="#ffffff" d="M0 0h31v31H0z"/>
+        <path stroke="#111111" d="M1 1.5h7m2 0h1m1 0h1m3 0h2m1 0h1m1 0h1m1 0h7M1 2.5h1m5 0h1m1 0h2m3 0h2m1 0h2m2 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m1 0h2m1 0h1m3 0h2m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h2m6 0h1m1 0h3m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h4m2 0h2m2 0h2m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m3 0h1m1 0h3m1 0h1m1 0h1M1 9.5h1m5 0h1m1 0h2m2 0h1m4 0h2m1 0h3m2 0h3M1 10.5h1m1 0h1m1 0h2m2 0h1m1 0h1m2 0h1m2 0h2m1 0h1m3 0h2m1 0h2M2 11.5h3m1 0h3m4 0h4m2 0h1m1 0h1m1 0h3M1 12.5h3m1 0h1m4 0h1m1 0h3m3 0h1m1 0h5m1 0h1M2 13.5h2m2 0h3m1 0h3m1 0h1m3 0h2m1 0h1m1 0h2m4 0h1M4 14.5h1m1 0h1m1 0h1m1 0h1m5 0h3m1 0h1m2 0h3m2 0h2M1 15.5h1m2 0h2m1 0h2m3 0h1m3 0h1m1 0h2m1 0h1m1 0h2m1 0h2M2 16.5h1m2 0h2m1 0h2m3 0h1m5 0h1m4 0h1m2 0h1m1 0h1M1 17.5h7m9 0h1m1 0h1m1 0h1m4 0h2M1 18.5h2m2 0h2m3 0h1m2 0h4m2 0h3m1 0h3m1 0h3M1 19.5h2m2 0h5m1 0h1m1 0h1m3 0h2m1 0h2m1 0h1m2 0h1m2 0h1M1 20.5h1m1 0h3m2 0h1m1 0h1m1 0h1m1 0h1m3 0h3m1 0h1m1 0h1M1 21.5h1m1 0h1m1 0h6m4 0h2m2 0h1m1 0h5m1 0h3M9 22.5h4m2 0h1m1 0h1m1 0h3m3 0h2M1 23.5h7m4 0h2m2 0h2m1 0h3m1 0h1m1 0h3M1 24.5h1m5 0h1m2 0h3m2 0h1m4 0h2m3 0h1m2 0h2M1 25.5h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h2m4 0h7m2 0h1M1 26.5h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h2m2 0h1m1 0h2m3 0h3M1 27.5h1m1 0h3m1 0h1m2 0h2m2 0h1m1 0h1m2 0h3m1 0h6M1 28.5h1m5 0h1m2 0h3m1 0h4m1 0h1m4 0h4m1 0h1M1 29.5h7m1 0h2m1 0h3m1 0h2m8 0h2"/>
+      </svg>
+      <a class="qr-url" href="https://yoomoney.ru/to/41001802202071/0" target="_blank" rel="noopener">yoomoney.ru/to/41001802202071</a>
+      <p class="qr-hint">Ссылка открывает страницу перевода ЮMoney. Сумму выбираете сами.</p>
+      <p class="qr-pay">Либо по СБП <b>+79167303577</b>, банк ЮMoney.</p>
+    </div>
   </div>
 </div>
 
@@ -1143,34 +1210,81 @@ build();
   });
 })();
 
-/* ---------- Окно «Тренировки» (пока заглушка) ----------
-   Открывается кликом по плитке в шапке. Закрывается крестиком, кликом по фону и Esc.
-   Готовый тренажёр вставим внутрь .trn-panel — этот обработчик менять не придётся. */
-(function trainModal(){
-  const openBtn = document.getElementById("trainOpen");
-  const modal = document.getElementById("trnModal");
-  if (!openBtn || !modal) return;
-  const closeBtn = document.getElementById("trnClose");
+/* ---------- Окна шапки: тренажёр, QR-ссылка, поддержка ----------
+   Каждое открывается своей плиткой. Закрывается крестиком, кликом по фону и Esc.
+   Открыто всегда только одно. Тренажёр вставим внутрь #trnModal .trn-panel —
+   обработчик менять не придётся. */
+(function headModals(){
+  const pairs = [
+    ["trainOpen", "trnModal", "trnClose"],
+    ["qrOpen", "qrModal", "qrClose"],
+    ["qrSupportOpen", "qrSupportModal", "qrSupportClose"]
+  ].map(([openId, modalId, closeId]) => ({
+    open: document.getElementById(openId),
+    modal: document.getElementById(modalId),
+    close: document.getElementById(closeId)
+  })).filter(p => p.open && p.modal);
+
+  if (!pairs.length) return;
   let lastFocus = null;
 
-  const open = () => {
-    lastFocus = document.activeElement;
-    modal.hidden = false;
-    document.body.classList.add("trn-open");
-    if (closeBtn) closeBtn.focus();
-  };
-  const close = () => {
-    modal.hidden = true;
+  const anyOpen = () => pairs.some(p => !p.modal.hidden);
+  const closeAll = () => {
+    pairs.forEach(p => { p.modal.hidden = true; });
     document.body.classList.remove("trn-open");
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  };
+  const openOf = p => {
+    lastFocus = document.activeElement;
+    closeAll();
+    // тренажёр тяжёлый — грузим его страницу только в момент первого открытия
+    if (p.modal.id === "trnModal") {
+      const frame = document.getElementById("trnFrame");
+      if (frame && !frame.getAttribute("src")) frame.src = "trainer.html";
+    }
+    p.modal.hidden = false;
+    document.body.classList.add("trn-open");
+    if (p.close) p.close.focus();
   };
 
-  openBtn.addEventListener("click", open);
-  if (closeBtn) closeBtn.addEventListener("click", close);
-  modal.addEventListener("click", e => { if (e.target === modal) close(); });
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && !modal.hidden) close();
+  pairs.forEach(p => {
+    p.open.addEventListener("click", () => openOf(p));
+    if (p.close) p.close.addEventListener("click", () => { closeAll(); if (lastFocus && lastFocus.focus) lastFocus.focus(); });
+    p.modal.addEventListener("click", e => {
+      if (e.target === p.modal) { closeAll(); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+    });
   });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && anyOpen()) { closeAll(); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  });
+
+  // ссылка под QR сайта: клик копирует адрес и показывает уведомление
+  const copyBtn = document.getElementById("qrCopyLink");
+  const copyNote = document.getElementById("qrCopyNote");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", () => {
+      const text = copyBtn.getAttribute("data-copy");
+      const done = ok => {
+        if (copyNote) copyNote.textContent = ok
+          ? "Ссылка скопирована — можно вставлять и отправлять."
+          : "Не вышло скопировать: выделите ссылку вручную.";
+      };
+      const fallback = () => {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        ta.remove();
+        done(ok);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => done(true)).catch(fallback);
+      } else fallback();
+    });
+  }
 })();
 
 /* ---------- Карусель фотографий кия ---------- */
