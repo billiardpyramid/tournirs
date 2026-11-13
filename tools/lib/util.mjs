@@ -163,14 +163,23 @@ const fromDate = r => r.from instanceof Date ? r.from : new Date(r.from);
 const toDateOf = r => (r.to instanceof Date ? r.to : (r.from instanceof Date ? r.from : new Date(r.from)));
 
 /**
+ * Сколько дней турнир может идти, чтобы его ещё подсвечивали как «идёт сейчас».
+ * Долгие серии (месяц и больше) подсвечивать нельзя — иначе салатовых строк
+ * слишком много и таблица превращается в кашу.
+ */
+export const LIVE_MAX_DAYS = 8;
+
+/**
  * Идёт ли турнир прямо сейчас.
- * Конец турнира известен только по дню, поэтому «идёт» — это «начался и ещё не закончился
- * последним днём своей даты». Для турнира без времени (МСБС) считаем, что он идёт весь день.
+ * Конец турнира известен только по дню, поэтому «идёт» — это «начался, ещё не закончился
+ * последним днём своей даты» и «идёт не дольше LIVE_MAX_DAYS дней».
+ * Для турнира без времени (МСБС) считаем, что он идёт весь день.
  */
 export function isLive(r, now = new Date()) {
   const a = fromDate(r), b = toDateOf(r);
   if (isNaN(a) || isNaN(b)) return false;
-  return a.getTime() <= now.getTime() && b.getTime() >= now.getTime();
+  if (a.getTime() > now.getTime() || b.getTime() < now.getTime()) return false;
+  return now.getTime() - a.getTime() <= LIVE_MAX_DAYS * 86400000;
 }
 
 /**
