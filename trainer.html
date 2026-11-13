@@ -313,7 +313,9 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     background:radial-gradient(circle at 34% 30%, #fff, #ecece6 60%, #b9b9b1);
     box-shadow:inset -7px -9px 14px rgba(0,0,0,.28), inset 4px 4px 8px rgba(255,255,255,.9), 0 4px 9px rgba(0,0,0,.45);
   }
-  #spinCv{position:relative; z-index:1}
+  /* у мишени нет квадратной рамки: скругление и тень заданы всем холстам сразу,
+     а здесь они рисовали бы квадрат поверх белого прицельного шара */
+  #spinCv{position:relative; z-index:1; border-radius:0; box-shadow:none; background:transparent}
   .cut-range{width:100%; accent-color:#f2b91c; cursor:ew-resize; margin:0}
   .cut-label{font-size:13px; font-weight:650; color:var(--txt); text-align:center; min-height:18px}
   .cut-label.thin{color:#ffb057}
@@ -914,14 +916,15 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     c.arc(cx + r * 0.06, cy + r * 0.12, r * 1.16, 0, TAU);
     c.fill();
 
-    // тело битка (жёлтый Aramith Pro Cup)
+    // тело битка (жёлтый Aramith Pro Cup).
+    // Полупрозрачный, чтобы за ним было видно белый прицельный шар и их пересечение.
     const g = c.createRadialGradient(cx - r * 0.38, cy - r * 0.44, r * 0.05,
                                      cx, cy, r * 1.16);
-    g.addColorStop(0,    '#fffbe2');
-    g.addColorStop(0.20, '#ffe680');
-    g.addColorStop(0.60, '#f2b91c');
-    g.addColorStop(0.90, '#c98d08');
-    g.addColorStop(1,    '#a8730a');
+    g.addColorStop(0,    'rgba(255,251,226,0.55)');
+    g.addColorStop(0.20, 'rgba(255,230,128,0.55)');
+    g.addColorStop(0.60, 'rgba(242,185,28,0.55)');
+    g.addColorStop(0.90, 'rgba(201,141,8,0.55)');
+    g.addColorStop(1,    'rgba(168,115,10,0.55)');
     c.beginPath();
     c.arc(cx, cy, r, 0, TAU);
     c.fillStyle = g;
