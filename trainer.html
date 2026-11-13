@@ -154,6 +154,9 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     width:100%;
     display:flex;
     justify-content:center;
+    /* жест двумя пальцами увеличивает стол, а не листает страницу */
+    touch-action:none;
+    overflow:hidden;
   }
   .app canvas{
     display:block;
@@ -349,11 +352,17 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   .ro-row span{min-width:58px}
   .ro-hint{text-align:left}
   .spin-actions{justify-content:flex-start}
-  /* на узком экране панель уходит наверх, стол под ней */
+  /* на узком экране стол идёт сразу под кнопками, а винт с резкой — под стол:
+     так стол оказывается на виду, а не прячется под панелью */
   @media (max-width: 759px) {
-    .main{flex-direction:column}
-    .spin-panel{width:100%; position:static}
+    .app{display:flex; flex-direction:column}
+    .bar{order:1}
+    .titlebar{order:2}
+    .main{order:3; flex-direction:column}
+    .table-area{order:1}
+    .spin-panel{order:2; width:100%; position:static}
     .spin-hint{display:inline}
+    .foot{order:4}
   }
   /* ── подвал ── */
   .foot{
@@ -1467,13 +1476,22 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     c.fillText(txt, TOTAL_W / 2, h / 2 + size * 0.03);
   }
 
-  function drawScene(c, pxW, live) {
+  function drawScene(c, pxW, live, zoom) {
     const k = pxW / TOTAL_W;
     const top = hasTitle() ? HEADER_H : 0;
     c.setTransform(k, 0, 0, k, 0, 0);
     c.clearRect(0, 0, TOTAL_W, TOTAL_H + top);
 
     if (top) drawTitle(c);
+
+    // увеличение двумя пальцами: только на экране, в картинку стол попадает целиком
+    if (zoom) {
+      const cssW = cv.getBoundingClientRect().width || 1;   // сдвиг хранится в пикселях экрана
+      const ku = cssW / TOTAL_W;
+      c.translate(view.x / ku, view.y / ku + top);
+      c.scale(view.scale, view.scale);
+      c.translate(0, -top);
+    }
 
     c.save();
     c.translate(0, top);
@@ -1531,7 +1549,7 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     if (cv.style.height !== hAttr) cv.style.height = hAttr;
     if (titleInput !== null && titleInput.style.width !== wAttr) titleInput.style.width = wAttr;
 
-    drawScene(ctx, pw, true);
+    drawScene(ctx, pw, true, true);
     updateUI();
   }
 
@@ -1554,13 +1572,19 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   }
 
   /* ══════════════ Координаты / коллизии ══════════════ */
+  // увеличение стола двумя пальцами: масштаб и сдвиг в пикселях холста
+  const view = { scale: 1, x: 0, y: 0 };
+
   function toPlay(ev) {
     const rect = cv.getBoundingClientRect();
-    const k = TOTAL_W / rect.width;
+    const k = TOTAL_W / rect.width;          // миллиметры стола на пиксель экрана
     const top = hasTitle() ? HEADER_H : 0;
+    // всё в пикселях экрана: увеличение хранится там же
+    const px = ev.clientX - rect.left;
+    const py = ev.clientY - rect.top;
     return {
-      x: (ev.clientX - rect.left) * k - RAIL,
-      y: (ev.clientY - rect.top) * k - RAIL - top,
+      x: ((px - view.x) / view.scale) * k - RAIL,
+      y: ((py - view.y) / view.scale) * k - RAIL - top,
     };
   }
 
@@ -1982,6 +2006,7 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   let rackDrag = null;
 
   cv.addEventListener('pointerdown', ev => {
+    if (pinch.on) return;                 // идёт увеличение двумя пальцами
     if (ev.button === 2) return;          // правая кнопка — через contextmenu
     const p = toPlay(ev);
     const hit = pickBall(p, pickPad(ev));
@@ -2053,6 +2078,7 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
   });
 
   window.addEventListener('pointermove', ev => {
+    if (pinch.on) return;                  // жест двумя пальцами, шар не тащим
     const p = toPlay(ev);
 
     if (rackDrag) {
@@ -2189,6 +2215,92 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     if (hit) { removeBall(hit.id); return; }
     const ln = pickLine(p);
     if (ln) removeLine(ln.id);
+  });
+
+  /* ── увеличение двумя пальцами ──
+     Пока на столе два пальца, стол двигается и масштабируется, а жест
+     не считается постановкой шара. Одним пальцем всё работает как раньше. */
+  const pinch = { on: false, pointers: new Map(), snap: null, startDist: 0, startScale: 1, startX: 0, startY: 0, cx: 0, cy: 0 };
+
+  function pinchCenter() {
+    const pts = [...pinch.pointers.values()];
+    return { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+  }
+
+  // снимок расстановки до жеста: первый палец успевает сработать раньше второго,
+  // поэтому при начале увеличения возвращаем всё как было
+  function shotSnapshot() {
+    return JSON.stringify({
+      balls: state.balls, lines: state.lines, rack: state.rack,
+      nextId: state.nextId, history: state.history,
+    });
+  }
+  function restoreSnapshot(s) {
+    if (!s) return;
+    const v = JSON.parse(s);
+    state.balls = v.balls;
+    state.lines = v.lines;
+    state.rack = v.rack;
+    state.nextId = v.nextId;
+    state.history = v.history;
+    state.hover = null;
+    state.hoverLine = null;
+    state.hoverRack = false;
+    state.draft = null;
+    drag = null;
+    rackDrag = null;
+    schedule();
+  }
+
+  stage.addEventListener('pointerdown', ev => {
+    if (pinch.pointers.size === 0) pinch.snap = shotSnapshot();
+    pinch.pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    if (pinch.pointers.size === 2) {
+      pinch.on = true;
+      // второй палец — отменяем то, что успел сделать первый
+      restoreSnapshot(pinch.snap);
+      const pts = [...pinch.pointers.values()];
+      pinch.startDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
+      pinch.startScale = view.scale;
+      pinch.startX = view.x;
+      pinch.startY = view.y;
+      const rect = cv.getBoundingClientRect();
+      const c = pinchCenter();
+      pinch.cx = c.x - rect.left;      // пиксели экрана внутри холста
+      pinch.cy = c.y - rect.top;
+    }
+  }, { capture: true });
+
+  stage.addEventListener('pointermove', ev => {
+    if (!pinch.pointers.has(ev.pointerId)) return;
+    pinch.pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    if (!pinch.on || pinch.pointers.size < 2) return;
+    const pts = [...pinch.pointers.values()];
+    const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
+    const scale = Math.min(6, Math.max(1, pinch.startScale * dist / pinch.startDist));
+    const rect = cv.getBoundingClientRect();
+    const c = pinchCenter();
+    const cx = c.x - rect.left;        // пиксели экрана
+    const cy = c.y - rect.top;
+    view.scale = scale;
+    view.x = cx - (pinch.cx - pinch.startX) * (scale / pinch.startScale);
+    view.y = cy - (pinch.cy - pinch.startY) * (scale / pinch.startScale);
+    if (view.scale === 1) { view.x = 0; view.y = 0; }
+    schedule();
+  });
+
+  function pinchEnd(ev) {
+    pinch.pointers.delete(ev.pointerId);
+    if (pinch.pointers.size < 2) pinch.on = false;
+    if (pinch.pointers.size === 0) pinch.snap = null;
+  }
+  stage.addEventListener('pointerup', pinchEnd);
+  stage.addEventListener('pointercancel', pinchEnd);
+
+  cv.addEventListener('dblclick', () => {
+    if (view.scale === 1 && view.x === 0 && view.y === 0) return;
+    view.scale = 1; view.x = 0; view.y = 0;
+    schedule();
   });
 
   /* ══════════════ Интерфейс ══════════════ */
