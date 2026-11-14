@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Тренажёр по бильярду: расстановка шаров, винт, сила удара и резка — сохраните схему в PNG.">
 <title>Тренажёр — расстановка шаров</title>
 <style>
 html,body{height:100%;margin:0}
@@ -2794,11 +2795,11 @@ body{background:#15171c;color:#e7e9ee;font:14px/1.45 system-ui,-apple-system,"Se
     c.fillText('Винт и сила удара', cx, y0 + 64);
 
     // прицел с резкой: жёлтый биток + белый прицельный шар позади
-    // (пропорции как в тренажёре: белый шар 0.75 радиуса битка, сдвиг до 1.5 радиуса)
-    const br = Math.min(140, Math.round(w * 0.24));
+    // (шары одного размера; сдвиг — до 1.5 радиуса, как ползунок в тренажёре)
+    const br = Math.min(124, Math.round(w * 0.20));
     const by = y0 + 140 + br;
     const cut = Math.max(-1, Math.min(1, state.cut || 0));
-    const aimR = Math.round(br * 0.75);
+    const aimR = br;
     const aimX = cx + cut * 1.5 * br;
     c.textBaseline = 'middle';
     c.font = '600 20px ' + FONT;
