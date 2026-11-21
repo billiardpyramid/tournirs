@@ -12,124 +12,16 @@
   "url": "https://mosbilliard.ru/calen/"
  },
  {
-  "key": "21.11",
-  "time": "10:09",
-  "name": "«Лидер – CUP 2026» по русскому бильярду 10 этап. \"Омская пирамида\"",
-  "city": "Кириши",
-  "venue": "Бильярдный клуб \"Лидер\"",
+  "key": "22.11",
+  "time": "11:00",
+  "name": "Аксай! Турнир МСК Пирамида в БК \"Чемпион \"",
+  "city": "Аксай",
+  "venue": "БК \"Чемпион\" (Аксай)",
   "kind": "пирамида",
-  "cnt": "26",
+  "cnt": "1",
   "src": "B4Y",
   "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15599"
- },
- {
-  "key": "21.11",
-  "time": "10:33",
-  "name": "турнир по динамичной пирамиде Bella Chao",
-  "city": "город Пхукет",
-  "venue": "Bella Chao",
-  "kind": "динамичная",
-  "cnt": "16",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15989"
- },
- {
-  "key": "21.11",
-  "time": "10:34",
-  "name": "Турнир \"ПЛАН Б\" Свободная пирамида. \"Бизнес-лайт\"",
-  "city": "Москва",
-  "venue": "БК \"План Б\" бильярд",
-  "kind": "свободная",
-  "cnt": "19",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15943"
- },
- {
-  "key": "21.11",
-  "time": "11:04",
-  "name": "Открытый Кубок Москвы. «Комбинированная пирамида». Женщины",
-  "city": "Москва",
-  "venue": "\"Дворец бильярдного спорта\"",
-  "kind": "комбинированная",
-  "cnt": "6",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15922"
- },
- {
-  "key": "21.11",
-  "time": "11:08",
-  "name": "Зимний Кубок БК DOSTAR 6-й Этап Московская пирамида",
-  "city": "Петропавловск",
-  "venue": "БК DOSTAR",
-  "kind": "пирамида",
-  "cnt": "21",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15961"
- },
- {
-  "key": "21.11",
-  "time": "11:11",
-  "name": "Открытый Кубок Москвы. «Комбинированная пирамида». Мужчины",
-  "city": "Москва",
-  "venue": "\"Дворец бильярдного спорта\"",
-  "kind": "комбинированная",
-  "cnt": "37",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15923"
- },
- {
-  "key": "21.11",
-  "time": "11:15",
-  "name": "Открытый турнир в Гатчине \"Московская пирамида\"",
-  "city": "Гатчина",
-  "venue": "Pool & Bar",
-  "kind": "пирамида",
-  "cnt": "26",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15418"
- },
- {
-  "key": "21.11",
-  "time": "11:42",
-  "name": "Чемпионат г. Ростова-на-Дону \"Динамичная пирамида\" Мужчины. Первая лига.",
-  "city": "Ростов-на-Дону",
-  "venue": "Доберман, Ростов-на-Дону",
-  "kind": "динамичная",
-  "cnt": "29",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15986"
- },
- {
-  "key": "21.11",
-  "time": "12:26",
-  "name": "Турнир H_Billiards (Московская пирамида)",
-  "city": "Астана",
-  "venue": "H_billiards",
-  "kind": "пирамида",
-  "cnt": "16",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15996"
- },
- {
-  "key": "21.11",
-  "time": "13:01",
-  "name": "Турнир БК \"Абриколь\" по Московской пирамиде г. Астрахань",
-  "city": "Астрахань",
-  "venue": "Абриколь",
-  "kind": "пирамида",
-  "cnt": "15",
-  "src": "B4Y",
-  "srcCls": "b4y",
-  "url": "https://bill4you.ru/rus-billiard/tournament/15930"
+  "url": "https://bill4you.ru/rus-billiard/tournament/16001"
  },
  {
   "key": "22.11",
@@ -138,7 +30,7 @@
   "city": "Ульяновск",
   "venue": "БК MATRESHKI",
   "kind": "комбинированная",
-  "cnt": "9",
+  "cnt": "10",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15576"
@@ -186,7 +78,7 @@
   "city": "—",
   "venue": "Fusion",
   "kind": "пирамида",
-  "cnt": "50",
+  "cnt": "52",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5582776"
@@ -198,7 +90,7 @@
   "city": "Воронеж",
   "venue": "Первый",
   "kind": "пирамида",
-  "cnt": "2",
+  "cnt": "1",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5585576"
@@ -210,7 +102,7 @@
   "city": "Москва",
   "venue": "БАЗА",
   "kind": "пирамида",
-  "cnt": "48",
+  "cnt": "43",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5582634"
@@ -288,6 +180,18 @@
   "url": "https://www.llb.su/t/5586303"
  },
  {
+  "key": "24.11",
+  "time": "08:00",
+  "name": "БК \"Полярная Звезда\" ПОЛЯРНЫЙ ВЫЗОВ 2026 Большая Пирамида",
+  "city": "посёлок Ямбург",
+  "venue": "БК \"Полярная Звезда\"",
+  "kind": "пирамида",
+  "cnt": "0",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/16004"
+ },
+ {
   "key": "25.11",
   "time": "19:00",
   "name": "Санкт-Петербург 2026. Ольгино. Пирамида № 67 (блиц)",
@@ -306,7 +210,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "5",
+  "cnt": "8",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5587342"
@@ -318,7 +222,7 @@
   "city": "Ташкент",
   "venue": "LIDER",
   "kind": "пирамида",
-  "cnt": "56",
+  "cnt": "57",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5533430"
@@ -378,7 +282,7 @@
   "city": "Москва",
   "venue": "БК \"Пирамида\"",
   "kind": "пирамида",
-  "cnt": "6",
+  "cnt": "7",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15940"
@@ -390,7 +294,7 @@
   "city": "Санкт-Петербург",
   "venue": "PLAYPOOL",
   "kind": "пирамида",
-  "cnt": "12",
+  "cnt": "13",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557416"
@@ -402,7 +306,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "37",
+  "cnt": "39",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5572559"
@@ -438,7 +342,7 @@
   "city": "—",
   "venue": "Максимус",
   "kind": "пирамида",
-  "cnt": "11",
+  "cnt": "12",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5551987"
@@ -534,7 +438,7 @@
   "city": "Санкт-Петербург",
   "venue": "MAXImatic",
   "kind": "пирамида",
-  "cnt": "20",
+  "cnt": "21",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5530728"
@@ -582,7 +486,7 @@
   "city": "Санкт-Петербург",
   "venue": "FRBS-club",
   "kind": "пирамида",
-  "cnt": "5",
+  "cnt": "6",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5587229"
@@ -618,7 +522,7 @@
   "city": "—",
   "venue": "Классик",
   "kind": "пирамида",
-  "cnt": "13",
+  "cnt": "14",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5581927"
