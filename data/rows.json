@@ -1,12 +1,24 @@
 [
  {
   "key": "25.11",
+  "time": "07:19",
+  "name": "БК \"Полярная Звезда\" ПОЛЯРНЫЙ ВЫЗОВ 2026 Большая Пирамида",
+  "city": "посёлок Ямбург",
+  "venue": "БК \"Полярная Звезда\"",
+  "kind": "пирамида",
+  "cnt": "25",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/16004"
+ },
+ {
+  "key": "25.11",
   "time": "19:00",
   "name": "Санкт-Петербург 2026. Ольгино. Пирамида № 67 (блиц)",
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "35",
+  "cnt": "34",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5587340"
@@ -18,7 +30,7 @@
   "city": "Новосибирск",
   "venue": "БК \"Rival\"",
   "kind": "свободная",
-  "cnt": "0",
+  "cnt": "1",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/16072"
@@ -42,7 +54,7 @@
   "city": "Ташкент",
   "venue": "LIDER",
   "kind": "пирамида",
-  "cnt": "65",
+  "cnt": "67",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5533430"
@@ -78,7 +90,7 @@
   "city": "Красноярск",
   "venue": "БК \"Шаровая Молния\"",
   "kind": "омка",
-  "cnt": "1",
+  "cnt": "2",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/16039"
@@ -90,7 +102,7 @@
   "city": "Лянтор",
   "venue": "БК \"Легенда\" (г. Лянтор)",
   "kind": "пирамида",
-  "cnt": "5",
+  "cnt": "6",
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/15905"
@@ -106,6 +118,18 @@
   "src": "B4Y",
   "srcCls": "b4y",
   "url": "https://bill4you.ru/rus-billiard/tournament/16071"
+ },
+ {
+  "key": "28.11",
+  "time": "10:00",
+  "name": "Открытый турнир по Московской пирамиде БК Шаровня",
+  "city": "Брянка",
+  "venue": "Шаровня БК",
+  "kind": "пирамида",
+  "cnt": "5",
+  "src": "B4Y",
+  "srcCls": "b4y",
+  "url": "https://bill4you.ru/rus-billiard/tournament/16087"
  },
  {
   "key": "28.11",
@@ -150,7 +174,7 @@
   "city": "Санкт-Петербург",
   "venue": "PLAYPOOL",
   "kind": "пирамида",
-  "cnt": "34",
+  "cnt": "37",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5557416"
@@ -174,7 +198,7 @@
   "city": "Санкт-Петербург",
   "venue": "ЦБС «Ольгино»",
   "kind": "пирамида",
-  "cnt": "45",
+  "cnt": "50",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5572559"
@@ -198,7 +222,7 @@
   "city": "—",
   "venue": "Луч",
   "kind": "пирамида",
-  "cnt": "16",
+  "cnt": "17",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5590978"
@@ -222,7 +246,7 @@
   "city": "—",
   "venue": "Максимус",
   "kind": "пирамида",
-  "cnt": "13",
+  "cnt": "15",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5551987"
@@ -253,12 +277,24 @@
  },
  {
   "key": "28.11",
+  "time": "12:00",
+  "name": "Санкт-Петербург 2026. ТриК3. Пирамида № 18",
+  "city": "Санкт-Петербург",
+  "venue": "ТриК3",
+  "kind": "пирамида",
+  "cnt": "5",
+  "src": "ЛЛБ",
+  "srcCls": "llb",
+  "url": "https://www.llb.su/t/5591607"
+ },
+ {
+  "key": "28.11",
   "time": "12:30",
   "name": "ЛЛБ 2026. Москва. Пирамида № 90 [К] ≤1300",
   "city": "Москва",
   "venue": "33",
   "kind": "пирамида",
-  "cnt": "11",
+  "cnt": "26",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5591553"
@@ -342,7 +378,7 @@
   "city": "Чехов",
   "venue": "BILLIARDS",
   "kind": "пирамида",
-  "cnt": "11",
+  "cnt": "12",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5589803"
@@ -390,7 +426,7 @@
   "city": "Москва",
   "venue": "БАЗА",
   "kind": "пирамида",
-  "cnt": "45",
+  "cnt": "46",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5591253"
@@ -426,7 +462,7 @@
   "city": "Санкт-Петербург",
   "venue": "MAXImatic",
   "kind": "пирамида",
-  "cnt": "24",
+  "cnt": "27",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5530728"
@@ -738,7 +774,7 @@
   "city": "Краснодар",
   "venue": "Турист",
   "kind": "пирамида",
-  "cnt": "38",
+  "cnt": "43",
   "src": "ЛЛБ",
   "srcCls": "llb",
   "url": "https://www.llb.su/t/5590089"
